@@ -40,6 +40,12 @@ public class AmountTest {
     public void tearDown() {
     }
     
+    // TODO 自販機に1円を投入すると例外がスローされる
+    // TODO 自販機に5円を投入すると例外がスローされる
+    // TODO 自販機に2000円を投入すると例外がスローされる
+    // TODO 自販機に5000円を投入すると例外がスローされる
+    // TODO 自販機に10000円を投入すると例外がスローされる
+    
     @Test
     public void 自販機に10円を投入すると投入金額合計が10円になる() {
         amount.addAmount(AmountableMoneyFactory.createNewMoney(10));
