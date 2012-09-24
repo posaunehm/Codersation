@@ -7,8 +7,6 @@
  *
  * @author mao
  */
-class AmountableMoney {
-    protected AmountableMoney(Integer value) {
-        
-    }
+interface AmountableMoney {
+    public Integer getValue();
 }

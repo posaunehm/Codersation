@@ -9,6 +9,10 @@
  */
 class AmountableMoneyFactory {
     public static AmountableMoney createNewMoney(Integer value) {
-        return new AmountableMoney(value);
+        switch(value) {
+            case 10: return new JPY10();
+            case 100: return new JPY100();
+            default: return null;
+        }
     }
 }
