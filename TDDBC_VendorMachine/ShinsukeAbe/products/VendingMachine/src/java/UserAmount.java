@@ -27,4 +27,8 @@ class UserAmount {
     public void addAmount(AmountableMoney money) {
         amountList.add(money);
     }
+
+    public void payBack() {
+        amountList.clear();
+    }
 }

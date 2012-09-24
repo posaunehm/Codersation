@@ -16,6 +16,7 @@ public class AmountableMoneyFactory {
             case 50: return new JPY50();
             case 100: return new JPY100();
             case 500: return new JPY500();
+            case 1000: return new JPY1000();
             default: return null;
         }
     }
