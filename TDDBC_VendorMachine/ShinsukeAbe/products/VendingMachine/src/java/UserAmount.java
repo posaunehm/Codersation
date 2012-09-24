@@ -21,6 +21,7 @@ class UserAmount {
         for(AmountableMoney amount: amountList) {
             totalAmount += amount.getValue();
         }
+        
         return totalAmount;
     }
     
@@ -28,7 +29,10 @@ class UserAmount {
         amountList.add(money);
     }
 
-    public void payBack() {
+    public Integer payBack() {
+        Integer totalAmount = getTotal();
         amountList.clear();
+        
+        return totalAmount;
     }
 }

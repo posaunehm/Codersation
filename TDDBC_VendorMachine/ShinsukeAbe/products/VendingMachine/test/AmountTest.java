@@ -42,7 +42,7 @@ public class AmountTest {
     
     // TODO 自販機に1000円を投入すると投入金額合計が1000円になる
     // TODO 
-    // TODO 自販機に1000円と100円を投入して払い戻しを行うと1100円戻ってくる
+    // TODO 
     
     @Test
     public void 自販機に10円を投入すると投入金額合計が10円になる() {
@@ -69,5 +69,12 @@ public class AmountTest {
         amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
         amount.payBack();
         assertThat(amount.getTotal(), is(0));
+    }
+    
+    @Test
+    public void 自販機に1000円と100円を投入して払い戻しを行うと1100円戻ってくる() {
+        amount.addAmount(AmountableMoneyFactory.createNewMoney(1000));
+        amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
+        assertThat(amount.payBack(), is(1100));
     }
 }
