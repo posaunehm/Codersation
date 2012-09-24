@@ -1,3 +1,5 @@
+package com.codersation.abe.vendingmachine.money;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -7,7 +9,7 @@
  *
  * @author mao
  */
-class AmountableMoneyFactory {
+public class AmountableMoneyFactory {
     public static AmountableMoney createNewMoney(Integer value) {
         switch(value) {
             case 10: return new JPY10();

@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 
+import com.codersation.abe.vendingmachine.money.AmountableMoneyFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,7 +37,6 @@ public class AmountTest {
     public void tearDown() {
     }
     
-    // TODO 
     // TODO 自販機に1000円を投入すると投入金額合計が1000円になる
     // TODO 自販機に50円と500円を投入すると投入金額合計が550円になる
     // TODO 自販機に10円と100円を投入して払い戻しを行うと投入金額合計が0円になる
