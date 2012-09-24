@@ -55,4 +55,12 @@ public class AmountTest {
         amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
         assertThat(amount.getTotal(), is(100));
     }
+    
+    @Test
+    public void 自販機に50円と500円を投入すると投入金額合計が550円になる() {
+        UserAmount amount = new UserAmount();
+        amount.addAmount(AmountableMoneyFactory.createNewMoney(50));
+        amount.addAmount(AmountableMoneyFactory.createNewMoney(500));
+        assertThat(amount.getTotal(), is(550));
+    }
 }

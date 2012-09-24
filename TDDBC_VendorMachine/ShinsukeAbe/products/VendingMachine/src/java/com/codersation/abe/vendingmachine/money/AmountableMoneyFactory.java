@@ -13,7 +13,9 @@ public class AmountableMoneyFactory {
     public static AmountableMoney createNewMoney(Integer value) {
         switch(value) {
             case 10: return new JPY10();
+            case 50: return new JPY50();
             case 100: return new JPY100();
+            case 500: return new JPY500();
             default: return null;
         }
     }
