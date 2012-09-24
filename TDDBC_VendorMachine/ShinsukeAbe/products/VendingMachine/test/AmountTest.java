@@ -40,10 +40,6 @@ public class AmountTest {
     public void tearDown() {
     }
     
-    // TODO 自販機に1000円を投入すると投入金額合計が1000円になる
-    // TODO 
-    // TODO 
-    
     @Test
     public void 自販機に10円を投入すると投入金額合計が10円になる() {
         amount.addAmount(AmountableMoneyFactory.createNewMoney(10));
