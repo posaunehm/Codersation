@@ -79,4 +79,9 @@ public class AmountTest {
         amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
         assertThat(amount.payBack(), is(1100));
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void 自販機に1円を投入すると例外がスローされる() {
+        AmountableMoneyFactory.createNewMoney(1);
+    }
 }

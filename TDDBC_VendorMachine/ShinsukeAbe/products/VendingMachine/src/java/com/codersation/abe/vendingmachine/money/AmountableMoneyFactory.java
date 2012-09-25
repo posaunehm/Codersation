@@ -17,7 +17,7 @@ public class AmountableMoneyFactory {
             case 100: return new JPY100();
             case 500: return new JPY500();
             case 1000: return new JPY1000();
-            default: return null;
+            default: throw new IllegalArgumentException("Unamountable money:" + value.toString());
         }
     }
 }
