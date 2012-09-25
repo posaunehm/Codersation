@@ -34,9 +34,8 @@ public class JuiceStocksTest {
     @After
     public void tearDown() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
+    // TODO ストックの初期状態はコーラが5本である
+    // TODO コーラは単価が120円である
+    // TODO ストックにレッドブルを5本追加できる
 }
