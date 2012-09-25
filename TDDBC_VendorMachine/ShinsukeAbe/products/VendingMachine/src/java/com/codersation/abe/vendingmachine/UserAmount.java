@@ -1,3 +1,5 @@
+package com.codersation.abe.vendingmachine;
+
 
 import com.codersation.abe.vendingmachine.money.AmountableMoney;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author mao
  */
-class UserAmount {
+public class UserAmount {
     private List<AmountableMoney> amountList = new ArrayList<AmountableMoney>();
     
     public Integer getTotal() {
