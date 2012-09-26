@@ -44,35 +44,35 @@ public class AmountTest {
     
     @Test
     public void 自販機に10円を投入すると投入金額合計が10円になる() {
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(10));
+        amount.insert(AmountableMoneyFactory.createNewMoney(10));
         assertThat(amount.getTotal(), is(10));
     }
     
     @Test
     public void 自販機に100円を投入すると投入金額合計が100円になる() {
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
+        amount.insert(AmountableMoneyFactory.createNewMoney(100));
         assertThat(amount.getTotal(), is(100));
     }
     
     @Test
     public void 自販機に50円と500円を投入すると投入金額合計が550円になる() {
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(50));
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(500));
+        amount.insert(AmountableMoneyFactory.createNewMoney(50));
+        amount.insert(AmountableMoneyFactory.createNewMoney(500));
         assertThat(amount.getTotal(), is(550));
     }
     
     @Test
     public void 自販機に1000円と100円を投入して払い戻しを行うと投入金額合計が0円になる() {
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(1000));
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
+        amount.insert(AmountableMoneyFactory.createNewMoney(1000));
+        amount.insert(AmountableMoneyFactory.createNewMoney(100));
         amount.payBack();
         assertThat(amount.getTotal(), is(0));
     }
     
     @Test
     public void 自販機に1000円と100円を投入して払い戻しを行うと1100円戻ってくる() {
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(1000));
-        amount.addAmount(AmountableMoneyFactory.createNewMoney(100));
+        amount.insert(AmountableMoneyFactory.createNewMoney(1000));
+        amount.insert(AmountableMoneyFactory.createNewMoney(100));
         assertThat(amount.payBack(), is(1100));
     }
     

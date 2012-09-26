@@ -27,7 +27,7 @@ public class UserAmount {
         return totalAmount;
     }
     
-    public void addAmount(AmountableMoney money) {
+    public void insert(AmountableMoney money) {
         amountList.add(money);
     }
 
