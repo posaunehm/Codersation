@@ -1,0 +1,4 @@
+/Users/ktz/work/study/codersation/TDDBC_VendorMachine/ktz_alias/sources/VendingMachine/bin/Debug/VendingMachine.dll.mdb
+/Users/ktz/work/study/codersation/TDDBC_VendorMachine/ktz_alias/sources/VendingMachine/bin/Debug/VendingMachine.dll
+/Users/ktz/work/study/codersation/TDDBC_VendorMachine/ktz_alias/sources/VendingMachine/obj/Debug/VendingMachine.dll
+/Users/ktz/work/study/codersation/TDDBC_VendorMachine/ktz_alias/sources/VendingMachine/obj/Debug/VendingMachine.dll.mdb
