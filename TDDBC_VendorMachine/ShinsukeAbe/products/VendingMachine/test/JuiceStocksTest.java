@@ -46,5 +46,13 @@ public class JuiceStocksTest {
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
         Juice juice = juiceStock.getJuice();
         assertThat(juice.getName(), is("コーラ"));
+        assertThat(juice.getPrice(), is(120));
+    }
+    
+    @Test
+    public void ストックの初期状態では5本格納されている() {
+        JuiceStocks juiceStocks = JuiceStocksFactory.createNewStocks();
+        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        assertThat(juiceStock.getCount(), is(5));
     }
 }
