@@ -27,12 +27,7 @@ namespace VendingMachine.Model {
 
         public int ChangedAount {
             get {
-                var receved = this.RecevedMoney
-                    .GroupBy(m => m)
-                    .Sum(m => m.Key.Value() * m.Count())
-                ;
-
-                return receved - this.UsedAmount;
+                return this.RecevedMoney.TotalAmount() - this.UsedAmount;
             }
         }
     }

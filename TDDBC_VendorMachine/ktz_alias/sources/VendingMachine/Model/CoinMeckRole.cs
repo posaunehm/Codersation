@@ -36,29 +36,27 @@ namespace VendingMachine.Model {
 
                 var received = inCash.RecevedMoney
                     .GroupBy(m => m)
-                    .Select(g => new {
-                        Money = g.Key,
-                        Count = g.Count(),
-                        Value = g.Key.Value(),
-                    })
-                    .OrderByDescending(m => m.Value)
+                    .ToDictionary(g => g.Key, g => g.Count())
+                    .OrderBy(m => m.Key.Value())
                 ;    
 
                 var result = new Dictionary<Money, int>();
-                var usedAmount = inCash.UsedAmount; 
-                foreach (var m in received) {
-                    int n = 0;
-                    if (usedAmount > 0) {
-                        n = this.EjectCore(usedAmount, m.Value, m.Count);
-                        if (n > 0) {
-                            usedAmount -= n * m.Value;
+                this.EjectCore(inCash.UsedAmount, received, (m, totalCount, count) => {
+                    result[m] = totalCount - (int)Math.Ceiling(count);
+                }); 
 
-                            result[m.Money] = m.Count - n;
+                this.EjectCore(
+                    inCash.ChangedAount - result.TotalAmount(),
+                    inReservedMoney.Items.OrderByDescending(pair => pair.Key.Value ()),
+                    (m, totalCount, count) => {
+                        if (result.ContainsKey(m)) {
+                            result[m] += (int)count;
+                        }
+                        else {
+                            result[m] = (int)count;
                         }
                     }
-
-                    result[m.Money] = m.Count - n;
-                }
+                );
 
                 return result.SelectMany(r => Enumerable.Repeat(r.Key, r.Value));
             }
@@ -67,8 +65,23 @@ namespace VendingMachine.Model {
             }
         }
 
-        private int EjectCore(int inUseAmount, int inValue, int inCount) {
-            return Math.Min((int)(inUseAmount / inValue), inCount);
+        private void EjectCore(int inAmount, IEnumerable<KeyValuePair<Money, int>> inMoney, Action<Money, int, decimal> inEjectCallback) {
+            foreach (var m in inMoney) {
+                if (inAmount == 0) break;
+
+                var v = m.Key.Value();
+                var n = this.CalculateEjectCount(inAmount, v, m.Value);
+                var useCount = (int)n;
+                if (useCount > 0) {
+                    inAmount -= useCount * v;
+
+                    inEjectCallback(m.Key, m.Value, n);
+                }
+            }
+        }
+
+        private decimal CalculateEjectCount(int inUseAmount, int inValue, int inCount) {
+                return Math.Min((decimal)inUseAmount / inValue, inCount);
         }
 	}
 }

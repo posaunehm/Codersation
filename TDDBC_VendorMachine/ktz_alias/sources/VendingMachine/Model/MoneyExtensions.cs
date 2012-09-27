@@ -6,6 +6,19 @@ namespace VendingMachine.Model {
         public static int Value(this Money inMoney) {
             return MoneyResolver.Resolve(inMoney).Value;
         }
+
+        public static int TotalAmount(this IDictionary<Money, int> inMoney) {
+            return inMoney
+                .Sum(m => m.Key.Value() * m.Value)
+            ;
+        }
+
+        public static int TotalAmount(this IList<Money> inMoney) {
+            return inMoney
+                .GroupBy(m => m)
+                .Sum(m => m.Key.Value() * m.Count())
+            ;
+        }
     }
 
     public enum MoneyStatus {

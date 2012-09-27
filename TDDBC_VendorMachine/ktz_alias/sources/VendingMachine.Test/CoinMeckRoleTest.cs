@@ -116,29 +116,37 @@ namespace VendingMachine.Test {
 		
 		public class _商品購入後お金を排出するParams {
 			public class Parameter {
+				public int Id {get; internal set;}
 				public Tuple<Money, int>[] ReceivedMoney {get; internal set;}
 				public Tuple<Money, int>[] ChangedMoney {get; internal set;}
 			}
 			
 			public IEnumerable<Parameter> Source {
 				get {
+					var id = 1;
+					
 					yield return new Parameter {
+						Id = id++,
 						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 10)), 
 						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 9)),
 					};
 					yield return new Parameter {
+						Id = id++,
 						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 5)), 
                         ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
+					yield return new Parameter {
+						Id = id++,
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2)), 
+                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+					};
 //					yield return new Parameter {
-//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2)), 
-//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
-//					};
-//					yield return new Parameter {
+//						Id = id++,
 //						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 3)), 
 //                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4)),
 //					};
 //					yield return new Parameter {								
+//						Id = id++,
 //						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1)), 
 //                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 //					};
@@ -153,7 +161,7 @@ namespace VendingMachine.Test {
 		private ReservedMoney InitInfinityReservedChange() {
 			var result = new ReservedMoney ();
 			
-			foreach (var m in Enum.GetValues(typeof(Money)) as Money[]) {
+			foreach (var m in Enum.GetValues(typeof(Money)).Cast<Money>().Where (m => m != Money.Unknown)) {
 				result.Items[m] = 10000;
 			}
 			
@@ -162,9 +170,9 @@ namespace VendingMachine.Test {
 		
 		[Test]
 		public void _商品購入後お金を排出する(
-		    [ValueSource(typeof(_商品購入後お金を排出するParams), "Source")] 
-		    _商品購入後お金を排出するParams.Parameter inParameter
-		) {
+			    [ValueSource(typeof(_商品購入後お金を排出するParams), "Source")] 
+			    _商品購入後お金を排出するParams.Parameter inParameter) 
+		{
 			var role = new CoinMeckRole ();
 			var received = new CashFlow ();
 			var reserved = this.InitInfinityReservedChange ();
@@ -188,11 +196,11 @@ namespace VendingMachine.Test {
 			
 			Assert.That(received.UsedAmount, Is.EqualTo(100));
 			
-			Assert.That(changed.Count, Is.EqualTo(lookup.Count));
+			Assert.That(changed.Count, Is.EqualTo(lookup.Count), "count money type (id = {0})", inParameter.Id);
 			
 			foreach (var pair in changed) {
-				Assert.True(lookup.ContainsKey(pair.Key));
-				Assert.That(pair.Value.Count(), Is.EqualTo (lookup[pair.Key]));
+				Assert.True(lookup.ContainsKey(pair.Key), "money ({0}) should be contained (id = {1})", pair.Key, inParameter.Id);
+				Assert.That(pair.Value.Count(), Is.EqualTo (lookup[pair.Key]), "money ({0}) count should be equaled (id = {1})", pair.Key, inParameter.Id);
 			}
 		}
 	}
