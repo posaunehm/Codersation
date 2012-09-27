@@ -116,24 +116,37 @@ namespace VendingMachine.Test {
 		
 		public class _商品購入後お金を排出するParams {
 			public class Parameter {
-				public Parameter(Money inMoney, int inRepeat, params Tuple<Money, int>[] inChange) {
-					this.ReceivedMoney = inMoney;
-					this.RepeatCount = inRepeat;
-					this.ChangedMoney = inChange;
-				}
-				
-				public Money ReceivedMoney {get; private set;}
-				public int RepeatCount { get; private set; }
-				public Tuple<Money, int>[] ChangedMoney {get;private set;}
+				public Tuple<Money, int>[] ReceivedMoney {get; internal set;}
+				public Tuple<Money, int>[] ChangedMoney {get; internal set;}
 			}
 			
 			public IEnumerable<Parameter> Source {
 				get {
-					yield return new Parameter(Money.Coin100, 10, Tuple.Create(Money.Coin100, 9));
-//					yield return new Parameter(Money.Coin500, 2, Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4));
-//					yield return new Parameter(Money.Coin500, 3, Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4));
-//					yield return new Parameter(Money.Bill1000, 1, Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4));
+					yield return new Parameter {
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 10)), 
+						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 9)),
+					};
+					yield return new Parameter {
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 5)), 
+                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+					};
+//					yield return new Parameter {
+//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2)), 
+//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+//					};
+//					yield return new Parameter {
+//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 3)), 
+//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4)),
+//					};
+//					yield return new Parameter {								
+//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1)), 
+//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+//					};
 				}
+			}
+			
+			private Tuple<Money, int>[] ToTuple(params Tuple<Money, int>[] inMoney) {
+				return inMoney;
 			}
 		}
 		
@@ -148,16 +161,18 @@ namespace VendingMachine.Test {
 		}
 		
 		[Test]
-		public void _商品購入後お金を排出する( 
+		public void _商品購入後お金を排出する(
 		    [ValueSource(typeof(_商品購入後お金を排出するParams), "Source")] 
-		    _商品購入後お金を排出するParams.Parameter inParameter) 
-		{
+		    _商品購入後お金を排出するParams.Parameter inParameter
+		) {
 			var role = new CoinMeckRole ();
-			var received = new CashFlow();
-			var reserved = this.InitInfinityReservedChange();
+			var received = new CashFlow ();
+			var reserved = this.InitInfinityReservedChange ();
 			
-			for (var i = 0; i < inParameter.RepeatCount; ++i) {
-				role.Receive(received, inParameter.ReceivedMoney);
+			foreach (var m in inParameter.ReceivedMoney) {
+				for (var i = 0; i < m.Item2; ++i) {
+					role.Receive (received, m.Item1);
+				}
 			}
 			
 			Assert.True(role.Purchase(received, 100));

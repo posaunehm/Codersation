@@ -47,14 +47,17 @@ namespace VendingMachine.Model {
                 var result = new Dictionary<Money, int>();
                 var usedAmount = inCash.UsedAmount; 
                 foreach (var m in received) {
+                    int n = 0;
                     if (usedAmount > 0) {
-                    var n = this.EjectCore(usedAmount, m.Value, m.Count);
+                        n = this.EjectCore(usedAmount, m.Value, m.Count);
                         if (n > 0) {
                             usedAmount -= n * m.Value;
 
                             result[m.Money] = m.Count - n;
                         }
                     }
+
+                    result[m.Money] = m.Count - n;
                 }
 
                 return result.SelectMany(r => Enumerable.Repeat(r.Key, r.Value));
