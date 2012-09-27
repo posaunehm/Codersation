@@ -4,20 +4,13 @@ using System.Linq;
 
 namespace VendingMachine.Model {
 	public class CoinMeckRole {
-        /// <summary>
-        /// Determines whether this instance is available money.
-        /// </summary>
-        /// <param name="inMoney"></param>
-        /// <returns>
-        /// <c>true</c> if this instance is available money; otherwise, <c>false</c>.
-        /// </returns>
 		public bool IsAvailableMoney(Money inMoney) {
             return MoneyResolver.Resolve(inMoney).Status == MoneyStatus.Available;
 		}
 
-        public bool Receive(IList<Money> inReceivedList, Money inMoney) {
+        public bool Receive(CashFlow inCash, Money inMoney) {
             if (this.IsAvailableMoney(inMoney)) {
-                inReceivedList.Add(inMoney);
+                inCash.RecevedMoney.Add(inMoney);
 
                 return true;
             }
@@ -25,12 +18,54 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public IEnumerable<Money> Eject(IList<Money> inReceivedList) {
-            var result = inReceivedList.ToList();
+        public bool Purchase(CashFlow inCash, int inItemValue) {
+            if (inCash.ChangedAount >= inItemValue) {
+                inCash.UsedAmount += inItemValue;
 
-            inReceivedList.Clear();
+                return true;
+            }
 
-            return result;
+            return false;
+        }
+
+        public IEnumerable<Money> Eject(CashFlow inCash, ReservedMoney inReservedMoney) {
+            try {
+                if (inCash.UsedAmount == 0) {
+                    return inCash.RecevedMoney.ToList();
+                }
+
+                var received = inCash.RecevedMoney
+                    .GroupBy(m => m)
+                    .Select(g => new {
+                        Money = g.Key,
+                        Count = g.Count(),
+                        Value = g.Key.Value(),
+                    })
+                    .OrderByDescending(m => m.Value)
+                ;    
+
+                var result = new Dictionary<Money, int>();
+                var usedAmount = inCash.UsedAmount; 
+                foreach (var m in received) {
+                    if (usedAmount > 0) {
+                    var n = this.EjectCore(usedAmount, m.Value, m.Count);
+                        if (n > 0) {
+                            usedAmount -= n * m.Value;
+
+                            result[m.Money] = m.Count - n;
+                        }
+                    }
+                }
+
+                return result.SelectMany(r => Enumerable.Repeat(r.Key, r.Value));
+            }
+            finally {
+                inCash.RecevedMoney.Clear();
+            }
+        }
+
+        private int EjectCore(int inUseAmount, int inValue, int inCount) {
+            return Math.Min((int)(inUseAmount / inValue), inCount);
         }
 	}
 }

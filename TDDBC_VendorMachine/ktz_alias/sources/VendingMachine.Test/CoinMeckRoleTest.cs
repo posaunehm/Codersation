@@ -48,7 +48,7 @@ namespace VendingMachine.Test {
 		[Test]
 		public void _利用者がお金を投入する() {
 			var role = new CoinMeckRole ();
-			var received = new List<Money>();
+			var received = new CashFlow();
 			
 			Assert.True(role.Receive(received, Money.Coin10)); 
 			Assert.True(role.Receive(received, Money.Coin50));
@@ -71,18 +71,13 @@ namespace VendingMachine.Test {
 			Assert.False(role.Receive(received, Money.Bill5000));
 			Assert.False(role.Receive(received, Money.Bill10000));
 			
-			Assert.False(received.Contains(Money.Coin1));
-			Assert.False(received.Contains(Money.Coin5));
-			Assert.False(received.Contains(Money.Bill2000));
-			Assert.False(received.Contains(Money.Bill5000));
-			Assert.False(received.Contains(Money.Bill10000));
+			Assert.False(received.RecevedMoney.Contains(Money.Coin1));
+			Assert.False(received.RecevedMoney.Contains(Money.Coin5));
+			Assert.False(received.RecevedMoney.Contains(Money.Bill2000));
+			Assert.False(received.RecevedMoney.Contains(Money.Bill5000));
+			Assert.False(received.RecevedMoney.Contains(Money.Bill10000));
 			
-			var summary = received
-				.GroupBy(m => m)
-				.Sum(m => m.Key.Value() * m.Count())
-			;
-			
-			Assert.That(summary, Is.EqualTo(3320));
+			Assert.That(received.ChangedAount, Is.EqualTo(3320));
 		}
 		
 		[TestCase(Money.Coin100, 10)]
@@ -90,22 +85,100 @@ namespace VendingMachine.Test {
 		[TestCase(Money.Bill1000, 1)]
 		public void _何も購入せずお金を排出する(Money inMoney, int inRepeat) {
 			var role = new CoinMeckRole ();
-			var received = new List<Money>();
+			var received = new CashFlow();
+			var reserved = this.InitInfinityReservedChange();
 			
 			for (var i = 0; i < inRepeat; ++i) {
 				role.Receive(received, inMoney);
 			}
 			
-			var changed = role.Eject(received)
+			var changed = role.Eject(received, reserved)
 				.GroupBy(m => m)
 				.ToDictionary(g => g.Key, g => g)
 			;
 			
-			Assert.That(received.Count, Is.EqualTo(0));
+			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
 			
 			Assert.That(changed.Count, Is.EqualTo(1));
 			Assert.True(changed.ContainsKey(inMoney));
 			Assert.That(changed[inMoney].Count(), Is.EqualTo(inRepeat));
+		}
+		
+		[Test]
+		public void _お金を入れず購入() {
+			var role = new CoinMeckRole ();
+			var received = new CashFlow();
+			
+			Assert.False(role.Purchase(received, 100));	
+			
+			Assert.That(received.UsedAmount, Is.EqualTo(0));
+		}
+		
+		public class _商品購入後お金を排出するParams {
+			public class Parameter {
+				public Parameter(Money inMoney, int inRepeat, params Tuple<Money, int>[] inChange) {
+					this.ReceivedMoney = inMoney;
+					this.RepeatCount = inRepeat;
+					this.ChangedMoney = inChange;
+				}
+				
+				public Money ReceivedMoney {get; private set;}
+				public int RepeatCount { get; private set; }
+				public Tuple<Money, int>[] ChangedMoney {get;private set;}
+			}
+			
+			public IEnumerable<Parameter> Source {
+				get {
+					yield return new Parameter(Money.Coin100, 10, Tuple.Create(Money.Coin100, 9));
+//					yield return new Parameter(Money.Coin500, 2, Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4));
+//					yield return new Parameter(Money.Coin500, 3, Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4));
+//					yield return new Parameter(Money.Bill1000, 1, Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4));
+				}
+			}
+		}
+		
+		private ReservedMoney InitInfinityReservedChange() {
+			var result = new ReservedMoney ();
+			
+			foreach (var m in Enum.GetValues(typeof(Money)) as Money[]) {
+				result.Items[m] = 10000;
+			}
+			
+			return result;
+		}
+		
+		[Test]
+		public void _商品購入後お金を排出する( 
+		    [ValueSource(typeof(_商品購入後お金を排出するParams), "Source")] 
+		    _商品購入後お金を排出するParams.Parameter inParameter) 
+		{
+			var role = new CoinMeckRole ();
+			var received = new CashFlow();
+			var reserved = this.InitInfinityReservedChange();
+			
+			for (var i = 0; i < inParameter.RepeatCount; ++i) {
+				role.Receive(received, inParameter.ReceivedMoney);
+			}
+			
+			Assert.True(role.Purchase(received, 100));
+			
+			var changed = role.Eject(received, reserved)
+				.GroupBy(m => m)
+				.ToDictionary(g => g.Key, g => g)
+			;
+			
+			var lookup = inParameter.ChangedMoney.ToDictionary(m => m.Item1, m => m.Item2);
+			
+			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
+			
+			Assert.That(received.UsedAmount, Is.EqualTo(100));
+			
+			Assert.That(changed.Count, Is.EqualTo(lookup.Count));
+			
+			foreach (var pair in changed) {
+				Assert.True(lookup.ContainsKey(pair.Key));
+				Assert.That(pair.Value.Count(), Is.EqualTo (lookup[pair.Key]));
+			}
 		}
 	}
 }
