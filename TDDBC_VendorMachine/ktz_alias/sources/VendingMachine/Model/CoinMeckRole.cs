@@ -36,25 +36,18 @@ namespace VendingMachine.Model {
 
                 var received = inCash.RecevedMoney
                     .GroupBy(m => m)
-                    .ToDictionary(g => g.Key, g => g.Count())
-                    .OrderBy(m => m.Key.Value())
+                    .ToDictionary(g => g.Key, g => g.Count())                  
                 ;    
 
-                var result = new Dictionary<Money, int>();
-                this.EjectCore(inCash.UsedAmount, received, (m, totalCount, count) => {
-                    result[m] = totalCount - (int)Math.Ceiling(count);
-                }); 
+                var result = new List<KeyValuePair<Money, int>>();
 
                 this.EjectCore(
-                    inCash.ChangedAount - result.TotalAmount(),
-                    inReservedMoney.Items.OrderByDescending(pair => pair.Key.Value ()),
-                    (m, totalCount, count) => {
-                        if (result.ContainsKey(m)) {
-                            result[m] += (int)count;
-                        }
-                        else {
-                            result[m] = (int)count;
-                        }
+                    inCash.ChangedAount,
+                    inReservedMoney.Items.OrderByDescending(pair => pair.Key.Value()),
+                    (m, totalCount, useCount) => {
+                        result.Add(
+                            new KeyValuePair<Money, int>(m, (int)useCount)
+                        );
                     }
                 );
 
@@ -65,23 +58,25 @@ namespace VendingMachine.Model {
             }
         }
 
-        private void EjectCore(int inAmount, IEnumerable<KeyValuePair<Money, int>> inMoney, Action<Money, int, decimal> inEjectCallback) {
+        private int EjectCore(int inChangeAmount, IEnumerable<KeyValuePair<Money, int>> inMoney, Action<Money, int, decimal> inEjectCallback) {
             foreach (var m in inMoney) {
-                if (inAmount == 0) break;
+                if (inChangeAmount == 0) break;
 
                 var v = m.Key.Value();
-                var n = this.CalculateEjectCount(inAmount, v, m.Value);
+                var n = this.CalculateEjectCount(inChangeAmount, v, m.Value);
                 var useCount = (int)n;
                 if (useCount > 0) {
-                    inAmount -= useCount * v;
+                    inChangeAmount -= useCount * v;
 
                     inEjectCallback(m.Key, m.Value, n);
                 }
             }
+
+            return inChangeAmount;
         }
 
-        private decimal CalculateEjectCount(int inUseAmount, int inValue, int inCount) {
-                return Math.Min((decimal)inUseAmount / inValue, inCount);
+        private decimal CalculateEjectCount(int inChangeAmount, int inValue, int inCount) {
+                return Math.Min(inChangeAmount / inValue, inCount);
         }
 	}
 }

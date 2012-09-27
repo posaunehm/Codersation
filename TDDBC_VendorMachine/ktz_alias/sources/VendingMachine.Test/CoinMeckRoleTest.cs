@@ -127,8 +127,13 @@ namespace VendingMachine.Test {
 					
 					yield return new Parameter {
 						Id = id++,
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 5)), 
+						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 4)),
+					};
+					yield return new Parameter {
+						Id = id++,
 						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 10)), 
-						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 9)),
+						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {
 						Id = id++,
@@ -140,16 +145,21 @@ namespace VendingMachine.Test {
 						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2)), 
                         ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
-//					yield return new Parameter {
-//						Id = id++,
-//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 3)), 
-//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4)),
-//					};
-//					yield return new Parameter {								
-//						Id = id++,
-//						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1)), 
-//                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
-//					};
+					yield return new Parameter {
+						Id = id++,
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 3)), 
+                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin100, 4)),
+					};
+					yield return new Parameter {								
+						Id = id++,
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1)), 
+                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+					};
+					yield return new Parameter {								
+						Id = id++,
+						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 2)), 
+                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+					};
 				}
 			}
 			

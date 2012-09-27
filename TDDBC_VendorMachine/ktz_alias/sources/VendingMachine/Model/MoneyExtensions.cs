@@ -7,7 +7,7 @@ namespace VendingMachine.Model {
             return MoneyResolver.Resolve(inMoney).Value;
         }
 
-        public static int TotalAmount(this IDictionary<Money, int> inMoney) {
+        public static int TotalAmount(this IEnumerable<KeyValuePair<Money, int>> inMoney) {
             return inMoney
                 .Sum(m => m.Key.Value() * m.Value)
             ;
