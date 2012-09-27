@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine", "VendingMachine\VendingMachine.csproj", "{A9379842-5625-4096-B908-B659A334E46F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestVendingMachine", "TestVendingMachine\TestVendingMachine.csproj", "{B4BD5BF2-27F4-4F2B-B91A-CE05E46AD93D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9379842-5625-4096-B908-B659A334E46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9379842-5625-4096-B908-B659A334E46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9379842-5625-4096-B908-B659A334E46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9379842-5625-4096-B908-B659A334E46F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BD5BF2-27F4-4F2B-B91A-CE05E46AD93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BD5BF2-27F4-4F2B-B91A-CE05E46AD93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BD5BF2-27F4-4F2B-B91A-CE05E46AD93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BD5BF2-27F4-4F2B-B91A-CE05E46AD93D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
