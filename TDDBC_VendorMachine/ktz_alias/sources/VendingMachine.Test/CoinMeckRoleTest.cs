@@ -71,12 +71,41 @@ namespace VendingMachine.Test {
 			Assert.False(role.Receive(received, Money.Bill5000));
 			Assert.False(role.Receive(received, Money.Bill10000));
 			
+			Assert.False(received.Contains(Money.Coin1));
+			Assert.False(received.Contains(Money.Coin5));
+			Assert.False(received.Contains(Money.Bill2000));
+			Assert.False(received.Contains(Money.Bill5000));
+			Assert.False(received.Contains(Money.Bill10000));
+			
 			var summary = received
 				.GroupBy(m => m)
 				.Sum(m => m.Key.Value() * m.Count())
 			;
 			
 			Assert.That(summary, Is.EqualTo(3320));
+		}
+		
+		[TestCase(Money.Coin100, 10)]
+		[TestCase(Money.Coin500, 2)]
+		[TestCase(Money.Bill1000, 1)]
+		public void _何も購入せずお金を排出する(Money inMoney, int inRepeat) {
+			var role = new CoinMeckRole ();
+			var received = new List<Money>();
+			
+			for (var i = 0; i < inRepeat; ++i) {
+				role.Receive(received, inMoney);
+			}
+			
+			var changed = role.Eject(received)
+				.GroupBy(m => m)
+				.ToDictionary(g => g.Key, g => g)
+			;
+			
+			Assert.That(received.Count, Is.EqualTo(0));
+			
+			Assert.That(changed.Count, Is.EqualTo(1));
+			Assert.True(changed.ContainsKey(inMoney));
+			Assert.That(changed[inMoney].Count(), Is.EqualTo(inRepeat));
 		}
 	}
 }

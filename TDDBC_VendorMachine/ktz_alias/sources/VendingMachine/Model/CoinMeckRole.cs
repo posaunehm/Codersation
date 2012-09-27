@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VendingMachine.Model {
 	public class CoinMeckRole {
@@ -22,6 +23,14 @@ namespace VendingMachine.Model {
             }
 
             return false;
+        }
+
+        public IEnumerable<Money> Eject(IList<Money> inReceivedList) {
+            var result = inReceivedList.ToList();
+
+            inReceivedList.Clear();
+
+            return result;
         }
 	}
 }
