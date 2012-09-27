@@ -36,9 +36,6 @@ public class JuiceStocksTest {
     public void tearDown() {
     }
     
-    // TODO ストックの初期状態はコーラが格納されている
-    // TODO ストックの初期状態で格納されているコーラは5本である
-    // TODO コーラは単価が120円である
     // TODO ストックにレッドブルを5本追加できる
     @Test
     public void ストックの初期状態はコーラが格納されている() {
@@ -53,6 +50,17 @@ public class JuiceStocksTest {
     public void ストックの初期状態では5本格納されている() {
         JuiceStocks juiceStocks = JuiceStocksFactory.createNewStocks();
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        assertThat(juiceStock.getCount(), is(5));
+    }
+    
+    @Test
+    public void ストックにレッドブルを5本追加できる() {
+        JuiceStocks juiceStocks = JuiceStocksFactory.createNewStocks();
+        juiceStocks.addStock(new Juice("レッドブル", 200), 5);
+        JuiceStock juiceStock = juiceStocks.getAllStocks().get(1);
+        Juice juice = juiceStock.getJuice();
+        assertThat(juice.getName(), is("レッドブル"));
+        assertThat(juice.getPrice(), is(200));
         assertThat(juiceStock.getCount(), is(5));
     }
 }
