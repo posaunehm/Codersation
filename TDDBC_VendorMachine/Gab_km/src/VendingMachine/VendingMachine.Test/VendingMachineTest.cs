@@ -58,7 +58,7 @@ namespace VendingMachine.Test
             vm.DropIn(Money.Ten);
             vm.PayBack();
             Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(1010));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.OneThousand, Money.Ten }));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace VendingMachine.Test
         {
             vm.DropIn(Money.One);
             Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(1));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.One }));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace VendingMachine.Test
             vm.DropIn(Money.One);
             vm.DropIn(Money.Five);
             Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(6));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.Five, Money.One }));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace VendingMachine.Test
             vm.DropIn(Money.Five);
             vm.DropIn(Money.FiveThousand);
             Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(5005));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.FiveThousand, Money.Five }));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace VendingMachine.Test
             vm.DropIn(Money.FiveThousand);
             vm.DropIn(Money.TenThousand);
             Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(15000));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.TenThousand, Money.FiveThousand }));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace VendingMachine.Test
             vm.DropIn(Money.Five);
             vm.DropIn(Money.Ten);
             Assert.That(vm.Total, Is.EqualTo(10));
-            Assert.That(vm.Change, Is.EqualTo(5));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.Five }));
         }
 
         [Test]
@@ -173,16 +173,36 @@ namespace VendingMachine.Test
         }
 
         [Test]
-        public void 自販機に500円を投入してコーラを購入した後払い戻したらお釣りが380円で売上が120円になる()
+        public void 自販機に500円を投入してコーラを購入するとお釣りが380円になる()
         {
             vm.DropIn(Money.FiveHundred);
 
             vm.Buy(Juice.NAME_Coke);
-            vm.PayBack();
 
-            Assert.That(vm.Total, Is.EqualTo(0));
-            Assert.That(vm.Change, Is.EqualTo(380));
-            Assert.That(vm.Sale, Is.EqualTo(120));
+            var changes = new List<AcceptableMoney>();
+            changes.AddRange(Enumerable.Range(1, 3).Select(_ => Money.OneHundred));
+            changes.Add(Money.Fifty);
+            changes.AddRange(Enumerable.Range(1, 3).Select(_ => Money.Ten));
+            Assert.That(vm.Change, Is.EqualTo(changes));
+        }
+
+        [Test]
+        public void 自販機に500円を投入してコーラを購入するのを4回行うと4回目の購入が行われない()
+        {
+            Enumerable.Range(1, 3).ToList().ForEach(_ =>
+            {
+                vm.DropIn(Money.FiveHundred);
+                vm.Buy(Juice.NAME_Coke);
+            });
+
+            Assert.That(vm.Sale, Is.EqualTo(360));
+            vm.DropIn(Money.FiveHundred);
+            Console.WriteLine(vm.Total);
+            Console.WriteLine(vm.Change);
+            vm.Buy(Juice.NAME_Coke);
+            Console.WriteLine(vm.Total);
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.FiveHundred }));
+            Assert.That(vm.Sale, Is.EqualTo(360));
         }
     }
 }

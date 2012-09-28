@@ -7,14 +7,29 @@ namespace VendingMachine
 {
     public class JuiceStock
     {
-        public string Name { get; private set; }
-        public int Price { get; private set; }
+        public Juice Juice { get; private set; }
+        
+        public string Name
+        {
+            get
+            {
+                return this.Juice.Name;
+            }
+        }
+
+        public int Price
+        {
+            get
+            {
+                return this.Juice.Price;
+            }
+        }
+
         public int Count { get; private set; }
 
         public JuiceStock(Juice juice, int count)
         {
-            this.Name = juice.Name;
-            this.Price = juice.Price;
+            this.Juice = juice;
             this.Count = count;
         }
 
