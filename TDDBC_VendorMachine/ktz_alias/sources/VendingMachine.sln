@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine", "VendingMachine\VendingMachine.csproj", "{69045954-09E5-4186-B5BA-506555177051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Test", "VendingMachine.Test\VendingMachine.Test.csproj", "{DADBD17D-3640-488F-A1AA-FED15EA1D077}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69045954-09E5-4186-B5BA-506555177051}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69045954-09E5-4186-B5BA-506555177051}.Debug|x86.Build.0 = Debug|Any CPU
+		{69045954-09E5-4186-B5BA-506555177051}.Release|x86.ActiveCfg = Release|Any CPU
+		{69045954-09E5-4186-B5BA-506555177051}.Release|x86.Build.0 = Release|Any CPU
+		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.Build.0 = Debug|Any CPU
+		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Release|x86.ActiveCfg = Release|Any CPU
+		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = VendingMachine\VendingMachine.csproj
+	EndGlobalSection
+EndGlobal
