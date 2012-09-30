@@ -18,6 +18,7 @@ import static org.hamcrest.core.Is.*;
 public class JuiceStocksTest {
     
     private Juice cola = new Juice("コーラ", 120);
+    private Juice redBull = new Juice("レッドブル", 200);
     
     public JuiceStocksTest() {
     }
@@ -57,11 +58,10 @@ public class JuiceStocksTest {
     @Test
     public void ストックにレッドブルを5本追加できる() {
         JuiceStocks juiceStocks = JuiceStocksFactory.createNewStocks();
-        juiceStocks.addStock(new Juice("レッドブル", 200), 5);
+        juiceStocks.addStock(redBull, 5);
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(1);
         Juice juice = juiceStock.getJuice();
-        assertThat(juice.getName(), is("レッドブル"));
-        assertThat(juice.getPrice(), is(200));
+        assertThat(juice, is(redBull));
         assertThat(juiceStock.getCount(), is(5));
     }
 }
