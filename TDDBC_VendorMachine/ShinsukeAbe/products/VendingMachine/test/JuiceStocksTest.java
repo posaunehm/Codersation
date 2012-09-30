@@ -17,6 +17,8 @@ import static org.hamcrest.core.Is.*;
  */
 public class JuiceStocksTest {
     
+    private Juice cola = new Juice("コーラ", 120);
+    
     public JuiceStocksTest() {
     }
     
@@ -42,8 +44,7 @@ public class JuiceStocksTest {
         JuiceStocks juiceStocks = JuiceStocksFactory.createNewStocks();
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
         Juice juice = juiceStock.getJuice();
-        assertThat(juice.getName(), is("コーラ"));
-        assertThat(juice.getPrice(), is(120));
+        assertThat(juice, is(cola));
     }
     
     @Test
