@@ -42,26 +42,16 @@ public class JuiceStocksTest {
     public void tearDown() {
     }
     
-    // TODO ストックにレッドブルを5本追加できる
     @Test
-    public void ストックの初期状態はコーラが格納されている() {
+    public void ストックの初期状態ではコーラが5本格納されている() {
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
-        Juice juice = juiceStock.getJuice();
-        assertThat(juice, is(cola));
-    }
-    
-    @Test
-    public void ストックの初期状態では5本格納されている() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
-        assertThat(juiceStock.getCount(), is(5));
+        assertThat(juiceStock, is(new JuiceStock(cola, 5)));
     }
     
     @Test
     public void ストックにレッドブルを5本追加できる() {
         juiceStocks.addStock(redBull, 5);
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(1);
-        Juice juice = juiceStock.getJuice();
-        assertThat(juice, is(redBull));
-        assertThat(juiceStock.getCount(), is(5));
+        assertThat(juiceStock, is(new JuiceStock(redBull, 5)));
     }
 }

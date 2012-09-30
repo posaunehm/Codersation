@@ -31,4 +31,19 @@ public class JuiceStock {
     public void setCount(Integer count) {
         this.count = count;
     }
+    
+    @Override
+    public boolean equals(Object that) {
+        if(that instanceof JuiceStock) {
+            JuiceStock thatStock = (JuiceStock)that;
+            if(this.juice.equals(thatStock.getJuice())
+                    && this.count.equals(thatStock.getCount())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
