@@ -20,4 +20,6 @@ let ``Initially, the total amount of this vending machine is 0``() =
     |> When initially      
     |> It should have (total_amount 0)
     |> Verify
+
+//Feature:“Š“ü‹àŠz‚ÌŠm”F‚ª‚Å‚«‚é
                  
