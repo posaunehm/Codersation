@@ -6,15 +6,18 @@ open VendingMachine
 
 let sut = new VendingMachine();
 
-let get_total_amount (vm:VendingMachine) =
-    printMethod ()
-    vm.TotalAmount 
+let initially vm =
+    vm
+
+let total_amount amount (vm:VendingMachine)  =
+    printMethod (amount)
+    vm.TotalAmount = amount 
     
 //Feature:“Š“ü‹àŠz‚ÌŠm”F‚ª‚Å‚«‚é
 [<Scenario>]
 let ``Initially, the total amount of this vending machine is 0``() =
   Given sut              
-    |> When get_total_amount      
-    |> It should equal 0
+    |> When initially      
+    |> It should have (total_amount 0)
     |> Verify
                  
