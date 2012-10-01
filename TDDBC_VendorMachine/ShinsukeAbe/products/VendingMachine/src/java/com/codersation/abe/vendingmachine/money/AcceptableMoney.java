@@ -9,6 +9,14 @@ package com.codersation.abe.vendingmachine.money;
  *
  * @author mao
  */
-public interface AcceptableMoney {
-    public Integer getValue();
+public class AcceptableMoney {
+    private Integer value;
+    
+    AcceptableMoney(Integer value) {
+        this.value = value;
+    }
+    
+    public Integer getValue() {
+        return value;
+    }
 }
