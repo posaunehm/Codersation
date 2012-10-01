@@ -9,6 +9,6 @@ package com.codersation.abe.vendingmachine.money;
  *
  * @author mao
  */
-public interface AmountableMoney {
+public interface AcceptableMoney {
     public Integer getValue();
 }

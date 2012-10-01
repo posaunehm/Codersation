@@ -9,8 +9,8 @@ package com.codersation.abe.vendingmachine.money;
  *
  * @author mao
  */
-public class AmountableMoneyFactory {
-    public static AmountableMoney createNewMoney(Integer value) {
+public class AcceptableMoneyFactory {
+    public static AcceptableMoney createNewMoney(Integer value) {
         switch(value) {
             case 10: return new JPY10();
             case 50: return new JPY50();

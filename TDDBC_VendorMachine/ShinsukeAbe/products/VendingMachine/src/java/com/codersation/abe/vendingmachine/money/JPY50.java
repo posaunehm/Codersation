@@ -8,7 +8,7 @@ package com.codersation.abe.vendingmachine.money;
  *
  * @author mao
  */
-public class JPY50 implements AmountableMoney {
+public class JPY50 implements AcceptableMoney {
 
     protected JPY50() {
         
