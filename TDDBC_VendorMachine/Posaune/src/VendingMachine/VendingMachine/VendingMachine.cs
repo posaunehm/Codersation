@@ -14,5 +14,10 @@ namespace VendingMachine
         }
 
         public int TotalAmount { get; private set; }
+
+        public void InsertMoeny(int amount)
+        {
+            TotalAmount += amount;
+        }
     }
 }
