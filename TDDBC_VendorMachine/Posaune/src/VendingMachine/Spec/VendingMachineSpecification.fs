@@ -10,10 +10,11 @@ let get_total_amount (vm:VendingMachine) =
     printMethod ()
     vm.TotalAmount 
     
-
+//Feature:“Š“ü‹àŠz‚ÌŠm”F‚ª‚Å‚«‚é
 [<Scenario>]
 let ``Initially, the total amount of this vending machine is 0``() =
   Given sut              
     |> When get_total_amount      
-    |> It should equal 0    
-    |> Verify                   
+    |> It should equal 0
+    |> Verify
+                 
