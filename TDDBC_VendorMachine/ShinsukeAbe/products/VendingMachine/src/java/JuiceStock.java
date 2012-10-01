@@ -46,4 +46,12 @@ public class JuiceStock {
             return false;
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + (this.juice != null ? this.juice.hashCode() : 0);
+        hash = 29 * hash + (this.count != null ? this.count.hashCode() : 0);
+        return hash;
+    }
 }

@@ -47,5 +47,13 @@ public class Juice {
         }
         
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 67 * hash + (this.price != null ? this.price.hashCode() : 0);
+        return hash;
+    }
     
 }
