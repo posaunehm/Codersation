@@ -41,5 +41,12 @@ let ``Initially, the total amount of this vending machine is 0``() =
     |> Verify
 
 
+//Feature:ˆµ‚¦‚È‚¢‚¨‹à‚ğŠÇ—‚Å‚«‚é
+[<Scenario>]
+let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
+  Given (new VendingMachine())                
+    |> When insert_money [1]      
+    |> It should have (total_amount 0)
+    |> Verify
     
 
