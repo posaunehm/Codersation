@@ -5,6 +5,7 @@ open NaturalSpec
 open VendingMachine
 
 let initially vm =
+    printMethod ()
     vm
 
 let total_amount amount (vm:VendingMachine)  =
@@ -54,6 +55,7 @@ let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
 let cola = new Drink();
 
 let vending_machine_inserted_110_yen_and_have_one_drink = 
+    printMethod ()
     let vm = new VendingMachine()
     vm.AddDrink(cola)
     vm.InsertMoeny(100)
@@ -61,7 +63,8 @@ let vending_machine_inserted_110_yen_and_have_one_drink =
     vm
     
 let buy_drink drink (vm:VendingMachine) = 
-    vm.BuyDrink(drink);
+    printMethod drink
+    vm.BuyDrink(drink)
 
 
 [<Scenario>]
