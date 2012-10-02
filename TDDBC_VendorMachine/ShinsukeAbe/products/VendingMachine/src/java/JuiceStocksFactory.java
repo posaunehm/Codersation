@@ -12,7 +12,7 @@ public class JuiceStocksFactory {
     public static JuiceStocks createNewStocks() {
         JuiceStocks stocks = new JuiceStocks();
         
-        stocks.addStock(new Juice("コーラ", 120), 5);
+        stocks.add(new Juice("コーラ", 120), 5);
         
         return stocks;
     }

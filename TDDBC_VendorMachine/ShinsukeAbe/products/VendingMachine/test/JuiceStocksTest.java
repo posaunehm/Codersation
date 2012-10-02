@@ -49,38 +49,38 @@ public class JuiceStocksTest {
     
     @Test
     public void ストックの初期状態ではコーラが5本格納されている() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
         assertThat(juiceStock, is(new JuiceStock(cola, 5)));
     }
     
     @Test
     public void ストックにレッドブルを5本追加できる() {
-        juiceStocks.addStock(redBull, 5);
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(1);
+        juiceStocks.add(redBull, 5);
+        JuiceStock juiceStock = juiceStocks.getAll().get(1);
         assertThat(juiceStock, is(new JuiceStock(redBull, 5)));
     }
     
     @Test
     public void 投入金額がnullの場合はコーラが購入不可能() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
         assertThat(juiceStock.isPurchasable(null), is(false));
     }
     
     @Test
     public void 初期状態で100円投入した場合はコーラが購入不可能() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
         assertThat(juiceStock.isPurchasable(100), is(false));
     }
     
     @Test
     public void 初期状態で120円投入した場合はコーラが購入可能() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
         assertThat(juiceStock.isPurchasable(120), is(true));
     }
     
     @Test
     public void 初期状態からコーラの出庫を行うと在庫が4つになる() {
-        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
         juiceStock.delivery();
         assertThat(juiceStock.getCount(), is(4));
     }

@@ -15,11 +15,11 @@ public class JuiceStocks {
     
     private List<JuiceStock> stocks = new ArrayList<JuiceStock>();
 
-    List<JuiceStock> getAllStocks() {
+    List<JuiceStock> getAll() {
         return stocks;
     }
 
-    void addStock(Juice juice, int count) {
+    void add(Juice juice, int count) {
         stocks.add(new JuiceStock(juice, count));
     }
     
