@@ -20,5 +20,15 @@ namespace VendingMachine
             if (amount == 10 || amount == 50 || amount == 100 || amount == 500 || amount == 1000)
             TotalAmount += amount;
         }
+
+        public void AddDrink(Drink drink)
+        {
+            
+        }
+
+        public  Drink BuyDrink(Drink drink)
+        {
+            return drink;
+        }
     }
 }

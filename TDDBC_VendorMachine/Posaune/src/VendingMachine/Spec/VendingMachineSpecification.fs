@@ -48,5 +48,26 @@ let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
     |> When insert_money [1]      
     |> It should have (total_amount 0)
     |> Verify
+
+//Feature：ジュースを購入する
+
+let cola = new Drink();
+
+let vending_machine_inserted_110_yen_and_have_one_drink = 
+    let vm = new VendingMachine()
+    vm.AddDrink(cola)
+    vm.InsertMoeny(100)
+    vm.InsertMoeny(10)
+    vm
     
+let buy_drink nth (vm:VendingMachine) = 
+    vm.BuyDrink(cola);
+
+
+[<Scenario>]
+let ``After inserting 110 yen, you can buy a juice less than 110 yen``() =
+    Given vending_machine_inserted_110_yen_and_have_one_drink
+        |> When buy_drink cola
+        |> It should equal cola 
+        |> Verify
 
