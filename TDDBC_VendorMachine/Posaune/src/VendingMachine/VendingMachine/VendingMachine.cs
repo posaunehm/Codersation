@@ -15,10 +15,27 @@ namespace VendingMachine
 
         public int TotalAmount { get; private set; }
 
-        public void InsertMoeny(int amount)
+        public void InsertMoney(Money money)
         {
-            if (amount == 10 || amount == 50 || amount == 100 || amount == 500 || amount == 1000)
-            TotalAmount += amount;
+            switch (money.Kind)
+            {
+                case MoneyKind.Yen10:
+                case MoneyKind.Yen50:
+                case MoneyKind.Yen100:
+                case MoneyKind.Yen500:
+                case MoneyKind.Yen1000:
+                    TotalAmount += money.Amount;
+                    break;
+                case MoneyKind.Yen1:
+                case MoneyKind.Yen5:
+                case MoneyKind.Yen5000:
+                case MoneyKind.Yen10000:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
         }
 
         public void AddDrink(Drink drink)
@@ -26,7 +43,7 @@ namespace VendingMachine
             
         }
 
-        public  Drink BuyDrink(Drink drink)
+        public Drink BuyDrink(Drink drink)
         {
             return drink;
         }

@@ -14,21 +14,21 @@ let total_amount amount (vm:VendingMachine)  =
 
 let insert_money amount (vm:VendingMachine) = 
     printMethod amount
-    amount |> List.iter vm.InsertMoeny
+    amount |> List.iter vm.InsertMoney
     vm
  
 //Feature:‚¨‹à‚ª“Š“ü‚Å‚«‚é
 [<Scenario>]
 let ``After inserting 10 yen, it's total amount is 10``() =
   Given (new VendingMachine())          
-    |> When insert_money [10]      
+    |> When insert_money [new Money(MoneyKind.Yen10)]      
     |> It should have (total_amount 10)
     |> Verify
 
 [<Scenario>]
 let ``After inserting 10 yen and 100 yen, it's total amount is 110``() =
   Given (new VendingMachine())          
-    |> When insert_money [10;100]  
+    |> When insert_money [new Money(MoneyKind.Yen10);new Money(MoneyKind.Yen100)]  
     |> It should have (total_amount 110)
     |> Verify
                  
@@ -46,7 +46,7 @@ let ``Initially, the total amount of this vending machine is 0``() =
 [<Scenario>]
 let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
   Given (new VendingMachine())                
-    |> When insert_money [1]      
+    |> When insert_money [new Money(MoneyKind.Yen1)]      
     |> It should have (total_amount 0)
     |> Verify
 
@@ -58,8 +58,8 @@ let vending_machine_inserted_110_yen_and_have_one_drink =
     printMethod ()
     let vm = new VendingMachine()
     vm.AddDrink(cola)
-    vm.InsertMoeny(100)
-    vm.InsertMoeny(10)
+    vm.InsertMoney(new Money(MoneyKind.Yen100))
+    vm.InsertMoney(new Money(MoneyKind.Yen10))
     vm
     
 let buy_drink drink (vm:VendingMachine) = 
