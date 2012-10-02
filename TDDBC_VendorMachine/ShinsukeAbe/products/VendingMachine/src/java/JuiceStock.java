@@ -67,5 +67,6 @@ public class JuiceStock {
 
     public void delivery() {
         this.count--;
+        // TODO 永続化層の処理
     }
 }

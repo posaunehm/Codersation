@@ -43,7 +43,6 @@ public class JuiceStocksTest {
     }
     
     // TODO 
-    // TODO 初期状態でコーラを指定してストックを取得できる
     // TODO 初期状態でレッドブルを指定するとストックを取得できない
     // TODO 投入金額不足 <= もっと上位のサービスかアプリケーション層
     
@@ -92,5 +91,12 @@ public class JuiceStocksTest {
             juiceStock.delivery();
         }
         assertThat(juiceStock.isPurchasable(120), is(false));
+    }
+    
+    @Test
+    public void 初期状態でコーラを指定してストックを取得できる() {
+        JuiceStock juiceStock = juiceStocks.get(cola);
+        assertThat(juiceStock.getJuice(), is(cola));
+        assertThat(juiceStock.getCount(), is(5));
     }
 }

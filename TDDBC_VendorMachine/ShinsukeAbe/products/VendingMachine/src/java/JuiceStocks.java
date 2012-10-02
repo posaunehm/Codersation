@@ -15,12 +15,21 @@ public class JuiceStocks {
     
     private List<JuiceStock> stocks = new ArrayList<JuiceStock>();
 
-    List<JuiceStock> getAll() {
+    public List<JuiceStock> getAll() {
         return stocks;
     }
 
-    void add(Juice juice, int count) {
+    public void add(Juice juice, int count) {
         stocks.add(new JuiceStock(juice, count));
+    }
+
+    public JuiceStock get(Juice juice) {
+        for(JuiceStock stock: stocks) {
+            if(stock.getJuice().equals(juice)) {
+                return stock;
+            }
+        }
+        return null;
     }
     
 }
