@@ -17,6 +17,7 @@ namespace VendingMachine
 
         public void InsertMoeny(int amount)
         {
+            if (amount == 10 || amount == 50 || amount == 100 || amount == 500 || amount == 1000)
             TotalAmount += amount;
         }
     }
