@@ -61,4 +61,16 @@ public class JuiceStocksTest {
         JuiceStock juiceStock = juiceStocks.getAllStocks().get(1);
         assertThat(juiceStock, is(new JuiceStock(redBull, 5)));
     }
+    
+    @Test
+    public void 投入金額がnullの場合はコーラが購入不可能() {
+        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        assertThat(juiceStock.isPurchasable(null), is(false));
+    }
+    
+    @Test
+    public void 初期状態で100円投入した場合はコーラが購入不可能() {
+        JuiceStock juiceStock = juiceStocks.getAllStocks().get(0);
+        assertThat(juiceStock.isPurchasable(100), is(false));
+    }
 }

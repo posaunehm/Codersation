@@ -15,6 +15,16 @@ public class JuiceStock {
         this.juice = juice;
         this.count = count;
     }
+    
+    public Boolean isPurchasable(Integer amount) {
+        if(amount == null) return false;
+        if(juice.getPrice() <= amount &&
+                count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public Juice getJuice() {
         return juice;
