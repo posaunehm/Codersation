@@ -60,8 +60,8 @@ let vending_machine_inserted_110_yen_and_have_one_drink =
     vm.InsertMoeny(10)
     vm
     
-let buy_drink nth (vm:VendingMachine) = 
-    vm.BuyDrink(cola);
+let buy_drink drink (vm:VendingMachine) = 
+    vm.BuyDrink(drink);
 
 
 [<Scenario>]
