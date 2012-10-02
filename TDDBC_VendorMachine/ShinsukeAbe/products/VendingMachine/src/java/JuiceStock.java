@@ -64,4 +64,8 @@ public class JuiceStock {
         hash = 29 * hash + (this.count != null ? this.count.hashCode() : 0);
         return hash;
     }
+
+    public void delivery() {
+        this.count--;
+    }
 }
