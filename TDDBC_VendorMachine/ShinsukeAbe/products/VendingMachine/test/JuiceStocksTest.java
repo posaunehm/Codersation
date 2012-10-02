@@ -42,7 +42,7 @@ public class JuiceStocksTest {
     public void tearDown() {
     }
     
-    // TODO コーラの在庫が0の状態で120円投入した場合は購入不可能
+    // TODO 
     // TODO 初期状態でコーラを指定してストックを取得できる
     // TODO 初期状態でレッドブルを指定するとストックを取得できない
     // TODO 投入金額不足 <= もっと上位のサービスかアプリケーション層
@@ -83,5 +83,14 @@ public class JuiceStocksTest {
         JuiceStock juiceStock = juiceStocks.getAll().get(0);
         juiceStock.delivery();
         assertThat(juiceStock.getCount(), is(4));
+    }
+    
+    @Test
+    public void コーラの在庫が0の状態で120円投入した場合は購入不可能() {
+        JuiceStock juiceStock = juiceStocks.getAll().get(0);
+        for(int i = 0; i < 5; i++) {
+            juiceStock.delivery();
+        }
+        assertThat(juiceStock.isPurchasable(120), is(false));
     }
 }
