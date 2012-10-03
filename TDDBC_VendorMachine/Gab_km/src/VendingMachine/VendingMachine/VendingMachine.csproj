@@ -40,11 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeGroup.cs" />
     <Compile Include="ChangeStock.cs" />
     <Compile Include="Juice.cs" />
+    <Compile Include="JuiceGroup.cs" />
     <Compile Include="JuiceStock.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="Option.cs" />
+    <Compile Include="PurchaseResult.cs" />
+    <Compile Include="PurchaseSystem.cs" />
+    <Compile Include="StockSystem.cs" />
     <Compile Include="VendingMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
