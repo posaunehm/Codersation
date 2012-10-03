@@ -2,23 +2,22 @@
 {
     public class VendingMachine
     {
-        private IMoneyAcceptor _standardMoneyAcceptor = new StandardMoneyAcceptor();
+        private readonly IMoneyAcceptor _moneyAcceptor;
 
-        public VendingMachine()
+        public VendingMachine(IMoneyAcceptor acceptor)
         {
             TotalAmount = 0;
+            _moneyAcceptor = acceptor;
         }
 
         public int TotalAmount { get; private set; }
 
         public void InsertMoney(Money money)
         {
-            if(_standardMoneyAcceptor.IsValid(money))
+            if(_moneyAcceptor.IsValid(money))
             {
                 TotalAmount += money.Amount;
             }
-
-
         }
 
         public void AddDrink(Drink drink)

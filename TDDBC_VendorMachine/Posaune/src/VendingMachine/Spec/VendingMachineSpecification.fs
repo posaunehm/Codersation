@@ -20,14 +20,14 @@ let insert_money amount (vm:VendingMachine) =
 //Feature:‚¨‹à‚ª“Š“ü‚Å‚«‚é
 [<Scenario>]
 let ``After inserting 10 yen, it's total amount is 10``() =
-  Given (new VendingMachine())          
+  Given (new VendingMachine(new StandardMoneyAcceptor()))          
     |> When insert_money [new Money(MoneyKind.Yen10)]      
     |> It should have (total_amount 10)
     |> Verify
 
 [<Scenario>]
 let ``After inserting 10 yen and 100 yen, it's total amount is 110``() =
-  Given (new VendingMachine())          
+  Given (new VendingMachine(new StandardMoneyAcceptor()))          
     |> When insert_money [new Money(MoneyKind.Yen10);new Money(MoneyKind.Yen100)]  
     |> It should have (total_amount 110)
     |> Verify
@@ -36,7 +36,7 @@ let ``After inserting 10 yen and 100 yen, it's total amount is 110``() =
 //Feature:“Š“ü‹àŠz‚ÌŠm”F‚ª‚Å‚«‚é
 [<Scenario>]
 let ``Initially, the total amount of this vending machine is 0``() =
-  Given (new VendingMachine())                
+  Given (new VendingMachine(new StandardMoneyAcceptor()))                
     |> When initially      
     |> It should have (total_amount 0)
     |> Verify
@@ -45,7 +45,7 @@ let ``Initially, the total amount of this vending machine is 0``() =
 //Feature:ˆµ‚¦‚È‚¢‚¨‹à‚ğŠÇ—‚Å‚«‚é
 [<Scenario>]
 let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
-  Given (new VendingMachine())                
+  Given (new VendingMachine(new StandardMoneyAcceptor()))                
     |> When insert_money [new Money(MoneyKind.Yen1)]      
     |> It should have (total_amount 0)
     |> Verify
@@ -56,7 +56,7 @@ let cola = new Drink();
 
 let vending_machine_inserted_110_yen_and_have_one_drink = 
     printMethod ()
-    let vm = new VendingMachine()
+    let vm = new VendingMachine(new StandardMoneyAcceptor())
     vm.AddDrink(cola)
     vm.InsertMoney(new Money(MoneyKind.Yen100))
     vm.InsertMoney(new Money(MoneyKind.Yen10))
