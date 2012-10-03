@@ -108,15 +108,16 @@ namespace VendingMachine.Test
         [Test]
         public void 格納されているジュースの情報が取得できる()
         {
-            var cokeStock = vm.Stock.Find(stock => stock.Name == Juice.NAME_Coke);
+            var juiceGroups = vm.GetJuiceStock();
+            var cokeStock = juiceGroups.Find(j => j.Name == Juice.NAME_Coke);
             Assert.That(cokeStock.Price, Is.EqualTo(120));
             Assert.That(cokeStock.Count, Is.EqualTo(5));
 
-            var redbullStock = vm.Stock.Find(stock => stock.Name == Juice.NAME_RedBull);
+            var redbullStock = juiceGroups.Find(j => j.Name == Juice.NAME_RedBull);
             Assert.That(redbullStock.Price, Is.EqualTo(200));
             Assert.That(redbullStock.Count, Is.EqualTo(5));
 
-            var waterStock = vm.Stock.Find(stock => stock.Name == Juice.NAME_Water);
+            var waterStock = juiceGroups.Find(j => j.Name == Juice.NAME_Water);
             Assert.That(waterStock.Price, Is.EqualTo(100));
             Assert.That(waterStock.Count, Is.EqualTo(5));
         }
@@ -145,7 +146,8 @@ namespace VendingMachine.Test
 
             vm.Buy(Juice.NAME_Coke);
 
-            Assert.That(vm.Stock.Find(stock => stock.Name == Juice.NAME_Coke).Count, Is.EqualTo(4));
+            var juiceGroup = vm.GetJuiceStock();
+            Assert.That(juiceGroup.Find(stock => stock.Name == Juice.NAME_Coke).Count, Is.EqualTo(4));
             Assert.That(vm.Total, Is.EqualTo(0));
             Assert.That(vm.Sale, Is.EqualTo(120));
         }
@@ -157,7 +159,8 @@ namespace VendingMachine.Test
 
             vm.Buy(Juice.NAME_Coke);
 
-            Assert.That(vm.Stock.Find(stock => stock.Name == Juice.NAME_Coke).Count, Is.EqualTo(5));
+            var juiceGroup = vm.GetJuiceStock();
+            Assert.That(juiceGroup.Find(stock => stock.Name == Juice.NAME_Coke).Count, Is.EqualTo(5));
             Assert.That(vm.Total, Is.EqualTo(100));
             Assert.That(vm.Sale, Is.EqualTo(0));
         }
@@ -196,13 +199,22 @@ namespace VendingMachine.Test
             });
 
             Assert.That(vm.Sale, Is.EqualTo(360));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 1000).Count, Is.EqualTo(10));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 500).Count, Is.EqualTo(10));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 100).Count, Is.EqualTo(1));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 50).Count, Is.EqualTo(7));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 10).Count, Is.EqualTo(1));
+
             vm.DropIn(Money.FiveHundred);
-            Console.WriteLine(vm.Total);
-            Console.WriteLine(vm.Change);
             vm.Buy(Juice.NAME_Coke);
-            Console.WriteLine(vm.Total);
-            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.FiveHundred }));
             Assert.That(vm.Sale, Is.EqualTo(360));
+            Assert.That(vm.Change, Is.EquivalentTo(new List<Money>() { Money.FiveHundred }));
+
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 1000).Count, Is.EqualTo(10));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 500).Count, Is.EqualTo(10));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 100).Count, Is.EqualTo(1));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 50).Count, Is.EqualTo(7));
+            Assert.That(vm.AllChanges.FindAll(m => m.Value == 10).Count, Is.EqualTo(1));
         }
     }
 }

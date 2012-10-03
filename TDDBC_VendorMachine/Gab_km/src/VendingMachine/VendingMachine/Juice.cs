@@ -12,12 +12,10 @@ namespace VendingMachine
         public const string NAME_Water = "水";
 
         public string Name { get; private set; }
-        public int Price { get; private set; }
 
-        public Juice(string name, int price)
+        public Juice(string name)
         {
             this.Name = name;
-            this.Price = price;
         }
     }
 }
