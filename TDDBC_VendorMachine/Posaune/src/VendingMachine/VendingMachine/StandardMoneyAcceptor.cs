@@ -2,7 +2,7 @@ using System;
 
 namespace VendingMachine
 {
-    internal class MoneyAcceptor
+    public class StandardMoneyAcceptor : IMoneyAcceptor
     {
         public bool IsValid(Money money)
         {

@@ -2,7 +2,7 @@
 {
     public class VendingMachine
     {
-        private MoneyAcceptor _moneyAcceptor = new MoneyAcceptor();
+        private IMoneyAcceptor _standardMoneyAcceptor = new StandardMoneyAcceptor();
 
         public VendingMachine()
         {
@@ -13,7 +13,7 @@
 
         public void InsertMoney(Money money)
         {
-            if(_moneyAcceptor.IsValid(money))
+            if(_standardMoneyAcceptor.IsValid(money))
             {
                 TotalAmount += money.Amount;
             }
