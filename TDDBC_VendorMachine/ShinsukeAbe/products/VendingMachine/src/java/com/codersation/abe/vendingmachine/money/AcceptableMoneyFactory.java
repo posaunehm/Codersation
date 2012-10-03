@@ -9,14 +9,16 @@ package com.codersation.abe.vendingmachine.money;
  *
  * @author mao
  */
-public class AmountableMoneyFactory {
-    public static AmountableMoney createNewMoney(Integer value) {
+public class AcceptableMoneyFactory {
+    
+    public static AcceptableMoney createNewMoney(Integer value) {
         switch(value) {
-            case 10: return new JPY10();
-            case 50: return new JPY50();
-            case 100: return new JPY100();
-            case 500: return new JPY500();
-            case 1000: return new JPY1000();
+            case 10: 
+            case 50:
+            case 100:
+            case 500:
+            case 1000:
+                return new AcceptableMoney(value);
             default: throw new IllegalArgumentException("Unamountable money:" + value.toString());
         }
     }

@@ -1,8 +1,6 @@
 package codersation.vendingmachine;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -45,11 +43,6 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void コーラの在庫数を取得() throws Exception {
-			assertThat(sut.getStockCount(Juice.Coke), is(5));
-		}
-
-		@Test
 		public void 売上金額は0円() throws Exception {
 			assertThat(sut.getSaleAmount(), is(0));
 		}
@@ -63,7 +56,15 @@ public class VendingMachineTest {
 		@Test
 		public void 買えない状態で購入しても在庫は減らない() throws Exception {
 			sut.purchase(Juice.Coke);
-			assertThat(sut.getStockCount(Juice.Coke), is(5));
+			assertThat(sut.getAllJuiceStock().get(0).getCount(), is(5));
+		}
+
+		@Test
+		public void 在庫情報を取得できる() throws Exception {
+			assertThat(sut.getAllJuiceStock().size(), is(3));
+			assertThat(sut.getAllJuiceStock().get(0).getJuice(), is(Juice.Coke));
+			assertThat(sut.getAllJuiceStock().get(1).getJuice(), is(Juice.Water));
+			assertThat(sut.getAllJuiceStock().get(2).getJuice(), is(Juice.RedBull));
 		}
 	}
 
@@ -102,11 +103,6 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void コーラを購入できない() throws Exception {
-			assertThat(sut.canPurchase(Juice.Coke), is(false));
-		}
-
-		@Test
 		public void 買えない状態で購入しても預かり金は減らない() throws Exception {
 			sut.purchase(Juice.Coke);
 			assertThat(sut.getTotalAmount(), is(100));
@@ -139,14 +135,9 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void コーラを購入できる() throws Exception {
-			assertThat(sut.canPurchase(Juice.Coke), is(true));
-		}
-
-		@Test
 		public void 購入したら在庫が減る() throws Exception {
 			sut.purchase(Juice.Coke);
-			assertThat(sut.getStockCount(Juice.Coke), is(4));
+			assertThat(sut.getAllJuiceStock().get(0).getCount(), is(4));
 		}
 
 		@Test
@@ -169,7 +160,7 @@ public class VendingMachineTest {
 			sut.purchase(Juice.Coke);
 			sut.purchase(Juice.Coke);
 
-			assertThat(sut.canPurchase(Juice.Coke), is(false));
+			assertThat(sut.getPurchasable(), not(hasItem(Juice.Coke)));
 		}
 
 		@Test
