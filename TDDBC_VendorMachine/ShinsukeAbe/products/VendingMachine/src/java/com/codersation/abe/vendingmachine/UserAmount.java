@@ -1,7 +1,7 @@
 package com.codersation.abe.vendingmachine;
 
 
-import com.codersation.abe.vendingmachine.money.AmountableMoney;
+import com.codersation.abe.vendingmachine.money.AcceptableMoney;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,19 +15,19 @@ import java.util.List;
  * @author mao
  */
 public class UserAmount {
-    private List<AmountableMoney> amountList = new ArrayList<AmountableMoney>();
+    private List<AcceptableMoney> amountList = new ArrayList<AcceptableMoney>();
     
     public Integer getTotal() {
         Integer totalAmount = 0;
         
-        for(AmountableMoney amount: amountList) {
+        for(AcceptableMoney amount: amountList) {
             totalAmount += amount.getValue();
         }
         
         return totalAmount;
     }
     
-    public void insert(AmountableMoney money) {
+    public void insert(AcceptableMoney money) {
         amountList.add(money);
     }
 

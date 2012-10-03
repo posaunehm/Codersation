@@ -1,8 +1,5 @@
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/nbproject/private/
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/build/
-
-
-
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -31,3 +28,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+.DS_Store
