@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Drink.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="MoneyAcceptor.cs" />
     <Compile Include="MoneyKind.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
