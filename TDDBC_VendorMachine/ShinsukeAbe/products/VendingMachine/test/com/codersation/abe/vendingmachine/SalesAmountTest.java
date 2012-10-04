@@ -18,6 +18,8 @@ import static org.hamcrest.core.Is.*;
  */
 public class SalesAmountTest {
     
+    private SalesAmount amount;
+    
     public SalesAmountTest() {
     }
     
@@ -31,6 +33,7 @@ public class SalesAmountTest {
     
     @Before
     public void setUp() {
+        amount = new SalesAmount();
     }
     
     @After
@@ -41,13 +44,11 @@ public class SalesAmountTest {
     
     @Test
     public void 初期状態で売上金額合計を取得すると0円である() {
-        SalesAmount amount = new SalesAmount();
         assertThat(amount.getTotal(), is(0));
     }
     
     @Test
     public void 売上に120円追加して売上金額合計を取得すると120円である() {
-        SalesAmount amount = new SalesAmount();
         amount.add(120);
         assertThat(amount.getTotal(), is(120));
     }
