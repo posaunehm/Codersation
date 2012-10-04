@@ -4,7 +4,9 @@
  */
 package com.codersation.abe.vendingmachine;
 
+import com.codersation.abe.vendingmachine.money.AcceptableMoney;
 import com.codersation.abe.vendingmachine.money.AcceptableMoneyFactory;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,11 +40,22 @@ public class ChangeStockTest {
     public void tearDown() {
     }
     
-    // TODO 釣り銭ストックが初期状態で釣り銭に80円を要求すると50円１枚と10円が3枚で計算される
+    // TODO 初期状態の釣り銭ストックに50円1枚と10円3枚で払い出しを要求すると指定した金種の枚数が減る
+    // TODO 釣り銭ストックに100円2枚の投入金額を追加した場合金種の指定した枚数が増える
     @Test
     public void 釣り銭ストックの初期状態では各金種が10枚ずつ存在する() {
         ChangeStock changeStock = ChangeStockFactory.createNewChangeStock();
         assertThat(changeStock.get(AcceptableMoneyFactory.createNewMoney(10)), is(10));
         assertThat(changeStock.get(AcceptableMoneyFactory.createNewMoney(50)), is(10));
+        assertThat(changeStock.get(AcceptableMoneyFactory.createNewMoney(100)), is(10));
+        assertThat(changeStock.get(AcceptableMoneyFactory.createNewMoney(500)), is(10));
+        assertThat(changeStock.get(AcceptableMoneyFactory.createNewMoney(1000)), is(10));
+    }
+    
+    @Test
+    public void 釣り銭ストックが初期状態で釣り銭に80円を要求すると50円１枚と10円が3枚で計算される() {
+        Map<AcceptableMoney, Integer> calculatedChanges = ChangeStockFactory.createNewChangeStock().calculateCount(80);
+        assertThat(calculatedChanges.get(AcceptableMoneyFactory.createNewMoney(50)), is(1));
+        assertThat(calculatedChanges.get(AcceptableMoneyFactory.createNewMoney(10)), is(3));
     }
 }
