@@ -21,8 +21,27 @@ class ChangeStock {
     Map<AcceptableMoney, Integer> calculateCount(Integer change) {
         Map<AcceptableMoney, Integer> changeCount = new HashMap<AcceptableMoney, Integer>();
         
-        changeCount.put(AcceptableMoneyFactory.createNewMoney(50), 1);
-        changeCount.put(AcceptableMoneyFactory.createNewMoney(10), 3);
+        Integer balance = change;
+        
+        if(balance / 500 > 0) {
+            changeCount.put(AcceptableMoneyFactory.createNewMoney(500), balance / 500);
+            balance = balance % 500;
+        }
+        
+        if(balance / 100 > 0) {
+            changeCount.put(AcceptableMoneyFactory.createNewMoney(100), balance / 100);
+            balance = balance % 100;
+        }
+        
+        if(balance / 50 > 0) {
+            changeCount.put(AcceptableMoneyFactory.createNewMoney(50), balance / 50);
+            balance = balance % 50;
+        }
+        
+        if(balance / 10 > 0) {
+            changeCount.put(AcceptableMoneyFactory.createNewMoney(10), balance / 10);
+            balance = balance % 10;
+        }
         
         return changeCount;
     }
