@@ -1,3 +1,5 @@
+package com.codersation.abe.vendingmachine.managestock;
+
 
 import java.util.ArrayList;
 import java.util.List;

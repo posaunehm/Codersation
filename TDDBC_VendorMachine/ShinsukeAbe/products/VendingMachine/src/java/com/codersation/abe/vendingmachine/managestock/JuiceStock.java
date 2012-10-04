@@ -1,3 +1,5 @@
+package com.codersation.abe.vendingmachine.managestock;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
