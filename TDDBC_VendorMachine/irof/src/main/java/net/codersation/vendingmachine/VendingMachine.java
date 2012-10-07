@@ -1,7 +1,6 @@
 package net.codersation.vendingmachine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
@@ -30,23 +29,14 @@ public class VendingMachine {
 	}
 
 	public void purchase(Juice juice) {
-		JuiceRack stock = juiceStock.getRack(juice);
-		if (stock.isInStock() && juice.isEnough(getTotalAmount())) {
-			stock.remove();
+		if (!juice.isEnough(getTotalAmount())) {
+			return;
+		}
 
-			moneyFlow.addSale(juice.getPrice());
-			
-			List<Money> useMoneyList = CreditService.getUseMoneyList(moneyFlow.credit, juice.getPrice());
-			int tempAmount = 0;
-			for (Money money : useMoneyList) {
-				moneyFlow.credit.remove(money);
-				tempAmount += money.getValue();
-			}
-			if (tempAmount != juice.getPrice()) {
-				List<Money> list = new ArrayList<>(Collections.nCopies(100, Money.TenYen));
-				List<Money> l = CreditService.getUseMoneyList(list, tempAmount - juice.getPrice());
-				moneyFlow.credit.addAll(l);
-			}
+		JuiceRack stock = juiceStock.getRack(juice);
+		if (stock.isInStock()) {
+			stock.remove();
+			moneyFlow.purchase(juice.getPrice());
 		}
 	}
 

@@ -1,8 +1,10 @@
 package net.codersation.vendingmachine.moneyflow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.codersation.vendingmachine.CreditService;
 import net.codersation.vendingmachine.Money;
 
 public class MoneyFlow {
@@ -50,4 +52,19 @@ public class MoneyFlow {
 		return totalAmount;
 	}
 
+	public void purchase(int price) {
+		addSale(price);
+		
+		List<Money> useMoneyList = CreditService.getUseMoneyList(credit, price);
+		int tempAmount = 0;
+		for (Money money : useMoneyList) {
+			credit.remove(money);
+			tempAmount += money.getValue();
+		}
+		if (tempAmount != price) {
+			List<Money> list = new ArrayList<>(Collections.nCopies(100, Money.TenYen));
+			List<Money> l = CreditService.getUseMoneyList(list, tempAmount - price);
+			credit.addAll(l);
+		}
+	}
 }
