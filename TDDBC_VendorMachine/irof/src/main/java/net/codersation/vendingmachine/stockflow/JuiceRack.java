@@ -24,11 +24,7 @@ public class JuiceRack {
 		count--;
 	}
 
-	public boolean canPurchase(int amount) {
-		return isInStock() && juice.isEnough(amount);
-	}
-
-	private boolean isInStock() {
+	public boolean isInStock() {
 		return getCount() > 0;
 	}
 }
