@@ -1,11 +1,13 @@
-package net.codersation.vendingmachine;
+package net.codersation.vendingmachine.stockflow;
 
-public class JuiceStock {
+import net.codersation.vendingmachine.Juice;
 
-	int count;
+public class JuiceRack {
+
+	private int count;
 	private final Juice juice;
 
-	public JuiceStock(Juice juice, int count) {
+	public JuiceRack(Juice juice, int count) {
 		this.juice = juice;
 		this.count = count;
 	}
@@ -22,7 +24,7 @@ public class JuiceStock {
 		count--;
 	}
 
-	boolean canPurchase(int amount) {
+	public boolean canPurchase(int amount) {
 		if (getCount() <= 0) {
 			return false;
 		}

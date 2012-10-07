@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.codersation.vendingmachine.stockflow.JuiceRack;
+
 public class VendingMachine {
 
 	private List<Money> credit = new ArrayList<>();
 	
 	private List<Money> change = new ArrayList<>();
 	private MoneyPolicy moneyPoricy = new MoneyPolicy();
-	private List<JuiceStock> juiceStock = new ArrayList<>();
+	private List<JuiceRack> juiceStock = new ArrayList<>();
 	private int saleAmount = 0;
 
 	public VendingMachine() {
 		for (Juice juice : Juice.values()) {
-			juiceStock.add(new JuiceStock(juice, 5));
+			juiceStock.add(new JuiceRack(juice, 5));
 		}
 	}
 
@@ -49,7 +51,7 @@ public class VendingMachine {
 	}
 
 	public void purchase(Juice juice) {
-		JuiceStock stock = getJuiceStock(juice);
+		JuiceRack stock = getJuiceStock(juice);
 		if (stock.canPurchase(getTotalAmount())) {
 			stock.remove();
 
@@ -69,8 +71,8 @@ public class VendingMachine {
 		}
 	}
 
-	private JuiceStock getJuiceStock(Juice juice) {
-		for (JuiceStock stock : juiceStock) {
+	private JuiceRack getJuiceStock(Juice juice) {
+		for (JuiceRack stock : juiceStock) {
 			if (stock.getJuice().equals(juice)) {
 				return stock;
 			}
@@ -92,7 +94,7 @@ public class VendingMachine {
 		return list;
 	}
 
-	public List<JuiceStock> getAllJuiceStock() {
+	public List<JuiceRack> getAllJuiceStock() {
 		return juiceStock;
 	}
 }
