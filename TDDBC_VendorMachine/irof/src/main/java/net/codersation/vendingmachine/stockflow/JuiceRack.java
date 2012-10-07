@@ -25,9 +25,10 @@ public class JuiceRack {
 	}
 
 	public boolean canPurchase(int amount) {
-		if (getCount() <= 0) {
-			return false;
-		}
-		return amount >= getJuice().getPrice();
+		return isInStock() && juice.isEnough(amount);
+	}
+
+	private boolean isInStock() {
+		return getCount() > 0;
 	}
 }

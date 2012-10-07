@@ -1,5 +1,6 @@
 package net.codersation.vendingmachine;
 
+
 public class Juice {
 	public static Juice Coke = new Juice("コーラ", 120);
 	public static Juice Water = new Juice("水", 100);
@@ -19,6 +20,10 @@ public class Juice {
 
 	public int getPrice() {
 		return price;
+	}
+
+	public boolean isEnough(int amount) {
+		return amount >= this.getPrice();
 	}
 
 	public static Juice[] values() {
