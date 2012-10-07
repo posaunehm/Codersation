@@ -10,39 +10,23 @@ import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 public class VendingMachine {
 
-	public MoneyFlow money = new MoneyFlow();
-	private List<Money> credit = new ArrayList<>();
-	
-	private List<Money> change = new ArrayList<>();
-	private MoneyPolicy moneyPoricy = new MoneyPolicy();
+	public MoneyFlow moneyFlow = new MoneyFlow();
 	private JuiceStock juiceStock = new JuiceStock();
+
 	public int getTotalAmount() {
-		int totalAmount = 0;
-		for (Money c : credit) {
-			totalAmount += c.getValue();
-		}
-		return totalAmount;
+		return moneyFlow.getTotalAmount();
 	}
 
 	public void insert(Money money) {
-		if (moneyPoricy.isAllowed(money)) {
-			credit.add(money);
-		} else {
-			change.add(money);
-		}
+		moneyFlow.insert(money);
 	}
 
 	public void payBack() {
-		change.addAll(credit);
-		credit.clear();
+		moneyFlow.payBack();
 	}
 
 	public int getChangeAmount() {
-		int totalAmount = 0 ;
-		for (Money c : change) {
-			totalAmount += c.getValue();
-		}
-		return totalAmount;
+		return moneyFlow.getChangeAmount();
 	}
 
 	public void purchase(Juice juice) {
@@ -50,24 +34,24 @@ public class VendingMachine {
 		if (stock.canPurchase(getTotalAmount())) {
 			stock.remove();
 
-			money.addSale(juice.getPrice());
+			moneyFlow.addSale(juice.getPrice());
 			
-			List<Money> useMoneyList = CreditService.getUseMoneyList(credit, juice.getPrice());
+			List<Money> useMoneyList = CreditService.getUseMoneyList(moneyFlow.credit, juice.getPrice());
 			int tempAmount = 0;
 			for (Money money : useMoneyList) {
-				credit.remove(money);
+				moneyFlow.credit.remove(money);
 				tempAmount += money.getValue();
 			}
 			if (tempAmount != juice.getPrice()) {
 				List<Money> list = new ArrayList<>(Collections.nCopies(100, Money.TenYen));
 				List<Money> l = CreditService.getUseMoneyList(list, tempAmount - juice.getPrice());
-				credit.addAll(l);
+				moneyFlow.credit.addAll(l);
 			}
 		}
 	}
 
 	public int getSaleAmount() {
-		return money.getSaleAmount();
+		return moneyFlow.getSaleAmount();
 	}
 
 	public List<Juice> getPurchasable() {
