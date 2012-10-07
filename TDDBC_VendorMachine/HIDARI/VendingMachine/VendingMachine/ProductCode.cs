@@ -7,5 +7,6 @@ namespace VendingMachine
 {
     public class ProductCode
     {
+
     }
 }

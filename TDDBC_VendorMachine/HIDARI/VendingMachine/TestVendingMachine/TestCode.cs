@@ -9,5 +9,11 @@ namespace TestVendingMachine
 {
     public class TestCode
     {
+		[Test]
+		public void JuiceStocksCanAddNewJuice(){
+			Juice juice = new Juice();
+			Assert.That(juice,Has.Property("Name"));
+
+		}
     }
 }
