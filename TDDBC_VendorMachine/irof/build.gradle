@@ -16,3 +16,5 @@ eclipse {
    downloadSources=true
   }
 }
+
+test.exclude '**/*$*'
