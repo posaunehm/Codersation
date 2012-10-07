@@ -12,6 +12,10 @@ public class JuiceRack {
 		this.count = count;
 	}
 
+	/**
+	 * @deprecated テストのために残してるだけです
+	 */
+	@Deprecated
 	public Juice getJuice() {
 		return juice;
 	}
@@ -26,5 +30,9 @@ public class JuiceRack {
 
 	public boolean isInStock() {
 		return getCount() > 0;
+	}
+
+	boolean of(Juice juice) {
+		return getJuice().equals(juice);
 	}
 }

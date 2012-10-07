@@ -32,7 +32,7 @@ public class JuiceStock implements Iterable<JuiceRack> {
 
 	public JuiceRack getRack(Juice juice) {
 		for (JuiceRack stock : this) {
-			if (stock.getJuice().equals(juice)) {
+			if (stock.of(juice)) {
 				return stock;
 			}
 		}
