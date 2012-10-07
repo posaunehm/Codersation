@@ -16,12 +16,6 @@ public class VendingMachine {
 	private JuiceStock juiceStock = new JuiceStock();
 	private int saleAmount = 0;
 
-	public VendingMachine() {
-		for (Juice juice : Juice.values()) {
-			juiceStock.add(new JuiceRack(juice, 5));
-		}
-	}
-
 	public int getTotalAmount() {
 		int totalAmount = 0;
 		for (Money c : credit) {
@@ -96,6 +90,6 @@ public class VendingMachine {
 	}
 
 	public List<JuiceRack> getAllJuiceStock() {
-		return juiceStock;
+		return juiceStock.getRacks();
 	}
 }
