@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.codersation.vendingmachine.stockflow.JuiceRack;
+import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 public class VendingMachine {
 
@@ -12,7 +13,7 @@ public class VendingMachine {
 	
 	private List<Money> change = new ArrayList<>();
 	private MoneyPolicy moneyPoricy = new MoneyPolicy();
-	private List<JuiceRack> juiceStock = new ArrayList<>();
+	private JuiceStock juiceStock = new JuiceStock();
 	private int saleAmount = 0;
 
 	public VendingMachine() {
