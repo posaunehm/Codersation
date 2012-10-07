@@ -29,4 +29,13 @@ public class JuiceStock implements Iterable<JuiceRack> {
 			racks.add(new JuiceRack(juice, 5));
 		}
 	}
+
+	public JuiceRack getRack(Juice juice) {
+		for (JuiceRack stock : this) {
+			if (stock.getJuice().equals(juice)) {
+				return stock;
+			}
+		}
+		throw new IllegalStateException("そんなRackはない");
+	}
 }

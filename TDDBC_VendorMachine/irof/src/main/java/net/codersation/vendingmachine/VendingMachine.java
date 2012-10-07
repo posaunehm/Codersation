@@ -46,7 +46,7 @@ public class VendingMachine {
 	}
 
 	public void purchase(Juice juice) {
-		JuiceRack stock = getJuiceStock(juice);
+		JuiceRack stock = juiceStock.getRack(juice);
 		if (stock.canPurchase(getTotalAmount())) {
 			stock.remove();
 
@@ -66,15 +66,6 @@ public class VendingMachine {
 		}
 	}
 
-	private JuiceRack getJuiceStock(Juice juice) {
-		for (JuiceRack stock : juiceStock) {
-			if (stock.getJuice().equals(juice)) {
-				return stock;
-			}
-		}
-		throw new IllegalStateException("そんなStockはない");
-	}
-
 	public int getSaleAmount() {
 		return saleAmount;
 	}
@@ -82,7 +73,7 @@ public class VendingMachine {
 	public List<Juice> getPurchasable() {
 		List<Juice> list = new ArrayList<>();
 		for (Juice juice : Juice.values()) {
-			if (getJuiceStock(juice).canPurchase(getTotalAmount())) {
+			if (juiceStock.getRack(juice).canPurchase(getTotalAmount())) {
 				list.add(juice);
 			}
 		}
