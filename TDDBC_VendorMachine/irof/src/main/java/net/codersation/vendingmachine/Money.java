@@ -1,4 +1,4 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 public enum Money {
 	OneYen(1),

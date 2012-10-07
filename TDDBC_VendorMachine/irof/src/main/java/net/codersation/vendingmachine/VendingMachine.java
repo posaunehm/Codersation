@@ -1,4 +1,4 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 import java.util.ArrayList;
 import java.util.Collections;

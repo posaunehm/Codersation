@@ -1,4 +1,4 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 public class Juice {
 	public static Juice Coke = new Juice("コーラ", 120);
