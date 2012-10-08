@@ -24,11 +24,7 @@ public class MoneyFlow {
 	}
 
 	public int getTotalAmount() {
-		int totalAmount = 0;
-		for (Money c : credit) {
-			totalAmount += c.getValue();
-		}
-		return totalAmount;
+		return credit.getAmount();
 	}
 
 	public void insert(Money money) {
@@ -45,11 +41,7 @@ public class MoneyFlow {
 	}
 
 	public int getChangeAmount() {
-		int totalAmount = 0 ;
-		for (Money c : change) {
-			totalAmount += c.getValue();
-		}
-		return totalAmount;
+		return change.getAmount();
 	}
 
 	public void purchase(int price) {
