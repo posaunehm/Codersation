@@ -11,7 +11,10 @@ dependencies {
 }
 
 eclipse {
+  project.name = 'VendingMachine_irof'
   classpath {
    downloadSources=true
   }
 }
+
+test.exclude '**/*$*'
