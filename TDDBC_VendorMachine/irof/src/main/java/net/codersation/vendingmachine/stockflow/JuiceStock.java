@@ -38,4 +38,8 @@ public class JuiceStock implements Iterable<JuiceRack> {
 		}
 		throw new IllegalStateException("そんなRackはない");
 	}
+
+	public boolean isInStock(Juice juice) {
+		return getRack(juice).isInStock();
+	}
 }

@@ -47,8 +47,7 @@ public class VendingMachine {
 	public List<Juice> getPurchasable() {
 		List<Juice> list = new ArrayList<>();
 		for (Juice juice : Juice.values()) {
-			JuiceRack r = juiceStock.getRack(juice);
-			if (r.isInStock() && juice.isEnough(getTotalAmount())) {
+			if (juiceStock.isInStock(juice) && juice.isEnough(getTotalAmount())) {
 				list.add(juice);
 			}
 		}
