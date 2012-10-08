@@ -12,8 +12,8 @@ public class MoneyFlow {
 	public MoneyPolicy moneyPoricy = new MoneyPolicy();
 
 	private int saleAmount = 0;
-	public List<Money> credit = new ArrayList<>();
-	public List<Money> change = new ArrayList<>();
+	private MoneyStock credit = new MoneyStock();
+	private MoneyStock change = new MoneyStock();
 
 	public int getSaleAmount() {
 		return saleAmount;
