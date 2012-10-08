@@ -1,4 +1,4 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -7,6 +7,9 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import java.util.Arrays;
 import java.util.List;
+
+import net.codersation.vendingmachine.CreditService;
+import net.codersation.vendingmachine.Money;
 
 import org.junit.Test;
 
