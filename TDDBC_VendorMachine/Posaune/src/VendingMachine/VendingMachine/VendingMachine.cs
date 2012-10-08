@@ -27,7 +27,11 @@
 
         public Drink BuyDrink(Drink drink)
         {
-            return drink;
+            if (TotalAmount >= drink.Price)
+            {
+                return drink;
+            }
+            else return null;
         }
     }
 }
