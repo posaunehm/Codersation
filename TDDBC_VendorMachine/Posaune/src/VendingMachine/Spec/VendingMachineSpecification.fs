@@ -89,25 +89,55 @@ let ``After inserting 100 yen, you can't buy a juice over than 100 yen``() =
         |> Verify
 
 
-//w“üŒã‚Ì•¥‚¢–ß‚µ
-//FeatureFƒWƒ…[ƒX‚ğw“ü‚·‚é
-//let cola = new Drink();
-//
-//let vending_machine_inserted_200_yen_and_bought_110yen_drink = 
-//    printMethod ()
-//    let vm = new VendingMachine(new StandardMoneyAcceptor())
-//    vm.AddDrink(cola)
-//    vm.InsertMoney(new Money(MoneyKind.Yen100))
-//    vm.InsertMoney(new Money(MoneyKind.Yen10))
-//    vm
-//
-//
-//[<Scenario>]
-//let ``After inserted 200yen and then bought drink costed 110yen, you can pay back 90 yen``() =
-//    Given vending_machine_inserted_200_yen_and_bought_110yen_drink
-//        |> When PayBack
-//        |> It shoud have (coin_50_yen_for 1)
-//        |> It shoud have (coin_10_yen_for 4)
-//        |> Verify
+//FeatureFw“üŒã‚Ì•¥‚¢–ß‚µ
+let vending_machine_inserted_200_yen_and_bought_110yen_drink = 
+    printMethod ()
+    let vm = new VendingMachine(new StandardMoneyAcceptor())
+    vm.AddDrink(cola)
+    vm.InsertMoney(new Money(MoneyKind.Yen100))
+    vm.InsertMoney(new Money(MoneyKind.Yen100))
+    vm.BuyDrink(cola)
+    vm
+
+let vending_machine_inserted_200_yen_and_bought_150yen_drink = 
+    printMethod ()
+    let vm = new VendingMachine(new StandardMoneyAcceptor())
+    let soda = new Drink("Soda",150)
+    vm.AddDrink(soda)
+    vm.InsertMoney(new Money(MoneyKind.Yen100))
+    vm.InsertMoney(new Money(MoneyKind.Yen100))
+    vm.BuyDrink(soda)
+    vm
+
+let coin_50_yen_for length (moneySeq:seq<Money>) = 
+    printMethod length
+    let count = moneySeq |> Seq.filter (fun x -> x.Kind = MoneyKind.Yen50) |> Seq.length
+    count = length
+
+let coin_10_yen_for length (moneySeq:seq<Money>) = 
+    printMethod length
+    let count = moneySeq |> Seq.filter (fun x -> x.Kind = MoneyKind.Yen10) |> Seq.length
+    count = length
+
+let pay_back (vm:VendingMachine)  = 
+    printMethod ()
+    vm.PayBack().ToArray() |> Seq.ofArray
+
+[<Scenario>]
+let ``After inserted 200yen and then bought drink costed 110yen, you can pay back 90 yen``() =
+    Given vending_machine_inserted_200_yen_and_bought_110yen_drink
+        |> When pay_back
+        |> It should have (coin_50_yen_for 1)
+        |> It should have (coin_10_yen_for 4)
+        |> Verify
+
+
+[<Scenario>]
+let ``After inserted 200yen and then bought drink costed 150yen, you can pay back 50 yen``() =
+    Given vending_machine_inserted_200_yen_and_bought_150yen_drink
+        |> When pay_back
+        |> It should have (length 1)
+        |> It should have (coin_50_yen_for 1)
+        |> Verify
 
 
