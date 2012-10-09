@@ -34,6 +34,7 @@ Ankh.NoLoad
 #MonoDevelop
 *.pidb
 *.userprefs
+test-results/
 
 #Tooling
 _ReSharper*/
@@ -62,3 +63,6 @@ packages/
 
 #Test files
 *.testsettings
+
+#astah*
+*.lock

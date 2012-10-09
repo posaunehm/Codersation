@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+defaultTasks 'clean', 'test'
+
 repositories {
   mavenCentral()
 }
@@ -11,7 +13,10 @@ dependencies {
 }
 
 eclipse {
+  project.name = 'VendingMachine_irof'
   classpath {
    downloadSources=true
   }
 }
+
+test.exclude '**/*$*'
