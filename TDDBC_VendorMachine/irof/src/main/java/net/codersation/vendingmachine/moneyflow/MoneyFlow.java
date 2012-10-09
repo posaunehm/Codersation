@@ -54,14 +54,14 @@ public class MoneyFlow {
 	public void purchase(int price) {
 		addSale(price);
 		
-		List<Money> useMoneyList = MoneyStock.getUseMoneyList(credit, price);
+		List<Money> useMoneyList = credit.getUseMoneyList(price);
 		int tempAmount = 0;
 		for (Money money : useMoneyList) {
 			credit.remove(money);
 			tempAmount += money.getValue();
 		}
 		if (tempAmount != price) {
-			List<Money> l = MoneyStock.getUseMoneyList(pool, tempAmount - price);
+			List<Money> l = pool.getUseMoneyList(tempAmount - price);
 			credit.addAll(l);
 		}
 	}

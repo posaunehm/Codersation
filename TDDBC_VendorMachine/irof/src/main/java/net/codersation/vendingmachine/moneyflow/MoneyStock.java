@@ -43,13 +43,4 @@ public class MoneyStock extends ArrayList<Money> {
 		return result;
 
 	}
-
-	/**
-	 * @deprecated 一時的に残す
-	 */
-	public static List<Money> getUseMoneyList(List<Money> list, int i) {
-		MoneyStock stock = new MoneyStock();
-		stock.addAll(list);
-		return stock.getUseMoneyList(i);
-	}
 }
