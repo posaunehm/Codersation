@@ -4,6 +4,8 @@ open NaturalSpec
 
 open VendingMachine
 
+
+
 let initially vm =
     printMethod ()
     vm
@@ -52,13 +54,17 @@ let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
 
 //Feature：ジュースを購入する
 let cola = new Drink("Cola", 110);
+let soda = new Drink("Soda",150)
 
-let vending_machine_inserted_110_yen_and_have_one_drink = 
-    printMethod ()
-    let vm = new VendingMachine(new StandardMoneyAcceptor())
-    vm.AddDrink(cola)
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm.InsertMoney(new Money(MoneyKind.Yen10))
+let inserted (moneyArr:List<Money>) (vm:VendingMachine) = 
+    printMethod moneyArr
+    moneyArr |> List.iter (fun x -> vm.InsertMoney(x))
+    vm
+
+
+let pushed (drinkArr:List<Drink>) (vm:VendingMachine) = 
+    printMethod drinkArr
+    drinkArr |> List.iter (fun x -> vm.AddDrink(x))
     vm
     
 let buy_drink drink (vm:VendingMachine) = 
@@ -68,46 +74,34 @@ let buy_drink drink (vm:VendingMachine) =
 
 [<Scenario>]
 let ``After inserting 110 yen, you can buy a juice less than 110 yen``() =
-    Given vending_machine_inserted_110_yen_and_have_one_drink
+       Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen10)]
+            |> pushed [cola]
         |> When buy_drink cola
         |> It should equal cola 
         |> Verify
 
-//ジュースを購入できない場合
-let vending_machine_inserted_100_yen_and_have_one_drink = 
-    printMethod ()
-    let vm = new VendingMachine(new StandardMoneyAcceptor())
-    vm.AddDrink(cola)
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm
+//お金が足りずにジュースを購入できない場合
 
 [<Scenario>]
 let ``After inserting 100 yen, you can't buy a juice over than 100 yen``() =
-    Given vending_machine_inserted_100_yen_and_have_one_drink
+    Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> inserted [new Money(MoneyKind.Yen100);]
+            |> pushed [cola]
         |> When buy_drink cola
         |> It should equal null
         |> Verify
 
 
-//Feature：購入後の払い戻し
-let vending_machine_inserted_200_yen_and_bought_110yen_drink = 
-    printMethod ()
-    let vm = new VendingMachine(new StandardMoneyAcceptor())
-    vm.AddDrink(cola)
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm.BuyDrink(cola)
-    vm
 
-let vending_machine_inserted_200_yen_and_bought_150yen_drink = 
-    printMethod ()
-    let vm = new VendingMachine(new StandardMoneyAcceptor())
-    let soda = new Drink("Soda",150)
-    vm.AddDrink(soda)
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm.InsertMoney(new Money(MoneyKind.Yen100))
-    vm.BuyDrink(soda)
+//Feature：購入後の払い戻し
+
+
+
+let bought (drinkArr:List<Drink>) (vm:VendingMachine) = 
+    drinkArr |> List.iter (fun x -> ignore (vm.BuyDrink(x)))
     vm
+     
 
 let coin_50_yen_for length (moneySeq:seq<Money>) = 
     printMethod length
@@ -125,7 +119,10 @@ let pay_back (vm:VendingMachine)  =
 
 [<Scenario>]
 let ``After inserted 200yen and then bought drink costed 110yen, you can pay back 90 yen``() =
-    Given vending_machine_inserted_200_yen_and_bought_110yen_drink
+    Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
+            |> pushed [cola]
+            |> bought [cola]
         |> When pay_back
         |> It should have (coin_50_yen_for 1)
         |> It should have (coin_10_yen_for 4)
@@ -134,10 +131,12 @@ let ``After inserted 200yen and then bought drink costed 110yen, you can pay bac
 
 [<Scenario>]
 let ``After inserted 200yen and then bought drink costed 150yen, you can pay back 50 yen``() =
-    Given vending_machine_inserted_200_yen_and_bought_150yen_drink
+    Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
+            |> pushed [soda]
+            |> bought [soda]
         |> When pay_back
         |> It should have (length 1)
         |> It should have (coin_50_yen_for 1)
         |> Verify
-
 
