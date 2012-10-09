@@ -1,7 +1,5 @@
 package net.codersation.vendingmachine.moneyflow;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.codersation.vendingmachine.CreditService;
@@ -14,6 +12,16 @@ public class MoneyFlow {
 	private int saleAmount = 0;
 	private MoneyStock credit = new MoneyStock();
 	private MoneyStock change = new MoneyStock();
+	private MoneyStock pool = new MoneyStock();
+
+	public MoneyFlow() {
+		Money[] moneys = {Money.TenYen, Money.FiftyYen, Money.HundredYen, Money.FiveHundredYen, Money.ThousandYen};
+		for (Money money : moneys) {
+			for (int i = 0; i < 10; i++) {
+				pool.add(money);
+			}
+		}
+	}
 
 	public int getSaleAmount() {
 		return saleAmount;
@@ -54,8 +62,7 @@ public class MoneyFlow {
 			tempAmount += money.getValue();
 		}
 		if (tempAmount != price) {
-			List<Money> list = new ArrayList<>(Collections.nCopies(100, Money.TenYen));
-			List<Money> l = CreditService.getUseMoneyList(list, tempAmount - price);
+			List<Money> l = CreditService.getUseMoneyList(pool, tempAmount - price);
 			credit.addAll(l);
 		}
 	}
