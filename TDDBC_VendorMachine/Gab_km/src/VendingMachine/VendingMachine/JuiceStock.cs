@@ -7,35 +7,40 @@ namespace VendingMachine
 {
     public class JuiceStock
     {
-        public Juice Juice { get; private set; }
-        
-        public string Name
+        private List<JuiceGroup> juices;
+
+        public JuiceStock()
         {
-            get
-            {
-                return this.Juice.Name;
-            }
+            this.juices = new List<JuiceGroup>();
         }
 
-        public int Price
+        public void AddJuices(string itemName, int price, int count)
         {
-            get
-            {
-                return this.Juice.Price;
-            }
+            this.juices.Add(new JuiceGroup(new Juice(itemName), price, count));
         }
 
-        public int Count { get; private set; }
-
-        public JuiceStock(Juice juice, int count)
+        public bool CanBuy(string itemName, int price)
         {
-            this.Juice = juice;
-            this.Count = count;
+            var stock = this.juices.Find(s => s.Name == itemName);
+            return stock.Price <= price && stock.Count > 0;
         }
 
-        internal void ReduceCount()
+        internal Option<JuiceGroup> GetJuiceGroup(string itemName)
         {
-            this.Count--;
+            if (this.juices.Exists(s => s.Name == itemName))
+                return Option<JuiceGroup>.Some(this.juices.Find(s => s.Name == itemName));
+            else
+                return Option<JuiceGroup>.None();
+        }
+
+        internal List<JuiceGroup> GetJuiceGroups()
+        {
+            return this.juices;
+        }
+
+        internal void ReduceJuices(string itemName)
+        {
+            this.juices.Find(j => j.Name == itemName).ReduceCount();
         }
     }
 }

@@ -7,52 +7,135 @@ namespace VendingMachine
 {
     public class ChangeStock
     {
-        private Stack<Money> OneThousandStock;
-        private Stack<Money> FiveHundredStock;
-        private Stack<Money> OneHundredStock;
-        private Stack<Money> FiftyStock;
-        private Stack<Money> TenStock;
+        private ChangeGroup OneThousandStock;
+        private ChangeGroup FiveHundredStock;
+        private ChangeGroup OneHundredStock;
+        private ChangeGroup FiftyStock;
+        private ChangeGroup TenStock;
+
+        public List<Money> Changes
+        {
+            get
+            {
+                return Enumerable.Range(1, OneThousandStock.Count).Select(_ => Money.OneThousand)
+                    .Concat(Enumerable.Range(1, FiveHundredStock.Count).Select(_ => Money.FiveHundred)
+                    .Concat(Enumerable.Range(1, OneHundredStock.Count).Select(_ => Money.OneHundred)
+                    .Concat(Enumerable.Range(1, FiftyStock.Count).Select(_ => Money.Fifty)
+                    .Concat(Enumerable.Range(1, TenStock.Count).Select(_ => Money.Ten)
+                    )))).ToList<Money>();
+            }
+        }
 
         public ChangeStock(int oneThousands, int fiveHundreds, int oneHundreds, int fifties, int tens)
         {
-            this.OneThousandStock = new Stack<Money>(Enumerable.Range(1, oneThousands).Select(_ => Money.OneThousand));
-            this.FiveHundredStock = new Stack<Money>(Enumerable.Range(1, fiveHundreds).Select(_ => Money.FiveHundred));
-            this.OneHundredStock = new Stack<Money>(Enumerable.Range(1, oneHundreds).Select(_ => Money.OneHundred));
-            this.FiftyStock = new Stack<Money>(Enumerable.Range(1, fifties).Select(_ => Money.Fifty));
-            this.TenStock = new Stack<Money>(Enumerable.Range(1, tens).Select(_ => Money.Ten));
+            this.OneThousandStock = new ChangeGroup(Money.OneThousand, oneThousands);
+            this.FiveHundredStock = new ChangeGroup(Money.FiveHundred, fiveHundreds);
+            this.OneHundredStock = new ChangeGroup(Money.OneHundred, oneHundreds);
+            this.FiftyStock = new ChangeGroup(Money.Fifty, fifties);
+            this.TenStock = new ChangeGroup(Money.Ten, tens);
         }
 
-        private Option<Money> Draw(Stack<Money> stock)
+        public Option<List<Money>> GetChange(int price)
         {
-            if (stock.Count > 0)
-                return Option<Money>.Some(stock.Pop());
+            var change = new List<Money>();
+            var isOneThousandEmpty = false;
+            var isFiveHundredEmpty = false;
+            var isOneHundredEmpty = false;
+            var isFiftyEmpty = false;
+            var isTenEmpty = false;
+            var isChangeShort = false;
+            while (price > 0)
+            {
+                if (!isOneThousandEmpty && price >= Money.OneThousand.Value)
+                {
+                    isOneThousandEmpty = ReduceOneThousandAndAddChange(change, ref price);
+                }
+                else if (!isFiveHundredEmpty && price >= Money.FiveHundred.Value)
+                {
+                    isFiveHundredEmpty = ReduceFiveHundredAndAddChange(change, ref price);
+                }
+                else if (!isOneHundredEmpty && price >= Money.OneHundred.Value)
+                {
+                    isOneHundredEmpty = ReduceOneHundredAndAddChange(change, ref price);
+                }
+                else if (!isFiftyEmpty&& price >= Money.Fifty.Value)
+                {
+                    isFiftyEmpty = ReduceFiftyAndAddChange(change, ref price);
+                }
+                else if (!isTenEmpty&& price >= Money.Ten.Value)
+                {
+                    isTenEmpty = ReduceTenAndAddChange(change, ref price);
+                }
+                else
+                {
+                    isChangeShort = true;
+                    break;
+                }
+            }
+
+            if (!isChangeShort)
+                return Option<List<Money>>.Some(change);
             else
-                return Option<Money>.None();
+                return Option<List<Money>>.None();
         }
 
-        internal Option<Money> DrawOneThousand()
+        private bool ReduceMoneyAndAddChange(ChangeGroup changes, List<Money> change, ref int total)
         {
-            return Draw(this.OneThousandStock);
+            var maybeMoney = changes.DrawMoney();
+            if (maybeMoney.IsSome)
+            {
+                var money = maybeMoney.Value;
+                change.Add(money);
+                total -= money.Value;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        internal Option<Money> DrawFiveHundred()
+        private bool ReduceOneThousandAndAddChange(List<Money> change, ref int total)
         {
-            return Draw(this.FiveHundredStock);
+            return ReduceMoneyAndAddChange(this.OneThousandStock, change, ref total);
         }
 
-        internal Option<Money> DrawOneHundred()
+        private bool ReduceFiveHundredAndAddChange(List<Money> change, ref int total)
         {
-            return Draw(this.OneHundredStock);
+            return ReduceMoneyAndAddChange(this.FiveHundredStock, change, ref total);
         }
 
-        internal Option<Money> DrawFifty()
+        public bool ReduceOneHundredAndAddChange(List<Money> change, ref int total)
         {
-            return Draw(this.FiftyStock);
+            return ReduceMoneyAndAddChange(this.OneHundredStock, change, ref total);
         }
 
-        internal Option<Money> DrawTen()
+        private bool ReduceFiftyAndAddChange(List<Money> change, ref int total)
         {
-            return Draw(this.TenStock);
+            return ReduceMoneyAndAddChange(this.FiftyStock, change, ref total);
+        }
+
+        private bool ReduceTenAndAddChange(List<Money> change, ref int total)
+        {
+            return ReduceMoneyAndAddChange(this.TenStock, change, ref total);
+        }
+
+        public void CommitAll()
+        {
+            OneThousandStock.Commit();
+            FiveHundredStock.Commit();
+            OneHundredStock.Commit();
+            FiftyStock.Commit();
+            TenStock.Commit();
+        }
+
+        public void RollbackAll()
+        {
+            OneThousandStock.Rollback();
+            FiveHundredStock.Rollback();
+            OneHundredStock.Rollback();
+            FiftyStock.Rollback();
+            TenStock.Rollback();
         }
     }
 }

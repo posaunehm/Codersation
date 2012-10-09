@@ -1,4 +1,4 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 public enum Money {
 	OneYen(1),
@@ -20,20 +20,5 @@ public enum Money {
 
 	public int getValue() {
 		return value;
-	}
-}
-
-class MoneyPolicy {
-	boolean isAllowed(Money money) {
-		switch (money) {
-		case TenYen:
-		case FiftyYen:
-		case HundredYen:
-		case FiveHundredYen:
-		case ThousandYen:
-			return true;
-		default:
-			return false;
-		}
 	}
 }
