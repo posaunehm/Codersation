@@ -1,7 +1,11 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import net.codersation.vendingmachine.Juice;
+import net.codersation.vendingmachine.Money;
+import net.codersation.vendingmachine.VendingMachine;
 
 import org.junit.Before;
 import org.junit.Test;

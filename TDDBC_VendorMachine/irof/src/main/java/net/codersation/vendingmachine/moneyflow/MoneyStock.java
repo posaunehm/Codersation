@@ -1,17 +1,27 @@
-package codersation.vendingmachine;
+package net.codersation.vendingmachine.moneyflow;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CreditService {
+import net.codersation.vendingmachine.Money;
 
-	public static List<Money> getUseMoneyList(List<Money> list, int i) {
+public class MoneyStock extends ArrayList<Money> {
+
+	public int getAmount() {
+		int amount = 0;
+		for (Money c : this) {
+			amount += c.getValue();
+		}
+		return amount;
+	}
+
+	public List<Money> getUseMoneyList(int i) {
 
 		List<Money> result = new ArrayList<>();
 
-		Collections.sort(list);
-		for (Money money : list) {
+		Collections.sort(this);
+		for (Money money : this) {
 			if (i <= 0) {
 				break;
 			}
@@ -31,5 +41,6 @@ public class CreditService {
 			}
 		}
 		return result;
+
 	}
 }
