@@ -95,12 +95,22 @@ let ``After inserting 100 yen, you can't buy a juice over than 100 yen``() =
         |> It should equal null
         |> Verify
 
+//在庫が足りずにジュースを購入できない場合
+[<Scenario>]
+let ``If there is no stock for supecified drink, you can't buy it``() =
+    Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> inserted [new Money(MoneyKind.Yen100);]
+            |> pushed [cola]
+        |> When buy_drink_named "Soda"
+        |> It should equal null
+        |> Verify
+
 
 //Feature：購入後の払い戻し
 let bought (drinkArr:List<string>) (vm:VendingMachine) = 
     drinkArr |> List.iter (fun x -> ignore (vm.BuyDrink(x)))
     vm
-     
+
 
 let coin_50_yen_for length (moneySeq:seq<Money>) = 
     printMethod length
