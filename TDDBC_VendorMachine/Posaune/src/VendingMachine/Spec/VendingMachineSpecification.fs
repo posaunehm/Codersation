@@ -67,9 +67,13 @@ let pushed (drinkArr:List<Drink>) (vm:VendingMachine) =
     drinkArr |> List.iter (fun x -> vm.AddDrink(x))
     vm
     
-let buy_drink drink (vm:VendingMachine) = 
-    printMethod drink
-    vm.BuyDrink(drink)
+let buy_drink_named (drinkName:string) (vm:VendingMachine) =
+    printMethod drinkName
+    vm.BuyDrink(drinkName)
+
+let drink_named name (drink:Drink) =
+    printMethod name
+    drink.Name = name
 
 
 [<Scenario>]
@@ -77,28 +81,23 @@ let ``After inserting 110 yen, you can buy a juice less than 110 yen``() =
        Given (new VendingMachine(new StandardMoneyAcceptor())) 
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen10)]
             |> pushed [cola]
-        |> When buy_drink cola
-        |> It should equal cola 
+        |> When buy_drink_named "Cola"
+        |> It should have (drink_named "Cola")
         |> Verify
 
 //お金が足りずにジュースを購入できない場合
-
 [<Scenario>]
 let ``After inserting 100 yen, you can't buy a juice over than 100 yen``() =
     Given (new VendingMachine(new StandardMoneyAcceptor())) 
             |> inserted [new Money(MoneyKind.Yen100);]
             |> pushed [cola]
-        |> When buy_drink cola
+        |> When buy_drink_named "Cola"
         |> It should equal null
         |> Verify
 
 
-
 //Feature：購入後の払い戻し
-
-
-
-let bought (drinkArr:List<Drink>) (vm:VendingMachine) = 
+let bought (drinkArr:List<string>) (vm:VendingMachine) = 
     drinkArr |> List.iter (fun x -> ignore (vm.BuyDrink(x)))
     vm
      
@@ -122,7 +121,7 @@ let ``After inserted 200yen and then bought drink costed 110yen, you can pay bac
     Given (new VendingMachine(new StandardMoneyAcceptor())) 
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
             |> pushed [cola]
-            |> bought [cola]
+            |> bought ["Cola"]
         |> When pay_back
         |> It should have (coin_50_yen_for 1)
         |> It should have (coin_10_yen_for 4)
@@ -134,7 +133,7 @@ let ``After inserted 200yen and then bought drink costed 150yen, you can pay bac
     Given (new VendingMachine(new StandardMoneyAcceptor())) 
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
             |> pushed [soda]
-            |> bought [soda]
+            |> bought ["Soda"]
         |> When pay_back
         |> It should have (length 1)
         |> It should have (coin_50_yen_for 1)

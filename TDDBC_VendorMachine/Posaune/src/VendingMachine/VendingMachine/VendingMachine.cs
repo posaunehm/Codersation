@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace VendingMachine
 {
     public class VendingMachine
     {
         private readonly IMoneyAcceptor _moneyAcceptor;
+        private readonly List<Drink> _drinkStock = new List<Drink>();
 
         public VendingMachine(IMoneyAcceptor acceptor)
         {
@@ -26,7 +28,7 @@ namespace VendingMachine
 
         public void AddDrink(Drink drink)
         {
-            
+            _drinkStock.Add(drink);
         }
 
         public Drink BuyDrink(Drink drink)
@@ -37,6 +39,13 @@ namespace VendingMachine
                 return drink;
             }
             else return null;
+        }
+
+        public Drink BuyDrink(string drinkName)
+        {
+            var boughtDrink = _drinkStock.FirstOrDefault(drink => drink.Name == drinkName && drink.Price <= TotalAmount);
+            TotalAmount -= boughtDrink == null ? 0 : boughtDrink.Price;
+            return boughtDrink;
         }
 
         public List<Money> PayBack()
