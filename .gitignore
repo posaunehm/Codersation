@@ -1,18 +1,6 @@
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/nbproject/private/
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/build/
-<<<<<<< HEAD
 
-.DS_Store
-
-*.bak
-bin
-bin/**/*
-obj
-obj/**/*
-test-results
-test-results/**/*
-*.userprefs
-=======
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -33,13 +21,16 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-[Bb]in
+*.userprefs
+[Bb]in*
 [Dd]ebug*/
 *.lib
 *.sbr
-obj/
+obj*
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+#ignore thumbnails created by Mac OS X
 .DS_Store
->>>>>>> b496c3122483710b804158f08c395da9545bb840
+
+*test-results/

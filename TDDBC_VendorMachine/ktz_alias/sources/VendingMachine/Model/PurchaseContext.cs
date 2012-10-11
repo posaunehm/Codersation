@@ -1,6 +1,6 @@
 using System;
 
-namespace VendingMachine {
+namespace VendingMachine.Model {
     public class PurchaseContext {
         public PurchaseContext() {
         }
