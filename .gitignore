@@ -1,5 +1,6 @@
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/nbproject/private/
 /TDDBC_VendorMachine/ShinsukeAbe/products/VendingMachine/build/
+
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -20,12 +21,16 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-[Bb]in
+*.userprefs
+[Bb]in*
 [Dd]ebug*/
 *.lib
 *.sbr
-obj/
+obj*
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+#ignore thumbnails created by Mac OS X
 .DS_Store
+
+*test-results/
