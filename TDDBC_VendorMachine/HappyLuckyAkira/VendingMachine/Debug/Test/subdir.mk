@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Test/Amount_test.cpp \
+../Test/JuiceRack_test.cpp \
 ../Test/JuiceStock_test.cpp \
 ../Test/Juice_test.cpp \
 ../Test/MoneyStock_test.cpp \
@@ -14,6 +15,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./Test/Amount_test.o \
+./Test/JuiceRack_test.o \
 ./Test/JuiceStock_test.o \
 ./Test/Juice_test.o \
 ./Test/MoneyStock_test.o \
@@ -23,6 +25,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./Test/Amount_test.d \
+./Test/JuiceRack_test.d \
 ./Test/JuiceStock_test.d \
 ./Test/Juice_test.d \
 ./Test/MoneyStock_test.d \

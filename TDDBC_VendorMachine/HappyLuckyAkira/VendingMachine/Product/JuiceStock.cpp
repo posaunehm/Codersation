@@ -26,4 +26,5 @@ JuiceStock::~JuiceStock()
 {
   delete pJuice_;
 }
+//Operator+とかを考えたが、例外を返すとか、今ひとつ使いにくそうなので、上のJuiceStockで実装する方針とする。
 

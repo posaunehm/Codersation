@@ -26,7 +26,8 @@ public:
         return price_;
     }
     static Juice Coke()     {return Juice("Coke",120);}
-
+    bool operator==(const Juice& rjuice) ;
+    bool operator!=(const Juice& rjuice) ;
 private:
     Juice();
     std::string name_;
