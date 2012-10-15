@@ -3,14 +3,14 @@ using System;
 namespace VendingMachine.Model {
     public class ItemRackRole {
         public bool UpdateItemSelectionState(ItemRack inRack, CashFlow inCredits, ChangePool inPool) {
-            var oldState = inRack.SelectionState;
+            var oldState = inRack.State;
             if (oldState == ItemRackState.Soldout) return false;
 
             if (inRack.Item.Price <= (inCredits.RecevedMoney.TotalAmount() - inCredits.UsedAmount)) {
-                inRack.SelectionState = ItemRackState.CanPurchase;
+                inRack.State = ItemRackState.CanPurchase;
             }
 
-            return oldState != inRack.SelectionState;
+            return oldState != inRack.State;
         }
 
         public ItemRack FindRackAt(ItemRackPosition inRacks, int inPosition) {
@@ -21,7 +21,7 @@ namespace VendingMachine.Model {
         }
 
         public bool CanItemPurchase(ItemRack inRack) {
-            return inRack.SelectionState == ItemRackState.CanPurchase;
+            return inRack.State == ItemRackState.CanPurchase;
         }
     }
 }

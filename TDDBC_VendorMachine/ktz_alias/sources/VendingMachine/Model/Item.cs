@@ -20,7 +20,7 @@ namespace VendingMachine.Model {
     public class ItemRack {
         public Item Item {get; internal set;}
         public int Count {get; internal set;}
-        public ItemRackState SelectionState {get; internal set;}
+        public ItemRackState State {get; internal set;}
     }
 
     public enum ItemRackState {

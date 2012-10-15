@@ -79,7 +79,7 @@ namespace VendingMachine.Test {
             foreach (var result in racks.Items.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
-                Assert.That(result.Item1.SelectionState, Is.EqualTo(result.Item2));
+                Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
                 Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            }
         }
 
@@ -103,7 +103,7 @@ namespace VendingMachine.Test {
             foreach (var result in racks.Items.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
-                Assert.That(result.Item1.SelectionState, Is.EqualTo(result.Item2));
+                Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
                 Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            
             }
         }
@@ -143,14 +143,14 @@ namespace VendingMachine.Test {
                     0, 
                     new ItemRack {
                         Item = new Item { Name = "Item0", Price = 120,  Shape = ItemShapeType.Can350 },    
-                        SelectionState = inState,
+                        State = inState,
                     }
                 ),
                 Tuple.Create(
                     1, 
                     new ItemRack {
                         Item = new Item { Name = "Item1", Price = 250,  Shape = ItemShapeType.Can500 },
-                        SelectionState = inState,
+                        State = inState,
                     }
                 )
             );
