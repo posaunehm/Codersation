@@ -27,7 +27,7 @@ namespace VendingMachine
                 }
             }
             if (amount != 0)
-            { throw new ApplicationException(string.Format("VendingMachine couldn't prepare return money. Reset:{0}", amount)); }
+            { throw new ApplicationException(string.Format("VendingMachine couldn't prepare return money. Rest:{0}", amount)); }
             _insertedAmount = 0;
 
             return returnMoney;
