@@ -26,16 +26,17 @@ public class MoneyStock {
 		stock.addAll(l);
 	}
 
-	void addAll(MoneyStock s) {
-		stock.addAll(s.stock);
+	/**
+	 * 引数のMoneyStockにこのオブジェクトに全てのStockを移す。移されたほうは空になる。
+	 * @param s
+	 */
+	void moveTo(MoneyStock s) {
+		s.stock.addAll(stock);
+		stock.clear();
 	}
 
 	void remove(Money e) {
 		stock.remove(e);
-	}
-
-	void clear() {
-		stock.clear();
 	}
 
 	public List<Money> getUseMoneyList(int i) {

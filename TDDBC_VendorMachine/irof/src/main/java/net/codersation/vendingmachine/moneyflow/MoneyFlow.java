@@ -43,8 +43,7 @@ public class MoneyFlow {
 	}
 
 	public void payBack() {
-		change.addAll(credit);
-		credit.clear();
+		credit.moveTo(change);
 	}
 
 	public int getChangeAmount() {
