@@ -138,7 +138,7 @@ let coin_10_yen_for length (moneySeq:seq<Money>) =
 
 let pay_back (vm:VendingMachine)  = 
     printMethod ()
-    vm.PayBack().ToArray() |> Seq.ofArray
+    vm.PayBack()
 
 [<Scenario>]
 let ``After inserted 200yen and then bought drink costed 110yen, you can pay back 90 yen``() =

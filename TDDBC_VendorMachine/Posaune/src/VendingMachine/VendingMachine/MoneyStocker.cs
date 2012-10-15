@@ -8,6 +8,21 @@ namespace VendingMachine
     {
         private readonly List<Money> _moneyPool = new List<Money>();
         private int _insertedAmount = 0;
+        private IMoneyAcceptor _acceptor;
+
+        public MoneyStocker():this(new StandardMoneyAcceptor())
+        {
+        }
+
+        public MoneyStocker(IMoneyAcceptor acceptor)
+        {
+            _acceptor = acceptor;
+        }
+
+        public int InsertedMoneyAmount
+        {
+            get { return _insertedAmount; }
+        }
 
 
         public IEnumerable<Money> PayBack()
@@ -28,8 +43,11 @@ namespace VendingMachine
 
         public void Insert(Money money)
         {
-            _moneyPool.Add(money);
-            _insertedAmount += money.Amount;
+            if (_acceptor.IsValid(money))
+            {
+                _moneyPool.Add(money);
+                _insertedAmount += money.Amount;
+            }
         }
 
         public void Stock(Money money)
@@ -44,7 +62,12 @@ namespace VendingMachine
 
         public bool CanRetuenJustMoneyIfUsed(int amount)
         {
-            return EnumurateMoneyUpTo(_insertedAmount - amount).Last().Remainder == 0;
+            if (amount == _insertedAmount)
+            {
+                return true;
+            }
+            var lastElement = EnumurateMoneyUpTo(_insertedAmount - amount).LastOrDefault();
+            return lastElement != null && lastElement.Remainder == 0;
         }
 
         IEnumerable<MoneyWithRemainder> EnumurateMoneyUpTo(int amount)
