@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
+import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
 import net.codersation.vendingmachine.stockflow.JuiceRack;
 import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 public class VendingMachine {
 
-	public MoneyFlow moneyFlow = MoneyFlow.create();
+	public MoneyFlow moneyFlow = MoneyFlowFactory.create();
 	private JuiceStock juiceStock = new JuiceStock();
 
 	public int getCreditAmount() {
