@@ -79,7 +79,7 @@ namespace VendingMachine.Test {
             var credit = new CashFlow();
             
             var coinMeckRole = new CoinMeckRole();
-            var purchaseRole = new PurchaseRole();
+            var purchaseRole = new  ItemRackRole();
             
             foreach (var c in inParameter.Credits) {
                 coinMeckRole.Receive(credit, c);
@@ -112,7 +112,7 @@ namespace VendingMachine.Test {
             var credit = new CashFlow();
             
             var coinMeckRole = new CoinMeckRole();
-            var purchaseRole = new PurchaseRole();
+            var purchaseRole = new  ItemRackRole();
             
             foreach (var c in inParameter.Credits) {
                 coinMeckRole.Receive(credit, c);

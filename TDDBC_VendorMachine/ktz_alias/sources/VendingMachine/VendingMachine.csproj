@@ -32,8 +32,8 @@
     <Compile Include="Model\MoneyExtensions.cs" />
     <Compile Include="Model\PurchaseContext.cs" />
     <Compile Include="Model\Item.cs" />
-    <Compile Include="Model\PurchaseRole.cs" />
     <Compile Include="Model\Money.cs" />
+    <Compile Include="Model\ItemRackRole.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
