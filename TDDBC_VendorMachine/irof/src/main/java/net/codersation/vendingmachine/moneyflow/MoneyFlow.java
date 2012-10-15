@@ -26,7 +26,7 @@ public class MoneyFlow {
 		return saleAmount;
 	}
 
-	public void addSale(int price) {
+	private void addSale(int price) {
 		saleAmount += price;
 	}
 
