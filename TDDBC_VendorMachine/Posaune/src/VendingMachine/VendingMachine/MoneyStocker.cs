@@ -47,12 +47,23 @@ namespace VendingMachine
         public void TakeMoney(int usedAmound)
         {
             _insertedAmount -= usedAmound;
-
         }
 
         public bool CanUse(int amount)
         {
-            return false;
+            var amountTemp = _insertedAmount - amount;
+            foreach (var money in _moneyPool.OrderByDescending(m => m.Amount))
+            {
+                if ((amountTemp - money.Amount) >= 0)
+                {
+                    amountTemp -= money.Amount;
+                }
+                if (amountTemp == 0)
+                {
+                    break;
+                }
+            }
+            return amountTemp == 0;
         }
     }
 }
