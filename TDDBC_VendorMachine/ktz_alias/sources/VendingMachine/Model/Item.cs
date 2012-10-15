@@ -20,12 +20,12 @@ namespace VendingMachine.Model {
     public class ItemRack {
         public Item Item {get; internal set;}
         public int Count {get; internal set;}
-        public SelectionState SelectionState {get; internal set;}
+        public ItemRackState SelectionState {get; internal set;}
     }
 
-    public enum SelectionState {
-        Unselected,
-        Selected,
+    public enum ItemRackState {
+        CanNotPurchase,
+        CanPurchase,
         Soldout,
     }
 

@@ -4,10 +4,10 @@ namespace VendingMachine.Model {
     public class ItemRackRole {
         public bool UpdateItemSelectionState(ItemRack inRack, CashFlow inCredits, ChangePool inPool) {
             var oldState = inRack.SelectionState;
-            if (oldState == SelectionState.Soldout) return false;
+            if (oldState == ItemRackState.Soldout) return false;
 
             if (inRack.Item.Price <= (inCredits.RecevedMoney.TotalAmount() - inCredits.UsedAmount)) {
-                inRack.SelectionState = SelectionState.Selected;
+                inRack.SelectionState = ItemRackState.CanPurchase;
             }
 
             return oldState != inRack.SelectionState;
@@ -18,6 +18,13 @@ namespace VendingMachine.Model {
             inRacks.Positions.TryGetValue(inPosition, out result);
 
             return result;
+        }
+
+        public bool CanItemPurchase(ItemRackPosition inRacks, int inPosition) {
+            var rack = this.FindRackAt(inRacks, inPosition);
+            if (rack == null) return false;
+
+            return rack.SelectionState == ItemRackState.CanPurchase;
         }
     }
 }
