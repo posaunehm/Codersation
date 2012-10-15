@@ -126,6 +126,16 @@ namespace VendingMachine.Test {
             Assert.That(rack, Is.Null);
         }
 
+        [Test]
+        public void _商品ラック配置のラックコレクションは位置順に並んでいる() {
+            var racks = this.InitItemRack(SelectionState.Unselected);
+
+            var keys = racks.Positions.Keys.OrderBy(k => k);
+            foreach (var pair in keys.Zip(racks.Items, (n, rack) => Tuple.Create(n, rack))) {
+                Assert.That(racks.Positions[pair.Item1], Is.EqualTo(pair.Item2));
+            }
+        }
+
         private ItemRackPosition InitItemRack(SelectionState inState) {
             return new ItemRackPosition(
                 Tuple.Create(
