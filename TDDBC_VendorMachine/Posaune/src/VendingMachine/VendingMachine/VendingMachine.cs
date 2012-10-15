@@ -5,6 +5,7 @@ namespace VendingMachine
 {
     public class VendingMachine
     {
+        //DrinkStockも作るべきだけれど、この範囲ではLinqの各メソッドで十分なので見送り
         private readonly List<Drink> _drinkStock = new List<Drink>();
         private readonly MoneyStocker _moneyStocker;
 
@@ -38,9 +39,10 @@ namespace VendingMachine
         {
             var boughtDrink = _drinkStock.FirstOrDefault(
                 drink =>
-                drink.Name == drinkName
-                && drink.Price <= TotalAmount
-                && _moneyStocker.CanRetuenJustMoneyIfUsed(drink.Price));
+                    drink.Name == drinkName
+                    && drink.Price <= TotalAmount
+                    && _moneyStocker.CanRetuenJustMoneyIfUsed(drink.Price)
+                );
             _moneyStocker.TakeMoney(boughtDrink == null ? 0 : boughtDrink.Price);
             return boughtDrink;
         }

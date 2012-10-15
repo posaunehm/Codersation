@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +6,9 @@ namespace VendingMachine
 {
     public class MoneyStocker
     {
+        //© @irof
         private readonly List<Money> _moneyPool = new List<Money>();
+        
         private int _insertedAmount = 0;
         private readonly IMoneyAcceptor _acceptor;
 
@@ -27,6 +29,7 @@ namespace VendingMachine
 
         public IEnumerable<Money> PayBack()
         {
+            //いったんキャプチャして
             var enumuratedMoneyList = EnumurateMoneyUpTo(_insertedAmount).ToList();
 
             var lastElement = enumuratedMoneyList.LastOrDefault();
@@ -37,7 +40,7 @@ namespace VendingMachine
                     "VendingMachine couldn't prepare return money. Remainder:{0}",
                     lastElement.Remainder));
             }
-
+            //もっかい列挙ってどうなんだろ・・・（結構やるけれど）
             return enumuratedMoneyList.Select(_ => _.Money);
         }
 
@@ -60,6 +63,7 @@ namespace VendingMachine
             _insertedAmount -= usedAmount;
         }
 
+        //メソッド名冗長だけれど思いつかない・・・
         public bool CanRetuenJustMoneyIfUsed(int amount)
         {
             if (amount == _insertedAmount)
@@ -70,6 +74,9 @@ namespace VendingMachine
             return lastElement != null && lastElement.Remainder == 0;
         }
 
+
+        //列挙の成功・不成功をどう実装すべきか非常に迷ってこれ。
+        //番兵を置く方式も考えたけれど・・・
         IEnumerable<MoneyWithRemainder> EnumurateMoneyUpTo(int amount)
         {
             foreach (var money in _moneyPool.OrderByDescending(m => m.Amount))
@@ -86,6 +93,8 @@ namespace VendingMachine
             }
         }
 
+        //全部Linqに押し込んで匿名クラス使っていもいいのかもだけれど、
+        //オブジェクト指向チックに新規クラス作成で。
         private class MoneyWithRemainder
         {
             public MoneyWithRemainder(Money money, int amount)
