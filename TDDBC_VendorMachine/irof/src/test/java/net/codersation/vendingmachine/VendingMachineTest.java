@@ -60,7 +60,7 @@ public class VendingMachineTest {
 		@Test
 		public void 買えない状態で購入しても在庫は減らない() throws Exception {
 			sut.purchase(Juice.Coke);
-			assertThat(sut.getAllJuiceStock().get(0).getCount(), is(5));
+			assertThat(sut.getStockCount(Juice.Coke), is(5));
 		}
 
 		@Test

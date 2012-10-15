@@ -58,4 +58,8 @@ public class VendingMachine {
 	public List<JuiceRack> getAllJuiceStock() {
 		return juiceStock.getRacks();
 	}
+
+	public int getStockCount(Juice juice) {
+		return juiceStock.getRack(juice).getCount();
+	}
 }
