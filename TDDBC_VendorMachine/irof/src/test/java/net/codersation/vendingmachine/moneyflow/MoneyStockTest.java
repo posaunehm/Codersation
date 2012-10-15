@@ -37,4 +37,8 @@ public class MoneyStockTest {
 		assertThat(actual.getAmount(), is(120));
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void 払えない金額を要求されると例外を投げる() throws Exception {
+		sut.takeOut(10);
+	}
 }

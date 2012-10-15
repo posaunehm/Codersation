@@ -68,6 +68,9 @@ public class MoneyStock {
 	}
 
 	public MoneyStock takeOut(int price) {
+		if (price > getAmount())
+			throw new IllegalArgumentException("cannot take out. price:"
+					+ price + ", amount " + getAmount());
 		MoneyStock res = new MoneyStock();
 		res.stock = getUseMoneyList(price);
 		for (Money money : res.stock) {
