@@ -9,6 +9,7 @@ namespace VendingMachine
     {
         private readonly IMoneyAcceptor _moneyAcceptor;
         private readonly List<Drink> _drinkStock = new List<Drink>();
+        private readonly List<Money> _moneyStock = new List<Money>();
 
         public VendingMachine(IMoneyAcceptor acceptor)
         {
@@ -26,24 +27,18 @@ namespace VendingMachine
             }
         }
 
-        public void AddDrink(Drink drink)
+        public void AddDrink(IEnumerable<Drink> drink)
         {
-            _drinkStock.Add(drink);
-        }
-
-        public Drink BuyDrink(Drink drink)
-        {
-            if (TotalAmount >= drink.Price)
-            {
-                TotalAmount -= drink.Price;
-                return drink;
-            }
-            else return null;
+            _drinkStock.AddRange(drink);
         }
 
         public Drink BuyDrink(string drinkName)
         {
-            var boughtDrink = _drinkStock.FirstOrDefault(drink => drink.Name == drinkName && drink.Price <= TotalAmount);
+            var boughtDrink = _drinkStock.FirstOrDefault(
+                drink =>
+                drink.Name == drinkName
+                && drink.Price <= TotalAmount
+                && CanReturnMoney(TotalAmount - drink.Price));
             TotalAmount -= boughtDrink == null ? 0 : boughtDrink.Price;
             return boughtDrink;
         }
@@ -51,25 +46,44 @@ namespace VendingMachine
         public List<Money> PayBack()
         {
             var returnMoney = new List<Money>();
-
-            foreach (
-                var moneyKind in
-                    new List<MoneyKind>
-                        {MoneyKind.Yen500, MoneyKind.Yen100, MoneyKind.Yen50, MoneyKind.Yen10})
+            var amount = this.TotalAmount;
+            foreach (var money in _moneyStock.OrderByDescending(m => m.Amount))
             {
-                while (true)
+                if ((amount - money.Amount) >= 0)
                 {
-                    var moneyTemp = new Money(moneyKind);
-                    if (moneyTemp.Amount <= TotalAmount)
-                    {
-                        returnMoney.Add(moneyTemp);
-                        TotalAmount -= moneyTemp.Amount;
-                    }
-                    else{break;}
+                    amount -= money.Amount;
+                    returnMoney.Add(money);
+                }
+                if (amount == 0)
+                {
+                    break;
                 }
             }
-
+            if(amount != 0)
+            {throw new ApplicationException("VendingMachine couldn't prepare return money");}
+            TotalAmount = 0;
             return returnMoney;
+        }
+
+        private bool CanReturnMoney(int amount)
+        {
+            foreach (var money in _moneyStock.OrderByDescending(m => m.Amount))
+            {
+                if ((amount - money.Amount) >= 0)
+                {
+                    amount -= money.Amount;
+                }
+                if (amount == 0)
+                {
+                    break;
+                }
+            }
+            return amount == 0;
+        }
+
+        public void SetStock(IEnumerable<Money> moneys)
+        {
+            _moneyStock.AddRange(moneys);
         }
     }
 }

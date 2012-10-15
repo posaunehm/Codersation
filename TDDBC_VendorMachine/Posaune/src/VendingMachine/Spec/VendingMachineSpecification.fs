@@ -56,6 +56,19 @@ let ``After inserting 1 yen, it's invalid so machine's total amout is 0``() =
 let cola = new Drink("Cola", 110);
 let soda = new Drink("Soda",150)
 
+let stocked (moneyArr:List<Money>) (vm:VendingMachine) = 
+    vm.SetStock(moneyArr) 
+    vm
+
+let standardStock = 
+    [
+        for i in 1 .. 10 do 
+            yield new Money(MoneyKind.Yen10)
+            yield new Money(MoneyKind.Yen50)
+            yield new Money(MoneyKind.Yen100)
+            yield new Money(MoneyKind.Yen500)
+            ]
+
 let inserted (moneyArr:List<Money>) (vm:VendingMachine) = 
     printMethod moneyArr
     moneyArr |> List.iter (fun x -> vm.InsertMoney(x))
@@ -64,7 +77,7 @@ let inserted (moneyArr:List<Money>) (vm:VendingMachine) =
 
 let pushed (drinkArr:List<Drink>) (vm:VendingMachine) = 
     printMethod drinkArr
-    drinkArr |> List.iter (fun x -> vm.AddDrink(x))
+    vm.AddDrink(drinkArr)
     vm
     
 let buy_drink_named (drinkName:string) (vm:VendingMachine) =
@@ -79,6 +92,7 @@ let drink_named name (drink:Drink) =
 [<Scenario>]
 let ``After inserting 110 yen, you can buy a juice less than 110 yen``() =
        Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> stocked standardStock
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen10)]
             |> pushed [cola]
         |> When buy_drink_named "Cola"
@@ -129,6 +143,7 @@ let pay_back (vm:VendingMachine)  =
 [<Scenario>]
 let ``After inserted 200yen and then bought drink costed 110yen, you can pay back 90 yen``() =
     Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> stocked standardStock
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
             |> pushed [cola]
             |> bought ["Cola"]
@@ -141,6 +156,7 @@ let ``After inserted 200yen and then bought drink costed 110yen, you can pay bac
 [<Scenario>]
 let ``After inserted 200yen and then bought drink costed 150yen, you can pay back 50 yen``() =
     Given (new VendingMachine(new StandardMoneyAcceptor())) 
+            |> stocked standardStock
             |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
             |> pushed [soda]
             |> bought ["Soda"]
@@ -149,3 +165,15 @@ let ``After inserted 200yen and then bought drink costed 150yen, you can pay bac
         |> It should have (coin_50_yen_for 1)
         |> Verify
 
+
+
+//つり銭ストックが足りない場合、購入ができない
+[<Scenario>]
+let ``If vending machine doesn't have enough stock for change, you can't buy drink``() = 
+    Given (new VendingMachine(new StandardMoneyAcceptor()))
+            |> stocked [for i in 1 .. 5 do yield new Money(MoneyKind.Yen10)]
+            |> inserted [new Money(MoneyKind.Yen100);new Money(MoneyKind.Yen100)]
+            |> pushed[cola]
+        |> When buy_drink_named "Cola"
+        |> It should equal null
+        |> Verify
