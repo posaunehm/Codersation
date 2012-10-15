@@ -30,7 +30,7 @@ let used (usedAmount:int) (stocker:MoneyStocker) =
 
 let try_use_amount_of (amount:int) (stocker:MoneyStocker) = 
     printMethod amount
-    stocker.CanUse(amount)
+    stocker.CanRetuenJustMoneyIfUsed(amount)
 
 [<Scenario>]
 let ``Given MoneyStocker Stocked 0 yen, when payback money you get 0 yen``() = 

@@ -12,25 +12,18 @@ namespace VendingMachine
 
         public IEnumerable<Money> PayBack()
         {
-            var returnMoney = new List<Money>();
-            var amount = _insertedAmount;
-            foreach (var money in _moneyPool.OrderByDescending(m => m.Amount))
-            {
-                if ((amount - money.Amount) >= 0)
-                {
-                    amount -= money.Amount;
-                    returnMoney.Add(money);
-                }
-                if (amount == 0)
-                {
-                    break;
-                }
-            }
-            if (amount != 0)
-            { throw new ApplicationException(string.Format("VendingMachine couldn't prepare return money. Rest:{0}", amount)); }
-            _insertedAmount = 0;
+            var enumuratedMoneyList = EnumurateMoneyUpTo(_insertedAmount).ToList();
 
-            return returnMoney;
+            var lastElement = enumuratedMoneyList.LastOrDefault();
+            if (lastElement != null && lastElement.Remainder != 0)
+            {
+                throw new ApplicationException
+                    (string.Format(
+                    "VendingMachine couldn't prepare return money. Remainder:{0}",
+                    enumuratedMoneyList.Last().Remainder));
+            }
+
+            return enumuratedMoneyList.Select(_ => _.Money);
         }
 
         public void Insert(Money money)
@@ -44,26 +37,42 @@ namespace VendingMachine
             _moneyPool.Add(money);
         }
 
-        public void TakeMoney(int usedAmound)
+        public void TakeMoney(int usedAmount)
         {
-            _insertedAmount -= usedAmound;
+            _insertedAmount -= usedAmount;
         }
 
-        public bool CanUse(int amount)
+        public bool CanRetuenJustMoneyIfUsed(int amount)
         {
-            var amountTemp = _insertedAmount - amount;
+            return EnumurateMoneyUpTo(_insertedAmount - amount).Last().Remainder == 0;
+        }
+
+        IEnumerable<MoneyWithRemainder> EnumurateMoneyUpTo(int amount)
+        {
             foreach (var money in _moneyPool.OrderByDescending(m => m.Amount))
             {
-                if ((amountTemp - money.Amount) >= 0)
+                if ((amount - money.Amount) >= 0)
                 {
-                    amountTemp -= money.Amount;
+                    amount -= money.Amount;
+                    yield return new MoneyWithRemainder(money, amount);
                 }
-                if (amountTemp == 0)
+                if (amount == 0)
                 {
-                    break;
+                    yield break;
                 }
             }
-            return amountTemp == 0;
+        }
+
+        private class MoneyWithRemainder
+        {
+            public MoneyWithRemainder(Money money, int amount)
+            {
+                Money = money;
+                Remainder = amount;
+            }
+
+            public int Remainder { get; private set; }
+            public Money Money { get; private set; }
         }
     }
 }
