@@ -8,7 +8,7 @@ namespace VendingMachine
     {
         private readonly List<Money> _moneyPool = new List<Money>();
         private int _insertedAmount = 0;
-        private IMoneyAcceptor _acceptor;
+        private readonly IMoneyAcceptor _acceptor;
 
         public MoneyStocker():this(new StandardMoneyAcceptor())
         {
