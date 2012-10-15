@@ -49,5 +49,10 @@ namespace VendingMachine
             _insertedAmount -= usedAmound;
 
         }
+
+        public bool CanUse(int amount)
+        {
+            return false;
+        }
     }
 }

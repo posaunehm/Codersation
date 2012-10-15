@@ -27,7 +27,10 @@ let used (usedAmount:int) (stocker:MoneyStocker) =
     printMethod usedAmount
     stocker.TakeMoney(usedAmount)
     stocker
-    
+
+let try_use_amount_of (amount:int) (stocker:MoneyStocker) = 
+    printMethod amount
+    stocker.CanUse(amount)
 
 [<Scenario>]
 let ``Given MoneyStocker Stocked 0 yen, when payback money you get 0 yen``() = 
@@ -44,11 +47,20 @@ let ``Given MoneyStocker inserted one 100 yen coin, when payback money you get 1
         |> Verify
 
 [<Scenario>]
-let ``Given MoneyStocker stocked 10 10yen coin, inserted one 200 yen coin and used 110yen, when payback money you get 10 yen coin``() = 
+let ``Given MoneyStocker stocked 10 10yen coin, inserted two 100 yen coin and used 110yen, when payback money you get 10 yen coin``() = 
     Given (new MoneyStocker()) 
             |> stocked [for i in 1 .. 10 -> MoneyKind.Yen10] 
             |> inserted [MoneyKind.Yen100;MoneyKind.Yen100]
             |> used 110
         |> When pay_back 
         |> It should have (coins [for i in 1 .. 9 -> MoneyKind.Yen10])
+        |> Verify
+
+[<Scenario>]
+let ``Given MoneyStocker stocked 5 10yen coin, inserted two 100 yen,  when try using money you can't``() = 
+    Given (new MoneyStocker()) 
+            |> stocked [for i in 1 .. 10 -> MoneyKind.Yen10] 
+            |> inserted [MoneyKind.Yen100;MoneyKind.Yen100]
+        |> When try_use_amount_of 110 
+        |> It should equal false
         |> Verify
