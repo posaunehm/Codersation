@@ -12,6 +12,13 @@ namespace VendingMachine.Model {
 
             return oldState != inRack.SelectionState;
         }
+
+        public ItemRack FindRackAt(ItemRackPosition inRacks, int inPosition) {
+            var result = default(ItemRack);
+            inRacks.Positions.TryGetValue(inPosition, out result);
+
+            return result;
+        }
     }
 }
 
