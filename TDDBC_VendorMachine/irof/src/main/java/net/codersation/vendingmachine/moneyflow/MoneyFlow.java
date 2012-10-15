@@ -7,17 +7,24 @@ public class MoneyFlow {
 	public MoneyPolicy moneyPoricy = new MoneyPolicy();
 
 	private int saleAmount = 0;
-	private MoneyStock credit = new MoneyStock();
-	private MoneyStock change = new MoneyStock();
-	private MoneyStock pool = new MoneyStock();
+	private final MoneyStock credit = new MoneyStock();
+	private final MoneyStock change = new MoneyStock();
+	private final MoneyStock pool;
 
-	public MoneyFlow() {
+	MoneyFlow(MoneyStock pool) {
+		this.pool = pool;
+	}
+
+	public static MoneyFlow create() {
+		MoneyStock pool = new MoneyStock();
 		Money[] moneys = {Money.TenYen, Money.FiftyYen, Money.HundredYen, Money.FiveHundredYen, Money.ThousandYen};
 		for (Money money : moneys) {
 			for (int i = 0; i < 10; i++) {
 				pool.add(money);
 			}
 		}
+		MoneyFlow moneyFlow = new MoneyFlow(pool);
+		return moneyFlow;
 	}
 
 	public int getSaleAmount() {

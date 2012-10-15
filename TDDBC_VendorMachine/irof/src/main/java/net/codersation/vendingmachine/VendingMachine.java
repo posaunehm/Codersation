@@ -9,7 +9,7 @@ import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 public class VendingMachine {
 
-	public MoneyFlow moneyFlow = new MoneyFlow();
+	public MoneyFlow moneyFlow = MoneyFlow.create();
 	private JuiceStock juiceStock = new JuiceStock();
 
 	public int getCreditAmount() {
