@@ -8,7 +8,7 @@ import net.codersation.vendingmachine.Money;
 
 public class MoneyStock {
 
-	private ArrayList<Money> stock = new ArrayList<>();
+	private List<Money> stock = new ArrayList<>();
 
 	public int getAmount() {
 		int amount = 0;
@@ -65,5 +65,14 @@ public class MoneyStock {
 		}
 		return result;
 
+	}
+
+	public MoneyStock takeOut(int price) {
+		MoneyStock res = new MoneyStock();
+		res.stock = getUseMoneyList(price);
+		for (Money money : res.stock) {
+			remove(money);
+		}
+		return res;
 	}
 }

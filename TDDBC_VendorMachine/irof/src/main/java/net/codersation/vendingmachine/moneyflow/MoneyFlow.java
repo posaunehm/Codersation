@@ -1,7 +1,5 @@
 package net.codersation.vendingmachine.moneyflow;
 
-import java.util.List;
-
 import net.codersation.vendingmachine.Money;
 
 public class MoneyFlow {
@@ -51,17 +49,14 @@ public class MoneyFlow {
 	}
 
 	public void purchase(int price) {
+		// creditから払えるだけのお金を取り出す
+		MoneyStock sale = credit.takeOut(price);
+		// poolからお釣りのために差額のお金を取り出す
+		MoneyStock change = pool.takeOut(sale.getAmount() - price);
+
+		sale.moveTo(pool);
+		change.moveTo(credit);
+
 		addSale(price);
-		
-		List<Money> useMoneyList = credit.getUseMoneyList(price);
-		int tempAmount = 0;
-		for (Money money : useMoneyList) {
-			credit.remove(money);
-			tempAmount += money.getValue();
-		}
-		if (tempAmount != price) {
-			List<Money> l = pool.getUseMoneyList(tempAmount - price);
-			credit.addAll(l);
-		}
 	}
 }
