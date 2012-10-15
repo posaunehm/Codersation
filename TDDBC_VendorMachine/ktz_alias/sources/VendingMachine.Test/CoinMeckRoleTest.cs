@@ -86,13 +86,13 @@ namespace VendingMachine.Test {
 		public void _何も購入せずお金を排出する(Money inMoney, int inRepeat) {
 			var role = new CoinMeckRole ();
 			var received = new CashFlow();
-			var reserved = this.InitInfinityReservedChange();
+			var pool = TestHelper.InitInfinityReservedChange();
 			
 			for (var i = 0; i < inRepeat; ++i) {
 				role.Receive(received, inMoney);
 			}
 			
-			var changed = role.Eject(received, reserved)
+			var changed = role.Eject(received, pool)
 				.GroupBy(m => m)
 				.ToDictionary(g => g.Key, g => g)
 			;
@@ -127,55 +127,41 @@ namespace VendingMachine.Test {
 					
 					yield return new Parameter {
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 5)), 
-						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 4)),
+						ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin100, 5)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin100, 10)), 
-						ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin100, 10)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 5)), 
-                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 5)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 2)), 
-                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 2)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 3)), 
-                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 3)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {								
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1)), 
-                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 1)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {								
 						Id = id++,
-						ReceivedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 2)), 
-                        ChangedMoney = this.ToTuple(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
+                        ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 2)), 
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin500, 1), Tuple.Create(Money.Coin100, 4)),
 					};
 				}
 			}
-			
-			private Tuple<Money, int>[] ToTuple(params Tuple<Money, int>[] inMoney) {
-				return inMoney;
-			}
-		}
-		
-		private ReservedMoney InitInfinityReservedChange() {
-			var result = new ReservedMoney ();
-			
-			foreach (var m in Enum.GetValues(typeof(Money)).Cast<Money>().Where (m => m != Money.Unknown)) {
-				result.Items[m] = 10000;
-			}
-			
-			return result;
 		}
 		
 		[Test]
@@ -183,9 +169,9 @@ namespace VendingMachine.Test {
 			    [ValueSource(typeof(_商品購入後お金を排出するParams), "Source")] 
 			    _商品購入後お金を排出するParams.Parameter inParameter) 
 		{
-			var role = new CoinMeckRole ();
-			var received = new CashFlow ();
-			var reserved = this.InitInfinityReservedChange ();
+			var role = new CoinMeckRole();
+			var received = new CashFlow();
+            var pool = TestHelper.InitInfinityReservedChange();
 			
 			foreach (var m in inParameter.ReceivedMoney) {
 				for (var i = 0; i < m.Item2; ++i) {
@@ -195,7 +181,7 @@ namespace VendingMachine.Test {
 			
 			Assert.True(role.Purchase(received, 100));
 			
-			var changed = role.Eject(received, reserved)
+			var changed = role.Eject(received, pool)
 				.GroupBy(m => m)
 				.ToDictionary(g => g.Key, g => g)
 			;

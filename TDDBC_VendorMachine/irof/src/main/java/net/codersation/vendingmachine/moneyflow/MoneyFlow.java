@@ -1,8 +1,5 @@
 package net.codersation.vendingmachine.moneyflow;
 
-import java.util.List;
-
-import net.codersation.vendingmachine.CreditService;
 import net.codersation.vendingmachine.Money;
 
 public class MoneyFlow {
@@ -10,28 +7,23 @@ public class MoneyFlow {
 	public MoneyPolicy moneyPoricy = new MoneyPolicy();
 
 	private int saleAmount = 0;
-	private MoneyStock credit = new MoneyStock();
-	private MoneyStock change = new MoneyStock();
-	private MoneyStock pool = new MoneyStock();
+	private final MoneyStock credit = new MoneyStock();
+	private final MoneyStock change = new MoneyStock();
+	private final MoneyStock pool;
 
-	public MoneyFlow() {
-		Money[] moneys = {Money.TenYen, Money.FiftyYen, Money.HundredYen, Money.FiveHundredYen, Money.ThousandYen};
-		for (Money money : moneys) {
-			for (int i = 0; i < 10; i++) {
-				pool.add(money);
-			}
-		}
+	MoneyFlow(MoneyStock pool) {
+		this.pool = pool;
 	}
 
 	public int getSaleAmount() {
 		return saleAmount;
 	}
 
-	public void addSale(int price) {
+	private void addSale(int price) {
 		saleAmount += price;
 	}
 
-	public int getTotalAmount() {
+	public int getCreditAmount() {
 		return credit.getAmount();
 	}
 
@@ -44,8 +36,7 @@ public class MoneyFlow {
 	}
 
 	public void payBack() {
-		change.addAll(credit);
-		credit.clear();
+		credit.moveTo(change);
 	}
 
 	public int getChangeAmount() {
@@ -53,17 +44,14 @@ public class MoneyFlow {
 	}
 
 	public void purchase(int price) {
+		// creditから払えるだけのお金を取り出す
+		MoneyStock sale = credit.takeOut(price);
+		// poolからお釣りのために差額のお金を取り出す
+		MoneyStock change = pool.takeOut(sale.getAmount() - price);
+
+		sale.moveTo(pool);
+		change.moveTo(credit);
+
 		addSale(price);
-		
-		List<Money> useMoneyList = CreditService.getUseMoneyList(credit, price);
-		int tempAmount = 0;
-		for (Money money : useMoneyList) {
-			credit.remove(money);
-			tempAmount += money.getValue();
-		}
-		if (tempAmount != price) {
-			List<Money> l = CreditService.getUseMoneyList(pool, tempAmount - price);
-			credit.addAll(l);
-		}
 	}
 }

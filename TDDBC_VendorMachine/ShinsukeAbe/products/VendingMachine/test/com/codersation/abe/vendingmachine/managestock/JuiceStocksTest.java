@@ -1,8 +1,14 @@
+package com.codersation.abe.vendingmachine.managestock;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import com.codersation.abe.vendingmachine.managestock.JuiceStocks;
+import com.codersation.abe.vendingmachine.managestock.Juice;
+import com.codersation.abe.vendingmachine.managestock.JuiceStock;
+import com.codersation.abe.vendingmachine.managestock.JuiceStocksFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
