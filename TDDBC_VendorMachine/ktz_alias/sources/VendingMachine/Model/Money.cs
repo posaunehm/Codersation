@@ -32,8 +32,8 @@ namespace VendingMachine.Model {
         }
     }
 
-     public class ReservedMoney {
-        public ReservedMoney() {
+     public class ChangePool {
+        public ChangePool() {
             this.Items = new Dictionary<Money, int>();
         }
 

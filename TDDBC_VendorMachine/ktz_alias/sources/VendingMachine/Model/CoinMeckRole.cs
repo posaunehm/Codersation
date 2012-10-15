@@ -28,16 +28,11 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public IEnumerable<Money> Eject(CashFlow inCash, ReservedMoney inReservedMoney) {
+        public IEnumerable<Money> Eject(CashFlow inCash, ChangePool inReservedMoney) {
             try {
                 if (inCash.UsedAmount == 0) {
                     return inCash.RecevedMoney.ToList();
-                }
-
-                var received = inCash.RecevedMoney
-                    .GroupBy(m => m)
-                    .ToDictionary(g => g.Key, g => g.Count())                  
-                ;    
+                }   
 
                 var result = new List<KeyValuePair<Money, int>>();
 
