@@ -80,7 +80,7 @@ namespace VendingMachine.Test {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.SelectionState, Is.EqualTo(result.Item2));
-            }
+                Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            }
         }
 
         [Test]
@@ -104,6 +104,7 @@ namespace VendingMachine.Test {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.SelectionState, Is.EqualTo(result.Item2));
+                Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            
             }
         }
 
@@ -153,38 +154,6 @@ namespace VendingMachine.Test {
                     }
                 )
             );
-        }
-
-        [Test]
-        public void _指定された位置の商品が選択可能かどうか(
-                [ValueSource(typeof(商品選択状態の変化Params), "Source")] 
-                商品選択状態の変化Params.Param inParameter) 
-        {
-            var racks = this.InitItemRack(ItemRackState.CanNotPurchase);
-            
-            var credit = new CashFlow();
-            var pool = TestHelper.InitInfinityReservedChange();
-
-            var coinMeckRole = new CoinMeckRole();
-            var itemRackRole = new  ItemRackRole();
-            
-            foreach (var c in inParameter.Credits) {
-                coinMeckRole.Receive(credit, c);
-            }
-
-            var fixtures = racks.Positions.Keys
-                .OrderBy(k => k)
-                .Zip(inParameter.States, (k, s) => {
-                    return Tuple.Create(k, s == ItemRackState.CanPurchase);
-                })
-            ;
-
-            foreach (var fixture in fixtures) {
-                var rack = itemRackRole.FindRackAt(racks, fixture.Item1);
-                itemRackRole.UpdateItemSelectionState(rack, credit, pool);
-                
-                Assert.That(itemRackRole.CanItemPurchase(racks, fixture.Item1), Is.EqualTo(fixture.Item2));
-            }
         }
     }
 }

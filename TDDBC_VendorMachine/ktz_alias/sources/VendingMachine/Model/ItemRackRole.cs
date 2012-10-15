@@ -20,11 +20,8 @@ namespace VendingMachine.Model {
             return result;
         }
 
-        public bool CanItemPurchase(ItemRackPosition inRacks, int inPosition) {
-            var rack = this.FindRackAt(inRacks, inPosition);
-            if (rack == null) return false;
-
-            return rack.SelectionState == ItemRackState.CanPurchase;
+        public bool CanItemPurchase(ItemRack inRack) {
+            return inRack.SelectionState == ItemRackState.CanPurchase;
         }
     }
 }
