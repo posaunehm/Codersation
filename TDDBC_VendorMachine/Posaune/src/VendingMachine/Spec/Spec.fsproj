@@ -55,6 +55,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <Compile Include="VendingMachineSpecification.fs" />
+    <Compile Include="MoneyStockerSpecification.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VendingMachine\VendingMachine.csproj">

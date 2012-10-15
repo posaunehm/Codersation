@@ -9,7 +9,9 @@ namespace VendingMachine
     {
         private readonly IMoneyAcceptor _moneyAcceptor;
         private readonly List<Drink> _drinkStock = new List<Drink>();
+        private readonly MoneyStocker _moneyStocker = new MoneyStocker();
         private readonly List<Money> _moneyStock = new List<Money>();
+
 
         public VendingMachine(IMoneyAcceptor acceptor)
         {
@@ -62,6 +64,7 @@ namespace VendingMachine
             if(amount != 0)
             {throw new ApplicationException("VendingMachine couldn't prepare return money");}
             TotalAmount = 0;
+
             return returnMoney;
         }
 

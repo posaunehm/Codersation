@@ -44,6 +44,7 @@
     <Compile Include="Drink.cs" />
     <Compile Include="IMoneyAcceptor.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="MoneyStocker.cs" />
     <Compile Include="StandardMoneyAcceptor.cs" />
     <Compile Include="MoneyKind.cs" />
     <Compile Include="Program.cs" />
