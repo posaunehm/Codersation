@@ -30,7 +30,7 @@ public class MoneyFlow {
 		saleAmount += price;
 	}
 
-	public int getTotalAmount() {
+	public int getCreditAmount() {
 		return credit.getAmount();
 	}
 

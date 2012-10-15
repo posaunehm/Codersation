@@ -26,13 +26,13 @@ public class VendingMachineTest {
 
 		@Test
 		public void 総計は0円() {
-			assertThat(sut.getTotalAmount(), is(0));
+			assertThat(sut.getCreditAmount(), is(0));
 		}
 
 		@Test
 		public void 十円投入すると総計は10円() throws Exception {
 			sut.insert(Money.TenYen);
-			assertThat(sut.getTotalAmount(), is(10));
+			assertThat(sut.getCreditAmount(), is(10));
 		}
 
 		@Test
@@ -43,7 +43,7 @@ public class VendingMachineTest {
 		@Test
 		public void 二千円入れても総計は増えない() throws Exception {
 			sut.insert(Money.TwoThousandYen);
-			assertThat(sut.getTotalAmount(), is(0));
+			assertThat(sut.getCreditAmount(), is(0));
 		}
 
 		@Test
@@ -84,13 +84,13 @@ public class VendingMachineTest {
 
 		@Test
 		public void 総計は100円() throws Exception {
-			assertThat(sut.getTotalAmount(), is(100));
+			assertThat(sut.getCreditAmount(), is(100));
 		}
 
 		@Test
 		public void 払い戻すと総計が0円になる() throws Exception {
 			sut.payBack();
-			assertThat(sut.getTotalAmount(), is(0));
+			assertThat(sut.getCreditAmount(), is(0));
 		}
 
 		@Test
@@ -109,7 +109,7 @@ public class VendingMachineTest {
 		@Test
 		public void 買えない状態で購入しても預かり金は減らない() throws Exception {
 			sut.purchase(Juice.Coke);
-			assertThat(sut.getTotalAmount(), is(100));
+			assertThat(sut.getCreditAmount(), is(100));
 		}
 
 		@Test
@@ -135,7 +135,7 @@ public class VendingMachineTest {
 
 		@Test
 		public void 総計は1000円() throws Exception {
-			assertThat(sut.getTotalAmount(), is(1000));
+			assertThat(sut.getCreditAmount(), is(1000));
 		}
 
 		@Test
@@ -153,7 +153,7 @@ public class VendingMachineTest {
 		@Test
 		public void 購入したら預かり金が減る() throws Exception {
 			sut.purchase(Juice.Coke);
-			assertThat(sut.getTotalAmount(), is(880));
+			assertThat(sut.getCreditAmount(), is(880));
 		}
 
 		@Test

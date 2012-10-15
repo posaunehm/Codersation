@@ -20,11 +20,11 @@ class VendingMachineSpec extends Specification {
 	}
 
 	@Unroll
-	def "#insert を入れると預かり金額が #credit になる"() {
+	def "Money.#insert を入れると預かり金額が #credit になる"() {
 		when:
 			sut.insert(insert)
 		then:
-			sut.totalAmount == credit
+			sut.creditAmount == credit
 		where:
 			insert                | credit
 			Money.OneYen          | 0
