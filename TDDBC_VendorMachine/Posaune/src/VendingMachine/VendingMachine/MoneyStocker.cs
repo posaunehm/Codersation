@@ -35,7 +35,7 @@ namespace VendingMachine
                 throw new ApplicationException
                     (string.Format(
                     "VendingMachine couldn't prepare return money. Remainder:{0}",
-                    enumuratedMoneyList.Last().Remainder));
+                    lastElement.Remainder));
             }
 
             return enumuratedMoneyList.Select(_ => _.Money);
