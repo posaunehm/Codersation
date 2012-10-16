@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace VendingMachine
 {
     public class VendingMachine
     {
-        //DrinkStockも作るべきだけれど、この範囲ではLinqの各メソッドで十分なので見送り
-        private readonly List<Drink> _drinkStock = new List<Drink>();
+        private readonly DrinkStocker _drinkStock = new DrinkStocker();
         private readonly MoneyStocker _moneyStocker;
 
 
@@ -32,19 +30,25 @@ namespace VendingMachine
 
         public void AddDrink(IEnumerable<Drink> drink)
         {
-            _drinkStock.AddRange(drink);
+            _drinkStock.AddDrinks(drink);
         }
 
         public Drink BuyDrink(string drinkName)
         {
-            var boughtDrink = _drinkStock.FirstOrDefault(
-                drink =>
-                    drink.Name == drinkName
-                    && drink.Price <= TotalAmount
-                    && _moneyStocker.CanRetuenJustMoneyIfUsed(drink.Price)
-                );
+            if (!CheckCanBuyDrinkNamed(drinkName))
+            {
+                return null;
+            }
+            var boughtDrink = _drinkStock.Take(drinkName);
             _moneyStocker.TakeMoney(boughtDrink == null ? 0 : boughtDrink.Price);
             return boughtDrink;
+        }
+
+        private bool CheckCanBuyDrinkNamed(string drinkName)
+        {
+            return _drinkStock.HasItem(drinkName)
+                   && _drinkStock.GetItemPrice(drinkName) <= TotalAmount
+                   && _moneyStocker.CanRetuenJustMoneyIfUsed(_drinkStock.GetItemPrice(drinkName));
         }
 
         public IEnumerable<Money> PayBack()

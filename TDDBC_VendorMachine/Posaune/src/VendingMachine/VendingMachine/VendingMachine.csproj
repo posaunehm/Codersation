@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drink.cs" />
+    <Compile Include="DrinkNotFoundException.cs" />
+    <Compile Include="DrinkStocker.cs" />
     <Compile Include="IMoneyAcceptor.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="MoneyStocker.cs" />
