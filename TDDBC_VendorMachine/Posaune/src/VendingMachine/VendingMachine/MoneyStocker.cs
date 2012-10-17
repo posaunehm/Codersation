@@ -29,7 +29,6 @@ namespace VendingMachine
 
         public IEnumerable<Money> PayBack()
         {
-            //いったんキャプチャして
             var enumuratedMoneyList = EnumurateMoneyUpTo(_insertedAmount).ToList();
 
             var lastElement = enumuratedMoneyList.LastOrDefault();
@@ -40,8 +39,14 @@ namespace VendingMachine
                     "VendingMachine couldn't prepare return money. Remainder:{0}",
                     lastElement.Remainder));
             }
-            //もっかい列挙ってどうなんだろ・・・（結構やるけれど）
-            return enumuratedMoneyList.Select(_ => _.Money);
+
+            _insertedAmount = 0;
+
+            var moneysPayBacked = enumuratedMoneyList.Select(_ => _.Money).ToList();
+
+            moneysPayBacked.ForEach(m => _moneyPool.Remove(m));
+
+            return moneysPayBacked;
         }
 
         public void Insert(Money money)

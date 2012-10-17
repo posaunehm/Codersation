@@ -175,3 +175,17 @@ let ``If vending machine doesn't have enough stock for change, you can't buy dri
         |> When buy_drink_named "Cola"
         |> It should equal null
         |> Verify
+
+
+
+//一つストックしておいて、同じものを二つ買う
+[<Scenario>]
+let ``If vending machine stocked only one drink and you try to buy two, you can't buy second one``() = 
+    Given (new VendingMachine(new StandardMoneyAcceptor()))
+        |> stocked standardStock
+        |> inserted [MoneyKind.Yen100;MoneyKind.Yen100;MoneyKind.Yen100]
+        |> pushed[cola]
+        |> bought["Cola"]
+    |> When buy_drink_named "Cola"
+    |> It should equal null
+    |> Verify

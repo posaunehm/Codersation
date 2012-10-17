@@ -15,7 +15,9 @@ namespace VendingMachine
         public Drink Take(string drinkName)
         {
             ThrowExceptionIfItemNotFound(drinkName);
-            return _drinkPool.First(drink => drink.Name == drinkName);
+            var found = _drinkPool.First(drink => drink.Name == drinkName);
+            _drinkPool.Remove(found);
+            return found;
         }
 
         private void ThrowExceptionIfItemNotFound(string drinkName)
