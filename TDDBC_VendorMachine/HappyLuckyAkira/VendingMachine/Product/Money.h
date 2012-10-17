@@ -20,6 +20,7 @@ public:
   static Money Yen1()     {return Money(1);}
   static Money Yen5()     {return Money(5);}
   static Money Yen10()    {return Money(10);}
+  static Money Yen50()    {return Money(50);}
   static Money Yen100()   {return Money(100);}
   static Money Yen500()   {return Money(500);}
   static Money Yen1000()  {return Money(1000);}
