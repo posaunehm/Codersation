@@ -20,6 +20,13 @@ JuiceRack::remove(void)
 {
 }
 
+bool
+JuiceRack::Of(const Juice& juice)
+{
+  if (*pJuice_ == juice){return true;}
+  return false;
+}
+
 //C++11だと、delete
 JuiceRack::JuiceRack():pJuice_(0),count_(0)
 {
