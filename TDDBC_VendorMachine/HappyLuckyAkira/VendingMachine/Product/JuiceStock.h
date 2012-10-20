@@ -9,6 +9,9 @@
 #define JUICESTOCK_H_
 
 class Juice;
+class JuiceRack;
+#include <list>
+#include <boost/shared_ptr.hpp>
 
 class JuiceStock
 {
@@ -16,21 +19,12 @@ public:
   explicit JuiceStock(const Juice& juice, int count);
   virtual
   ~JuiceStock();
-
-    int getCount() const
-    {
-        return count_;
-    }
-    const Juice& getJuice() const
-    {
-        return *pJuice_;
-    }
-
-
+    bool IsInStock(const Juice& juice );
+    bool AddJuice(const Juice& juice ,int count);
 private:
     JuiceStock();
-    Juice* pJuice_;
-    int count_;
+    typedef boost::shared_ptr<JuiceRack> JuiceRackPointer;
+    std::list<JuiceRackPointer> juicerack_list_;
 };
 
 #endif /* JUICESTOCK_H_ */
