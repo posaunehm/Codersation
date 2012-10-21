@@ -16,7 +16,8 @@ namespace VendingMachine
         public VendingMachine(IMoneyAcceptor acceptor)
         {
             _drinkPriceSpecification = new DrinkPriceSpecification();
-            _drinkStock = new DrinkStocker(_drinkPriceSpecification);
+
+            _drinkStock = new DrinkStocker();
             _moneyStocker = new MoneyStocker(acceptor);
         }
 
@@ -42,15 +43,15 @@ namespace VendingMachine
                 return null;
             }
             var boughtDrink = _drinkStock.Take(drinkName);
-            _moneyStocker.TakeMoney(boughtDrink == null ? 0 : boughtDrink.Price);
+            _moneyStocker.TakeMoney(boughtDrink == null ? 0 : _drinkPriceSpecification.GetItemPrice(drinkName));
             return boughtDrink;
         }
 
         private bool CheckCanBuyDrinkNamed(string drinkName)
         {
             return _drinkStock.HasItem(drinkName)
-                   && _drinkStock.GetItemPrice(drinkName) <= TotalAmount
-                   && _moneyStocker.CanRetuenJustMoneyIfUsed(_drinkStock.GetItemPrice(drinkName));
+                   && _drinkPriceSpecification.GetItemPrice(drinkName) <= TotalAmount
+                   && _moneyStocker.CanRetuenJustMoneyIfUsed(_drinkPriceSpecification.GetItemPrice(drinkName));
         }
 
         public IEnumerable<Money> PayBack()
@@ -65,9 +66,13 @@ namespace VendingMachine
                 _moneyStocker.Stock(money);
             }
         }
-    }
 
-    public class DrinkPriceSpecification : IDrinkPriceSpecification
-    {
+        public void SetDrinkSpecification(IEnumerable<PriceSpecification> specs)
+        {
+            foreach (var priceSpecification in specs)
+            {
+                _drinkPriceSpecification.SetDrinkSpec(priceSpecification);
+            }
+        }
     }
 }
