@@ -22,7 +22,7 @@ let soda = new Drink("Soda")
 
 
 let stocked (moneyArr:List<MoneyKind>) (vm:VendingMachine) = 
-    vm.SetStock(moneyArr |> Seq.map (fun m -> new Money(m))) 
+    vm.AddStock(moneyArr |> Seq.map (fun m -> new Money(m))) 
     vm
 
 let standardStock = 

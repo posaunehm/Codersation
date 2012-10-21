@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VendingMachine
 {
@@ -38,7 +40,7 @@ namespace VendingMachine
 
         public Drink BuyDrink(string drinkName)
         {
-            if (!CheckCanBuyDrinkNamed(drinkName))
+            if (!CanBuyDrinkNamed(drinkName))
             {
                 return null;
             }
@@ -47,11 +49,11 @@ namespace VendingMachine
             return boughtDrink;
         }
 
-        private bool CheckCanBuyDrinkNamed(string drinkName)
+        private bool CanBuyDrinkNamed(string drinkName)
         {
             return _drinkStock.HasItem(drinkName)
                    && _drinkPriceSpecification.GetItemPrice(drinkName) <= TotalAmount
-                   && _moneyStocker.CanRetuenJustMoneyIfUsed(_drinkPriceSpecification.GetItemPrice(drinkName));
+                   && _moneyStocker.CanReturnJustMoneyIfUsed(_drinkPriceSpecification.GetItemPrice(drinkName));
         }
 
         public IEnumerable<Money> PayBack()
@@ -59,11 +61,20 @@ namespace VendingMachine
             return _moneyStocker.PayBack();
         }
 
-        public void SetStock(IEnumerable<Money> moneys)
+        public void AddStock(IEnumerable<Money> moneys)
         {
             foreach (var money in moneys)
             {
-                _moneyStocker.Stock(money);
+                _moneyStocker.AddStock(money);
+            }
+        }
+
+        public void AddStock(IEnumerable<MoneyStockInfo> setMoneyInfos)
+        {
+            foreach (var money in setMoneyInfos
+                .SelectMany(info => Enumerable.Range(1,info.Count).Select(i => new Money(info.Kind))))
+            {
+                _moneyStocker.AddStock(money);
             }
         }
 
@@ -74,5 +85,18 @@ namespace VendingMachine
                 _drinkPriceSpecification.SetDrinkSpec(priceSpecification);
             }
         }
+    }
+
+    public class MoneyStockInfo
+    {
+        public MoneyStockInfo(MoneyKind kind, int count)
+        {
+            Kind = kind;
+            Count = count;
+        }
+
+        public int Count{ get; private set; }
+
+        public MoneyKind Kind { get; private set; }
     }
 }

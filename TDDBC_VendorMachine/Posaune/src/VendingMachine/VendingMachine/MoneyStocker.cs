@@ -56,7 +56,7 @@ namespace VendingMachine
             }
         }
 
-        public void Stock(Money money)
+        public void AddStock(Money money)
         {
             _moneyPool.Add(money);
         }
@@ -67,7 +67,7 @@ namespace VendingMachine
         }
 
         //メソッド名冗長だけれど思いつかない・・・
-        public bool CanRetuenJustMoneyIfUsed(int amount)
+        public bool CanReturnJustMoneyIfUsed(int amount)
         {
             if (amount == _insertedAmount)
             {

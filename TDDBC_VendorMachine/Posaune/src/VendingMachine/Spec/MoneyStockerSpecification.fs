@@ -35,7 +35,7 @@ let amount amount (stocker:MoneyStocker) =
 
 let stocked (moneyArr:seq<MoneyKind>) (stocker:MoneyStocker) = 
     printMethod moneyArr
-    moneyArr |> Seq.iter (fun m -> stocker.Stock(new Money(m)))
+    moneyArr |> Seq.iter (fun m -> stocker.AddStock(new Money(m)))
     stocker
 
 let used (usedAmount:int) (stocker:MoneyStocker) = 
@@ -46,7 +46,7 @@ let used (usedAmount:int) (stocker:MoneyStocker) =
 
 let try_use_amount_of (amount:int) (stocker:MoneyStocker) = 
     printMethod amount
-    stocker.CanRetuenJustMoneyIfUsed(amount)
+    stocker.CanReturnJustMoneyIfUsed(amount)
 
 [<Scenario>]
 let ``Given MoneyStocker Stocked 0 yen, when payback money you get 0 yen``() = 
