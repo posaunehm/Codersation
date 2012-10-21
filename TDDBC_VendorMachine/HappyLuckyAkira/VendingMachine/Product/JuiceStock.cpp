@@ -7,24 +7,30 @@
 
 #include "JuiceStock.h"
 #include "Juice.h"
+#include "JuiceRack.h"
+#include <boost/make_shared.hpp>
 
 //これをコンストラクタとする
 JuiceStock::JuiceStock(const Juice& juice, int count)
-:count_(count)
 {
-  pJuice_ = new Juice(juice);
+  boost::shared_ptr<JuiceRack> d = boost::make_shared<JuiceRack>(juice,count);
+
+}
+
+bool
+JuiceStock::IsInStock(const Juice& juice)
+{
+
+  return false;
 }
 
 //C++11のインストールできないから、使わないけどデフォルトコンストラクタの記載しておく
 JuiceStock::JuiceStock()
-:pJuice_(0),count_(0)
 {
 
 }
 
 JuiceStock::~JuiceStock()
 {
-  delete pJuice_;
 }
-//Operator+とかを考えたが、例外を返すとか、今ひとつ使いにくそうなので、上のJuiceStockで実装する方針とする。
 
