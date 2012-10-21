@@ -7,6 +7,13 @@ namespace VendingMachine
     {
         private readonly List<Drink> _drinkPool = new List<Drink>();
 
+        private IDrinkPriceSpecification _drinkPriceSpecification;
+
+        public DrinkStocker(IDrinkPriceSpecification drinkPriceSpecification)
+        {
+            _drinkPriceSpecification = drinkPriceSpecification;
+        }
+
         public void AddDrinks(IEnumerable<Drink> drinks)
         {
             _drinkPool.AddRange(drinks);

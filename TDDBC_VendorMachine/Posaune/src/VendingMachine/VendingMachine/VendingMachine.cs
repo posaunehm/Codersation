@@ -4,9 +4,9 @@ namespace VendingMachine
 {
     public class VendingMachine
     {
-        private readonly DrinkStocker _drinkStock = new DrinkStocker();
         private readonly MoneyStocker _moneyStocker;
-
+        private readonly IDrinkPriceSpecification _drinkPriceSpecification;
+        private readonly DrinkStocker _drinkStock;
 
         public VendingMachine()
             : this(new StandardMoneyAcceptor())
@@ -15,6 +15,8 @@ namespace VendingMachine
 
         public VendingMachine(IMoneyAcceptor acceptor)
         {
+            _drinkPriceSpecification = new DrinkPriceSpecification();
+            _drinkStock = new DrinkStocker(_drinkPriceSpecification);
             _moneyStocker = new MoneyStocker(acceptor);
         }
 
@@ -63,5 +65,9 @@ namespace VendingMachine
                 _moneyStocker.Stock(money);
             }
         }
+    }
+
+    public class DrinkPriceSpecification : IDrinkPriceSpecification
+    {
     }
 }
