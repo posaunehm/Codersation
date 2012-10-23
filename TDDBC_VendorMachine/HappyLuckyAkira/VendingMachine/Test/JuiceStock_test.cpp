@@ -6,6 +6,7 @@
  */
 
 #include "../Product/JuiceStock.h"
+#include "../Product/Juice.h"
 
 #include "CppUTest/TestHarness.h"
 
@@ -13,10 +14,20 @@ TEST_GROUP(TestSuiteJuiceStock)
 {
   void setup()
   {
+     pJuiceStock_ = new JuiceStock(Juice::Coke(),5);
   }
   void teardown()
   {
   }
+protected:
+  JuiceStock *pJuiceStock_;
+
 };
 
-//コーラが登録されている。
+//コーラを登録したらコーラがストックされている
+TEST(TestSuiteJuiceStock, TestCaseGetCoke)
+{
+  bool IsInStock = false;
+  IsInStock = pJuiceStock_->IsInStock(Juice::Coke());
+  CHECK_TRUE(IsInStock);
+}

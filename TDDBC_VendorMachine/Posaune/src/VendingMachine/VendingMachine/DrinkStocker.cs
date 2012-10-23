@@ -7,6 +7,11 @@ namespace VendingMachine
     {
         private readonly List<Drink> _drinkPool = new List<Drink>();
 
+
+        public DrinkStocker()
+        {
+        }
+
         public void AddDrinks(IEnumerable<Drink> drinks)
         {
             _drinkPool.AddRange(drinks);
@@ -31,12 +36,6 @@ namespace VendingMachine
         public bool HasItem(string drinkName)
         {
             return _drinkPool.Exists(d => d.Name == drinkName);
-        }
-
-        public int GetItemPrice(string drinkName)
-        {
-            ThrowExceptionIfItemNotFound(drinkName);
-            return _drinkPool.First(drink => drink.Name == drinkName).Price;
         }
     }
 }
