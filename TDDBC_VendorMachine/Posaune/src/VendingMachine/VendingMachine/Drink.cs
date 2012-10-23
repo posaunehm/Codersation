@@ -7,13 +7,11 @@ namespace VendingMachine
 {
     public class Drink
     {
-        public Drink(string name, int price)
+        public Drink(string name)
         {
             Name = name;
-            Price = price;
         }
 
-        public int Price { get; private set; }
         public string Name { get; private set; }
     }
 }
