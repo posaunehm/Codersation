@@ -29,12 +29,23 @@ namespace VendingMachine.Test.Unit {
         }
 
         [Test]
-        [Ignore(" Not Implemented")]
-        public void _金銭を投入して商品を受け取る_準備金なしの場合() {
+        public void _金銭を投入して商品を受け取る_丁度の場合() {
             var ctx = new PurchaseContext(
                 TestHelper.InitInfinityReservedChange(),
                 TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase)
             );
+
+            Assert.That(ctx.CanPurchase(0), Is.False);
+
+            ctx.ReceiveMoney(Money.Coin100);                     
+            ctx.ReceiveMoney(Money.Coin10);                     
+            ctx.ReceiveMoney(Money.Coin10);      
+
+            Assert.That(ctx.CanPurchase(0), Is.True);
+
+            var item = ctx.Purchase(0);
+            Assert.That(item.Name, Is.EqualTo("Item0"));
+            Assert.That(ctx.ReceivedTotal, Is.EqualTo(0));
         }
     }
 }

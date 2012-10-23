@@ -27,6 +27,16 @@ namespace VendingMachine.Model {
             return mCoinMeckRole.Eject(mDealAmount, mChanges);
         }
 
+        public bool CanPurchase(int inPosition) {
+            return false;
+        }
+
+        public Item Purchase(int inPosition) {
+            return mItemRole.Purchase(
+                mItemRole.FindRackAt(mItems, inPosition)
+            );
+        }
+
         public int ReceivedTotal {
             get {
                 return mDealAmount.ChangedAount;

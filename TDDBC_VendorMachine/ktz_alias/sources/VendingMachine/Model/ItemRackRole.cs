@@ -23,6 +23,10 @@ namespace VendingMachine.Model {
         public bool CanItemPurchase(ItemRack inRack) {
             return inRack.State == ItemRackState.CanPurchase;
         }
+
+        public Item Purchase(ItemRack inRack) {
+            return null;
+        }
     }
 }
 

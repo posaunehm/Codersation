@@ -138,6 +138,11 @@ namespace VendingMachine.Test.Unit {
                 Assert.That(racks.Positions[pair.Item1], Is.EqualTo(pair.Item2));
             }
         }
+
+        [Test]
+        public void _商品を購入する () {
+            Assert.Fail("Not Implemented");
+        }
     }
 }
 
