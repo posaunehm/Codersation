@@ -5,13 +5,15 @@ namespace VendingMachine.Model {
     public class PurchaseContext {
         private CashDeal mDealAmount;
         private ChangePool mChanges;
+        private ItemRackPosition mItems;
 
         private CoinMeckRole mCoinMeckRole;
         private ItemRackRole mItemRole;
 
-        public PurchaseContext() {
+        public PurchaseContext(ChangePool inChanges, ItemRackPosition inItems) {
             mDealAmount = new CashDeal();
-            mChanges = new ChangePool();
+            mChanges = inChanges;
+            mItems = inItems;
 
             mCoinMeckRole = new CoinMeckRole();
             mItemRole = new ItemRackRole();
