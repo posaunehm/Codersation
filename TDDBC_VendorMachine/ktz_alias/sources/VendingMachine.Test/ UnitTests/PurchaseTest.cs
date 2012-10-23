@@ -6,7 +6,9 @@ using VendingMachine.Model;
 
 using NUnit.Framework;
 
-namespace VendingMachine.Test {
+using VendingMachine.Test;
+
+namespace VendingMachine.Test.Unit {
     [TestFixture]
     public class _商品購入に関するTestSuite {
         public class 商品選択状態の変化Params {
@@ -67,7 +69,7 @@ namespace VendingMachine.Test {
             var racks = this.InitItemRack(ItemRackState.CanNotPurchase);
             
             var pool = TestHelper.InitInfinityReservedChange();
-            var credit = new CashFlow();
+            var credit = new CashDeal();
             
             var coinMeckRole = new CoinMeckRole();
             var itemRackRole = new  ItemRackRole();
@@ -91,7 +93,7 @@ namespace VendingMachine.Test {
             var racks = this.InitItemRack(ItemRackState.Soldout);
             
             var pool = TestHelper.InitInfinityReservedChange();
-            var credit = new CashFlow();
+            var credit = new CashDeal();
             
             var coinMeckRole = new CoinMeckRole();
             var itemRackRole = new  ItemRackRole();

@@ -40,6 +40,8 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="UnitTests\CoinMeckRoleTest.cs" />
     <Compile Include="UnitTests\PurchaseTest.cs" />
+    <Compile Include="UnitTests\PurchaseContextTest.cs" />
+    <Compile Include="End2EndTests\PurchaseE2ETest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -50,5 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />
+    <Folder Include="End2EndTests\" />
   </ItemGroup>
 </Project>
