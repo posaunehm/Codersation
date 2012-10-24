@@ -29,7 +29,7 @@
 * Actor
     * Contextに影響を及ぼす、利害関係者
 * Event
-    * ActorがContextに影響を与えた後、別のActorに通知するための手段
+    * ActorがContextに影響を与えた後、Contextが別のActorにトリガー通知するための手段
 
 ActorとEventはまだ予定段階で、現在はまだ使われていないのだ。
 
