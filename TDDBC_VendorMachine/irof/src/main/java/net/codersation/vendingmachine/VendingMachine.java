@@ -91,8 +91,8 @@ public class VendingMachine {
 		return list;
 	}
 
-	public List<JuiceRack> getAllJuiceStock() {
-		return juiceStock.getRacks();
+	public StockReport getAllJuiceStock() {
+		return juiceStock.getStockReport();
 	}
 
 	/**

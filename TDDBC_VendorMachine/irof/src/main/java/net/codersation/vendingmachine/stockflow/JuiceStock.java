@@ -1,11 +1,11 @@
 package net.codersation.vendingmachine.stockflow;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import net.codersation.vendingmachine.Juice;
+import net.codersation.vendingmachine.StockReport;
 
 public class JuiceStock implements Iterable<JuiceRack> {
 
@@ -18,10 +18,6 @@ public class JuiceStock implements Iterable<JuiceRack> {
 	@Override
 	public Iterator<JuiceRack> iterator() {
 		return racks.iterator();
-	}
-
-	public List<JuiceRack> getRacks() {
-		return Collections.unmodifiableList(racks);
 	}
 
 	private void initialize() {
@@ -41,5 +37,13 @@ public class JuiceStock implements Iterable<JuiceRack> {
 
 	public boolean isInStock(Juice juice) {
 		return getRack(juice).isInStock();
+	}
+
+	public StockReport getStockReport() {
+		StockReport report = new StockReport();
+		for (JuiceRack rack : racks) {
+			report.put(rack.getJuice(), rack.getCount());
+		}
+		return report;
 	}
 }
