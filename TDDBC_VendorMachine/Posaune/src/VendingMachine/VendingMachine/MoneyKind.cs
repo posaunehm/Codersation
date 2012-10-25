@@ -9,6 +9,7 @@ namespace VendingMachine
         Yen100,
         Yen500,
         Yen1000,
+        Yen2000,
         Yen5000,
         Yen10000,
     }

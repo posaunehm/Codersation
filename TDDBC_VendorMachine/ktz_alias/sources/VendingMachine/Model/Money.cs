@@ -17,8 +17,8 @@ namespace VendingMachine.Model {
         Bill10000,
     }
 
-     public class CashFlow {
-        public CashFlow() {
+     public class CashDeal {
+        public CashDeal() {
             this.RecevedMoney = new List<Money>();
         }
 

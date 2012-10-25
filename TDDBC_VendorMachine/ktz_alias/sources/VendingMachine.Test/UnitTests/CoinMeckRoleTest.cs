@@ -6,7 +6,9 @@ using VendingMachine.Model;
 
 using NUnit.Framework;
 
-namespace VendingMachine.Test {
+using VendingMachine.Test;
+
+namespace VendingMachine.Test.Unit {
 	[TestFixture]
 	public class _利用者の入出金の関するTestSuite {
 		[TestCase(Money.Coin10, MoneyStatus.Available, 10)]
@@ -48,7 +50,7 @@ namespace VendingMachine.Test {
 		[Test]
 		public void _利用者がお金を投入する() {
 			var role = new CoinMeckRole ();
-			var received = new CashFlow();
+			var received = new CashDeal();
 			
 			Assert.True(role.Receive(received, Money.Coin10)); 
 			Assert.True(role.Receive(received, Money.Coin50));
@@ -85,7 +87,7 @@ namespace VendingMachine.Test {
 		[TestCase(Money.Bill1000, 1)]
 		public void _何も購入せずお金を排出する(Money inMoney, int inRepeat) {
 			var role = new CoinMeckRole ();
-			var received = new CashFlow();
+			var received = new CashDeal();
 			var pool = TestHelper.InitInfinityReservedChange();
 			
 			for (var i = 0; i < inRepeat; ++i) {
@@ -107,7 +109,7 @@ namespace VendingMachine.Test {
 		[Test]
 		public void _お金を入れず購入() {
 			var role = new CoinMeckRole ();
-			var received = new CashFlow();
+			var received = new CashDeal();
 			
 			Assert.False(role.Purchase(received, 100));	
 			
@@ -170,7 +172,7 @@ namespace VendingMachine.Test {
 			    _商品購入後お金を排出するParams.Parameter inParameter) 
 		{
 			var role = new CoinMeckRole();
-			var received = new CashFlow();
+			var received = new CashDeal();
             var pool = TestHelper.InitInfinityReservedChange();
 			
 			foreach (var m in inParameter.ReceivedMoney) {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace VendingMachine
@@ -34,10 +33,9 @@ namespace VendingMachine
             var lastElement = enumuratedMoneyList.LastOrDefault();
             if (lastElement != null && lastElement.Remainder != 0)
             {
-                throw new ApplicationException
-                    (string.Format(
-                    "VendingMachine couldn't prepare return money. Remainder:{0}",
-                    lastElement.Remainder));
+                throw new RackingCoinStockException
+                    (
+                    lastElement.Remainder);
             }
 
             _insertedAmount = 0;
@@ -58,7 +56,7 @@ namespace VendingMachine
             }
         }
 
-        public void Stock(Money money)
+        public void AddStock(Money money)
         {
             _moneyPool.Add(money);
         }
@@ -69,7 +67,7 @@ namespace VendingMachine
         }
 
         //メソッド名冗長だけれど思いつかない・・・
-        public bool CanRetuenJustMoneyIfUsed(int amount)
+        public bool CanReturnJustMoneyIfUsed(int amount)
         {
             if (amount == _insertedAmount)
             {

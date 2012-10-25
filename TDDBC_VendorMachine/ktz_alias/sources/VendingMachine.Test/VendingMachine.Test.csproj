@@ -37,9 +37,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CoinMeckRoleTest.cs" />
-    <Compile Include="PurchaseTest.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="UnitTests\CoinMeckRoleTest.cs" />
+    <Compile Include="UnitTests\PurchaseTest.cs" />
+    <Compile Include="UnitTests\PurchaseContextTest.cs" />
+    <Compile Include="End2EndTests\PurchaseE2ETest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -47,5 +49,9 @@
       <Project>{69045954-09E5-4186-B5BA-506555177051}</Project>
       <Name>VendingMachine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitTests\" />
+    <Folder Include="End2EndTests\" />
   </ItemGroup>
 </Project>

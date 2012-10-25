@@ -27,4 +27,9 @@ private:
     std::list<JuiceRackPointer> juicerack_list_;
 };
 
+class IsInRack : public std::binary_function<boost::shared_ptr<JuiceRack>,Juice,bool> {
+public:
+  bool operator()(boost::shared_ptr<JuiceRack> pjuicerack, const Juice& juice) const;
+ };
+
 #endif /* JUICESTOCK_H_ */

@@ -8,7 +8,7 @@ namespace VendingMachine.Model {
             return MoneyResolver.Resolve(inMoney).Status == MoneyStatus.Available;
 		}
 
-        public bool Receive(CashFlow inCash, Money inMoney) {
+        public bool Receive(CashDeal inCash, Money inMoney) {
             if (this.IsAvailableMoney(inMoney)) {
                 inCash.RecevedMoney.Add(inMoney);
 
@@ -18,7 +18,7 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public bool Purchase(CashFlow inCash, int inItemValue) {
+        public bool Purchase(CashDeal inCash, int inItemValue) {
             if (inCash.ChangedAount >= inItemValue) {
                 inCash.UsedAmount += inItemValue;
 
@@ -28,7 +28,7 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public IEnumerable<Money> Eject(CashFlow inCash, ChangePool inReservedMoney) {
+        public IEnumerable<Money> Eject(CashDeal inCash, ChangePool inReservedMoney) {
             try {
                 if (inCash.UsedAmount == 0) {
                     return inCash.RecevedMoney.ToList();

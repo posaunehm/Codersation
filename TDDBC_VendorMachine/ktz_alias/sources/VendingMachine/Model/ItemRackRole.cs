@@ -2,7 +2,7 @@ using System;
 
 namespace VendingMachine.Model {
     public class ItemRackRole {
-        public bool UpdateItemSelectionState(ItemRack inRack, CashFlow inCredits, ChangePool inPool) {
+        public bool UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, ChangePool inPool) {
             var oldState = inRack.State;
             if (oldState == ItemRackState.Soldout) return false;
 
@@ -22,6 +22,10 @@ namespace VendingMachine.Model {
 
         public bool CanItemPurchase(ItemRack inRack) {
             return inRack.State == ItemRackState.CanPurchase;
+        }
+
+        public Item Purchase(ItemRack inRack) {
+            return null;
         }
     }
 }
