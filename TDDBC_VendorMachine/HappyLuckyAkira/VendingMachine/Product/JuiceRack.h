@@ -28,7 +28,6 @@ public:
   {
     return *pJuice_;
   }
-  bool Of(const Juice& juice);
 private:
   JuiceRack();
   Juice* pJuice_;
