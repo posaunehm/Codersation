@@ -7,7 +7,7 @@ class VendingMachineSpec extends Specification {
 
 	VendingMachine sut = new VendingMachine()
 
-	def "200円入れてコーラを買って払い戻した。売上は120円でお釣りは80円。"() {
+	def "200円入れてコーラを買って払い戻した。預かり金0円、売上120円、お釣り80円。"() {
 		given:
 			sut.insert(Money.HundredYen)
 			sut.insert(Money.HundredYen)
@@ -15,6 +15,7 @@ class VendingMachineSpec extends Specification {
 			sut.purchase(Juice.Coke)
 			sut.payBack()
 		then:
+			sut.creditAmount == 0
 			sut.saleAmount == 120
 			sut.changeAmount == 80
 	}
