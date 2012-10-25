@@ -65,10 +65,11 @@ public class VendingMachineTest {
 
 		@Test
 		public void 在庫情報を取得できる() throws Exception {
-			assertThat(sut.getAllJuiceStock().size(), is(3));
-			assertThat(sut.getStockCount(Juice.Coke), is(5));
-			assertThat(sut.getStockCount(Juice.Water), is(5));
-			assertThat(sut.getStockCount(Juice.RedBull), is(5));
+			StockReport actual = sut.getAllJuiceStock();
+			assertThat(actual.size(), is(3));
+			assertThat(actual.get(Juice.Coke), is(5));
+			assertThat(actual.get(Juice.Water), is(5));
+			assertThat(actual.get(Juice.RedBull), is(5));
 		}
 	}
 
