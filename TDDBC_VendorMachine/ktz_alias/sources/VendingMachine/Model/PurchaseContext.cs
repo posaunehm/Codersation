@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VendingMachine.Model {
     public class PurchaseContext {
@@ -21,6 +22,10 @@ namespace VendingMachine.Model {
 
         public void ReceiveMoney(Money inMoney) {
             mCoinMeckRole.Receive(mDealAmount, inMoney);
+
+            foreach (var rack in mItems.Items.Where(r => r.State == ItemRackState.CanNotPurchase)) {
+                mItemRole.UpdateItemSelectionState(rack, mDealAmount, mChanges);
+            }
         }
 
         public IEnumerable<Money> Eject() {
@@ -28,13 +33,27 @@ namespace VendingMachine.Model {
         }
 
         public bool CanPurchase(int inPosition) {
-            return false;
+            var rack = mItemRole.FindRackAt(mItems, inPosition);
+            if (rack == null) {
+                // error
+            }
+
+            return mItemRole.CanItemPurchase(rack);
         }
 
         public Item Purchase(int inPosition) {
-            return mItemRole.Purchase(
-                mItemRole.FindRackAt(mItems, inPosition)
-            );
+            var rack = mItemRole.FindRackAt(mItems, inPosition);
+            if (rack == null) {
+                // error
+            }
+
+            if (! mItemRole.CanItemPurchase(rack)) {
+                // error
+            }
+
+            mCoinMeckRole.Purchase(mDealAmount, rack.Item.Price);
+
+            return mItemRole.Purchase(rack);
         }
 
         public int ReceivedTotal {

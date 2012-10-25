@@ -41,7 +41,7 @@ namespace VendingMachine.Test.Unit {
             ctx.ReceiveMoney(Money.Coin10);                     
             ctx.ReceiveMoney(Money.Coin10);      
 
-            Assert.That(ctx.CanPurchase(0), Is.True);
+            Assert.That(ctx.CanPurchase(0), Is.True, "should be purchased");
 
             var item = ctx.Purchase(0);
             Assert.That(item.Name, Is.EqualTo("Item0"));

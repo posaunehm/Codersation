@@ -141,7 +141,34 @@ namespace VendingMachine.Test.Unit {
 
         [Test]
         public void _商品を購入する () {
-            Assert.Fail("Not Implemented");
+            var racks = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
+            
+            var pool = TestHelper.InitInfinityReservedChange();
+            var credit = new CashDeal();
+            
+            var coinMeckRole = new CoinMeckRole();
+            var itemRackRole = new  ItemRackRole();
+
+            coinMeckRole.Receive(credit, Money.Coin100);
+            coinMeckRole.Receive(credit, Money.Coin10);
+            coinMeckRole.Receive(credit, Money.Coin10);
+
+            var rack = itemRackRole.FindRackAt(racks, 0);
+            itemRackRole.UpdateItemSelectionState(rack, credit, pool);            
+
+            var svCount = rack.Count;
+            Assert.That(itemRackRole.CanItemPurchase(rack), Is.True);
+
+            coinMeckRole.Purchase(credit, rack.Item.Price);
+            var item = itemRackRole.Purchase(rack);
+
+            Assert.That(item, Is.Not.Null);
+            Assert.That(item.Name, Is.EqualTo("Item0"));
+
+            Assert.That(credit.UsedAmount, Is.EqualTo(120));
+            Assert.That(credit.ChangedAount, Is.EqualTo(0));
+
+            Assert.That(rack.Count, Is.EqualTo(svCount-1));
         }
     }
 }

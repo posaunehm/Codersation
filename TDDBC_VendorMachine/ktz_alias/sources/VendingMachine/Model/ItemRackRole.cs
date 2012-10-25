@@ -25,7 +25,9 @@ namespace VendingMachine.Model {
         }
 
         public Item Purchase(ItemRack inRack) {
-            return null;
+            --inRack.Count;
+
+            return inRack.Item;
         }
     }
 }
