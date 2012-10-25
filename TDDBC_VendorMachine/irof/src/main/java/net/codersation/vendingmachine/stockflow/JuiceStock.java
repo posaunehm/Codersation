@@ -27,9 +27,9 @@ public class JuiceStock implements Iterable<JuiceRack> {
 	}
 
 	public JuiceRack getRack(Juice juice) {
-		for (JuiceRack stock : this) {
-			if (stock.of(juice)) {
-				return stock;
+		for (JuiceRack rack : racks) {
+			if (rack.getJuice().equals(juice)) {
+				return rack;
 			}
 		}
 		throw new IllegalStateException("そんなRackはない");
