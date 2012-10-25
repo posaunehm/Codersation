@@ -4,6 +4,8 @@ apply plugin: 'eclipse'
 
 defaultTasks 'clean', 'test'
 
+[compileJava, compileTestJava, compileTestGroovy]*.options*.encoding = 'UTF-8'
+
 repositories {
   mavenCentral()
 }
@@ -20,6 +22,25 @@ eclipse {
   classpath {
    downloadSources=true
   }
+  jdt.file.withProperties { properties ->
+    properties.put('org.eclipse.jdt.core.formatter.lineSplit', '120')
+  }
 }
+
+eclipseJdt << {
+  file('.settings/org.eclipse.core.resources.prefs').withWriter {
+    it << 'eclipse.preferences.version=1\n'
+    it << 'encoding/<project>=UTF-8\n'
+  }
+  file('.settings/org.eclipse.jdt.groovy.core.prefs').withWriter {
+    it << 'eclipse.preferences.version=1\n'
+    it << 'groovy.compiler.level=20\n'
+  }
+}
+cleanEclipseJdt << {
+  file('.settings/org.eclipse.core.resources.prefs').delete()
+  file('.settings/org.eclipse.jdt.groovy.core.prefs').delete()
+}
+
 
 test.exclude '**/*$*'
