@@ -10,8 +10,13 @@ import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 public class VendingMachine {
 
-	public MoneyFlow moneyFlow = MoneyFlowFactory.create();
-	private JuiceStock juiceStock = new JuiceStock();
+	private final MoneyFlow moneyFlow;
+	private final JuiceStock juiceStock;
+
+	public VendingMachine() {
+		moneyFlow = MoneyFlowFactory.create();
+		juiceStock = new JuiceStock();
+	}
 
 	public int getCreditAmount() {
 		return moneyFlow.getCreditAmount();
