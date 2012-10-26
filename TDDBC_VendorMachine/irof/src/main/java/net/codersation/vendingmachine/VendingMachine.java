@@ -70,9 +70,9 @@ public class VendingMachine {
 			return;
 		}
 
-		JuiceRack stock = juiceStock.getRack(juice);
-		if (stock.isInStock()) {
-			stock.remove();
+		JuiceRack rack = juiceStock.getRack(juice);
+		if (rack.isInStock()) {
+			rack.remove();
 			moneyFlow.purchase(juice.getPrice());
 		}
 	}
