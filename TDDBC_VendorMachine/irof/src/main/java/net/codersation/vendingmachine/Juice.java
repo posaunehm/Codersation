@@ -2,9 +2,9 @@ package net.codersation.vendingmachine;
 
 
 public class Juice {
-	public static Juice Coke = new Juice("コーラ", 120);
-	public static Juice Water = new Juice("水", 100);
-	public static Juice RedBull = new Juice("レッドブル", 200);
+	public static Juice Coke = JuiceFactory.create("コーラ");
+	public static Juice Water = JuiceFactory.create("水");
+	public static Juice RedBull = JuiceFactory.create("レッドブル");
 
 	private final String juiceName;
 	private final int price;
