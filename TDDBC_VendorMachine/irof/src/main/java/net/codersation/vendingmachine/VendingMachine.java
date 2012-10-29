@@ -70,9 +70,9 @@ public class VendingMachine {
 			return;
 		}
 
-		JuiceRack stock = juiceStock.getRack(juice);
-		if (stock.isInStock()) {
-			stock.remove();
+		JuiceRack rack = juiceStock.getRack(juice);
+		if (rack.isInStock()) {
+			rack.remove();
 			moneyFlow.purchase(juice.getPrice());
 		}
 	}
@@ -83,9 +83,9 @@ public class VendingMachine {
 	 */
 	public List<Juice> getPurchasable() {
 		List<Juice> list = new ArrayList<>();
-		for (Juice juice : Juice.values()) {
-			if (juiceStock.isInStock(juice) && juice.isEnough(getCreditAmount())) {
-				list.add(juice);
+		for (JuiceRack rack : juiceStock) {
+			if (rack.isInStock() && rack.getJuice().isEnough(getCreditAmount())) {
+				list.add(rack.getJuice());
 			}
 		}
 		return list;

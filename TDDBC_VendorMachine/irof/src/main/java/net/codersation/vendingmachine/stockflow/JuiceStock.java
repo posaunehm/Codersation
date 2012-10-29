@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.codersation.vendingmachine.Juice;
+import net.codersation.vendingmachine.JuiceFactory;
 import net.codersation.vendingmachine.StockReport;
 
 public class JuiceStock implements Iterable<JuiceRack> {
@@ -21,9 +22,9 @@ public class JuiceStock implements Iterable<JuiceRack> {
 	}
 
 	private void initialize() {
-		for (Juice juice : Juice.values()) {
-			racks.add(new JuiceRack(juice, 5));
-		}
+		racks.add(new JuiceRack(JuiceFactory.create("コーラ"), 5));
+		racks.add(new JuiceRack(JuiceFactory.create("水"), 5));
+		racks.add(new JuiceRack(JuiceFactory.create("レッドブル"), 5));
 	}
 
 	public JuiceRack getRack(Juice juice) {
