@@ -15,6 +15,10 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 public class VendingMachineTest {
 
+	private static final Juice コーラ = JuiceFactory.create("コーラ");
+	private static final Juice レッドブル = JuiceFactory.create("レッドブル");
+	private static final Juice 水 = JuiceFactory.create("水");
+
 	public static class 初期状態 {
 
 		private VendingMachine sut;
@@ -53,23 +57,23 @@ public class VendingMachineTest {
 
 		@Test
 		public void 買えない状態で購入しても売上金額は増えない() throws Exception {
-			sut.purchase(Juice.Coke);
+			sut.purchase(コーラ);
 			assertThat(sut.getSaleAmount(), is(0));
 		}
 
 		@Test
 		public void 買えない状態で購入しても在庫は減らない() throws Exception {
-			sut.purchase(Juice.Coke);
-			assertThat(sut.getStockCount(Juice.Coke), is(5));
+			sut.purchase(コーラ);
+			assertThat(sut.getStockCount(コーラ), is(5));
 		}
 
 		@Test
 		public void 在庫情報を取得できる() throws Exception {
 			StockReport actual = sut.getAllJuiceStock();
 			assertThat(actual.size(), is(3));
-			assertThat(actual.get(Juice.Coke), is(5));
-			assertThat(actual.get(Juice.Water), is(5));
-			assertThat(actual.get(Juice.RedBull), is(5));
+			assertThat(actual.get(コーラ), is(5));
+			assertThat(actual.get(JuiceFactory.create("レッドブル")), is(5));
+			assertThat(actual.get(JuiceFactory.create("水")), is(5));
 		}
 	}
 
@@ -109,22 +113,23 @@ public class VendingMachineTest {
 
 		@Test
 		public void 買えない状態で購入しても預かり金は減らない() throws Exception {
-			sut.purchase(Juice.Coke);
+			sut.purchase(コーラ);
 			assertThat(sut.getCreditAmount(), is(100));
 		}
 
 		@Test
 		public void コーラは買えない() throws Exception {
-			assertThat(sut.getPurchasable(), not(hasItem(Juice.Coke)));
+			assertThat(sut.getPurchasable(), not(hasItem(コーラ)));
 		}
 
 		@Test
 		public void 水は買える() throws Exception {
-			assertThat(sut.getPurchasable(), hasItem(Juice.Water));
+			assertThat(sut.getPurchasable(), hasItem(水));
 		}
 	}
 
 	public static class 千円入れた状態 {
+
 		private VendingMachine sut;
 
 		@Before
@@ -141,41 +146,41 @@ public class VendingMachineTest {
 
 		@Test
 		public void 購入したら在庫が減る() throws Exception {
-			sut.purchase(Juice.Coke);
-			assertThat(sut.getStockCount(Juice.Coke), is(4));
+			sut.purchase(コーラ);
+			assertThat(sut.getStockCount(コーラ), is(4));
 		}
 
 		@Test
 		public void 購入したら売上が増える() throws Exception {
-			sut.purchase(Juice.Coke);
+			sut.purchase(コーラ);
 			assertThat(sut.getSaleAmount(), is(120));
 		}
 
 		@Test
 		public void 購入したら預かり金が減る() throws Exception {
-			sut.purchase(Juice.Coke);
+			sut.purchase(コーラ);
 			assertThat(sut.getCreditAmount(), is(880));
 		}
 
 		@Test
 		public void 在庫が無くなったら購入不可になる() throws Exception {
-			sut.purchase(Juice.Coke);
-			sut.purchase(Juice.Coke);
-			sut.purchase(Juice.Coke);
-			sut.purchase(Juice.Coke);
-			sut.purchase(Juice.Coke);
+			sut.purchase(コーラ);
+			sut.purchase(コーラ);
+			sut.purchase(コーラ);
+			sut.purchase(コーラ);
+			sut.purchase(コーラ);
 
-			assertThat(sut.getPurchasable(), not(hasItem(Juice.Coke)));
+			assertThat(sut.getPurchasable(), not(hasItem(コーラ)));
 		}
 
 		@Test
 		public void コーラが買える() throws Exception {
-			assertThat(sut.getPurchasable(), hasItem(Juice.Coke));
+			assertThat(sut.getPurchasable(), hasItem(コーラ));
 		}
 
 		@Test
 		public void レッドブルが買える() throws Exception {
-			assertThat(sut.getPurchasable(), hasItem(Juice.RedBull));
+			assertThat(sut.getPurchasable(), hasItem(レッドブル));
 		}
 	}
 }

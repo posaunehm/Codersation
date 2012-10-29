@@ -12,7 +12,7 @@ class VendingMachineSpec extends Specification {
 			sut.insert(Money.HundredYen)
 			sut.insert(Money.HundredYen)
 		when:
-			sut.purchase(Juice.Coke)
+			sut.purchase(JuiceFactory.create("コーラ"))
 			sut.payBack()
 		then:
 			sut.creditAmount == 0

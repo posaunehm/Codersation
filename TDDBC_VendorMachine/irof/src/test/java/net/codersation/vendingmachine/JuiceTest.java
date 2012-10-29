@@ -14,7 +14,7 @@ public class JuiceTest {
 
 	@Before
 	public void setUp() {
-		sut = Juice.Coke;
+		sut = JuiceFactory.create("コーラ");
 	}
 
 	@Test
