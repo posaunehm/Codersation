@@ -12,6 +12,9 @@ import java.util.Objects;
  */
 public class Juice implements Product {
     
+    public static final Juice COKE = new Juice("coke");
+    public static final Juice RED_BULL = new Juice("red bull");
+    
     private String name;
 
     public Juice(String name) {
