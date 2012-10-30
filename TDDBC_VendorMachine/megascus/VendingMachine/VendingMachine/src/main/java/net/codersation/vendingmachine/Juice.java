@@ -12,24 +12,32 @@ import java.util.Objects;
  */
 public class Juice implements Product {
     
-    public static final Juice COKE = new Juice("coke");
-    public static final Juice RED_BULL = new Juice("red bull");
+    public static final Juice COKE = new Juice("coke", 120);
+    public static final Juice RED_BULL = new Juice("red bull", 200);
     
     private String name;
+    private int price;
 
-    public Juice(String name) {
+    public Juice(String name, int price) {
         this.name = name;
+        this.price = price;
     }
 
     @Override
     public String getName() {
         return name;
     }
+    
+    @Override
+    public int getPrice() {
+        return this.price;
+    }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + this.price;
         return hash;
     }
 
@@ -45,11 +53,16 @@ public class Juice implements Product {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
+        if (this.price != other.price) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Juice{" + "name=" + name + '}';
-    } 
+        return "Juice{" + "name=" + name + ", price=" + price + '}';
+    }
+
+    
 }

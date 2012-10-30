@@ -92,13 +92,41 @@ public class MoneyBoxTest {
         assertFalse(instance.canPay(621));
         instance.pay(111);
         List<Money> result = instance.getChange();
-        List<Money> expected = new ArrayList<Money>();
+        List<Money> expected = new ArrayList<>();
         expected.add(Money.FIVE_HUNDREDS);
         expected.add(Money.FIVE);
         expected.add(Money.ONE);
         expected.add(Money.ONE);
         expected.add(Money.ONE);
         expected.add(Money.ONE);
+        assertThat(result, is(expected));
+    }
+    
+    @Test
+    public void getChangeReturnsAfterPayAndInsertMoney() {
+        MoneyBox instance = new MoneyBox();
+        List<Money> moneys = new ArrayList<>();
+        moneys.add(Money.TEN);
+        moneys.add(Money.TEN);
+        moneys.add(Money.FIVE_HUNDREDS);
+        moneys.add(Money.ONE_HUNDRED);
+        
+        for(Money money: moneys) {
+            instance.insert(money);
+        }
+        assertTrue(instance.canPay(620));
+        assertFalse(instance.canPay(621));
+        instance.pay(111);
+        instance.insert(Money.ONE_HUNDRED);
+        List<Money> result = instance.getChange();
+        List<Money> expected = new ArrayList<>();
+        expected.add(Money.FIVE_HUNDREDS);
+        expected.add(Money.FIVE);
+        expected.add(Money.ONE);
+        expected.add(Money.ONE);
+        expected.add(Money.ONE);
+        expected.add(Money.ONE);
+        expected.add(Money.ONE_HUNDRED);
         assertThat(result, is(expected));
     }
 

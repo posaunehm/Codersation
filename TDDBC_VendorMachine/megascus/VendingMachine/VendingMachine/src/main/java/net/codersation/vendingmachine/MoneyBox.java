@@ -56,7 +56,9 @@ public class MoneyBox {
         if (!canPay(price)) {
             throw new IllegalArgumentException("cannot pay.");
         }
-        insertedMoney = null;
+        if(!insertedMoney.isEmpty()) {
+            insertedMoney.clear();
+        }
         totalAmount -= price;
     }
 
@@ -66,10 +68,19 @@ public class MoneyBox {
      * @return
      */
     public List<Money> getChange() {
-        if (insertedMoney == null) {
-            return amountToMoneys(totalAmount);
+        int i = totalAmount;
+        i -= sum(insertedMoney);
+        List<Money> change = amountToMoneys(i);
+        change.addAll(insertedMoney);
+        return change;
+    }
+    
+    private int sum(List<Money> moneys) {
+        int sum = 0;
+        for (Money money : moneys) {
+            sum += money.getValue();
         }
-        return new ArrayList<>(insertedMoney);
+        return sum;
     }
     private List<Money> canPayChargeMoneys = ListUtils.of(Money.ONE_THOUSAND,
             Money.FIVE_HUNDREDS, Money.ONE_HUNDRED, Money.FIFTY, Money.TEN,

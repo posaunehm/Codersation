@@ -11,14 +11,26 @@ import java.util.Objects;
  * @author megascus
  */
 public class Stock <T extends Product> {
+    private int id;
     private T product;
     private int price;
     private int count;
+    
+    private static int idnum = 0;
 
     public Stock(T product, int price, int count) {
+        this.id = idnum++;
         this.product = product;
         this.price = price;
         this.count = count;
+    }
+    
+    /**
+     * 自動販売機が商品を管理するIDです。この値は重複をしません。
+     * @return 
+     */
+    public int getId() {
+        return this.id;
     }
     
     public T getProduct() {
@@ -78,8 +90,4 @@ public class Stock <T extends Product> {
     public String toString() {
         return "Stock{" + "product=" + product + ", price=" + price + ", count=" + count + '}';
     }
-    
-    
-
-
 }

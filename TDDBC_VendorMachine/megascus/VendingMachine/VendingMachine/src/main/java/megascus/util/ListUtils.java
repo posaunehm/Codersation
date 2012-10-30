@@ -16,12 +16,27 @@ public final class ListUtils {
     
     private ListUtils() {}
     
+    /**
+     * 引数のListを作成します。
+     * 
+     * @param <T>
+     * @param arg
+     * @return 
+     */
     public static <T> List<T> of(T arg) {
         List<T> list = new ArrayList<>();
         list.add(arg);
         return list;
     }
     
+    /**
+     * 引数のListを作成します。
+     * 
+     * @param <T>
+     * @param first
+     * @param rest
+     * @return 
+     */
     public static <T> List<T> of(T first, T... rest) {
         List<T> list = new ArrayList<>();
         list.add(first);
