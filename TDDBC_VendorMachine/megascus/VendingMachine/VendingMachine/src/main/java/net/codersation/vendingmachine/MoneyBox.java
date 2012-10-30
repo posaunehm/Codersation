@@ -82,6 +82,10 @@ public class MoneyBox {
         }
         return sum;
     }
+    
+    /**
+     * お釣りとして使用出来る金種一覧。
+     */
     private List<Money> canPayChargeMoneys = ListUtils.of(Money.ONE_THOUSAND,
             Money.FIVE_HUNDREDS, Money.ONE_HUNDRED, Money.FIFTY, Money.TEN,
             Money.FIVE, Money.ONE);
