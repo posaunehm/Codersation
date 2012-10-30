@@ -2,22 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Ninject;
+
 namespace VendingMachine.Model {
     public class PurchaseContext {
         private CashDeal mDealAmount;
         private ChangePool mChanges;
         private ItemRackPosition mItems;
 
-        private CoinMeckRole mCoinMeckRole;
-        private ItemRackRole mItemRole;
+        private IUserCoinMeckRole mCoinMeckRole;
+        private IUserPurchaseRole mItemRole;
 
+        [Inject]
         public PurchaseContext(ChangePool inChanges, ItemRackPosition inItems) {
             mDealAmount = new CashDeal();
             mChanges = inChanges;
             mItems = inItems;
+        }
 
-            mCoinMeckRole = new CoinMeckRole();
-            mItemRole = new ItemRackRole();
+        [Inject]
+        public void InitRoles(IUserCoinMeckRole inCoinMeckRole, IUserPurchaseRole inPurchaseRole) {
+            mCoinMeckRole = inCoinMeckRole;
+            mItemRole = inPurchaseRole;
         }
 
         public void ReceiveMoney(Money inMoney) {

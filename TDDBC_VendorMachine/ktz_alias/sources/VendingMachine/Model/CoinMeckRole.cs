@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace VendingMachine.Model {
-	public class CoinMeckRole {
+    public class CoinMeckRole : IUserCoinMeckRole {
 		public bool IsAvailableMoney(Money inMoney) {
             return MoneyResolver.Resolve(inMoney).Status == MoneyStatus.Available;
 		}

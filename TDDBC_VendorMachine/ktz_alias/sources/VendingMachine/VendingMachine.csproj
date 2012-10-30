@@ -34,10 +34,14 @@
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\Money.cs" />
     <Compile Include="Model\ItemRackRole.cs" />
+    <Compile Include="Model\RoleIntf.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject\Ninject.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

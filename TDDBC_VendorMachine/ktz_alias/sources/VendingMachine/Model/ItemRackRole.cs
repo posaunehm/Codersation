@@ -1,7 +1,7 @@
 using System;
 
 namespace VendingMachine.Model {
-    public class ItemRackRole {
+    public class ItemRackRole : IUserPurchaseRole {
         public bool UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, ChangePool inPool) {
             var oldState = inRack.State;
             if (oldState == ItemRackState.Soldout) return false;
