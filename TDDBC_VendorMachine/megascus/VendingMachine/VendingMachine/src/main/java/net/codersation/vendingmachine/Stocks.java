@@ -28,7 +28,7 @@ public class Stocks implements Iterable<Stock<Product>> {
      * 在庫を追加します。
      * @param s 在庫
      */
-    public void add(Stock<Product> s) {
+    void add(Stock<Product> s) {
         stocks.put(s.getProduct(), s);
     }
 
@@ -37,6 +37,7 @@ public class Stocks implements Iterable<Stock<Product>> {
         return stocks.values().iterator();
     }
     
-    
-    
+    public int size() {
+        return stocks.size();
+    }
 }

@@ -15,6 +15,13 @@ import java.util.List;
 public class VendingMachine {
 
     private MoneyBox moneyBox = new MoneyBox();
+    
+    private Stocks stocks;
+    
+    {
+        stocks = new Stocks();
+        stocks.add(new Stock<Product>(Juice.COKE, 5));
+    }
 
     /**
      * お金を投入します。
@@ -48,5 +55,13 @@ public class VendingMachine {
         List<Money> moneys = moneyBox.getChange();
         moneys.clear();
         return moneys;
+    }
+    
+    /**
+     * 在庫を取得します。
+     * @return 
+     */
+    public Stocks getStocks() {
+        return this.stocks;
     }
 }

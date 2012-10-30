@@ -13,15 +13,13 @@ import java.util.Objects;
 public class Stock <T extends Product> {
     private int id;
     private T product;
-    private int price;
     private int count;
     
     private static int idnum = 0;
 
-    public Stock(T product, int price, int count) {
+    public Stock(T product, int count) {
         this.id = idnum++;
         this.product = product;
-        this.price = price;
         this.count = count;
     }
     
@@ -37,22 +35,18 @@ public class Stock <T extends Product> {
         return this.product;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
     public int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    void setCount(int count) {
         this.count = count;
     }
     
     /**
      * 在庫を一つ減らします。
      */
-    public void decrement() {
+    void decrement() {
         count--;
     }
 
@@ -60,7 +54,6 @@ public class Stock <T extends Product> {
     public int hashCode() {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.product);
-        hash = 67 * hash + this.price;
         hash = 67 * hash + this.count;
         return hash;
     }
@@ -77,9 +70,6 @@ public class Stock <T extends Product> {
         if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        if (this.price != other.price) {
-            return false;
-        }
         if (this.count != other.count) {
             return false;
         }
@@ -88,6 +78,6 @@ public class Stock <T extends Product> {
 
     @Override
     public String toString() {
-        return "Stock{" + "product=" + product + ", price=" + price + ", count=" + count + '}';
+        return "Stock{" + "product=" + product + ", count=" + count + '}';
     }
 }

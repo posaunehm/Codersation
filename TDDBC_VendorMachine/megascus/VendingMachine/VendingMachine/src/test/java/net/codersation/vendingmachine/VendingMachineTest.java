@@ -4,6 +4,7 @@
  */
 package net.codersation.vendingmachine;
 
+import java.util.Iterator;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.core.IsNull;
 import org.junit.*;
@@ -51,10 +52,21 @@ public class VendingMachineTest {
         assertThat(money, IsNull.nullValue());
     }
     
+    @Test
     public void cannotInsert10000Yen() {
         VendingMachine vm = new VendingMachine();
         Money money = vm.insert(Money.TEN_THOUSANDS);
         assertThat(money, is(Money.TEN_THOUSANDS));
         assertThat(vm.getTotalAmount(), is(0));
+    }
+    
+    @Test
+    public void firstStockIsFiveCokes() {
+        VendingMachine vm = new VendingMachine();
+        Stocks stocks = vm.getStocks();
+        assertThat(stocks.size(), is(1));
+        Iterator<Stock<Product>> ite = stocks.iterator();
+        Stock<Product> s = ite.next();
+        assertThat(s, is(new Stock<Product>(new Juice("coke", 120), 5)));
     }
 }
