@@ -7,6 +7,7 @@ package net.codersation.vendingmachine;
 import net.codersation.vendingmachine.MoneyBox;
 import net.codersation.vendingmachine.Money;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
@@ -48,6 +49,12 @@ public class MoneyBoxTest {
     public void amountIs0WhenFirst() {
         MoneyBox instance = new MoneyBox();
         assertThat(instance.getAmount(),is(0));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void fiveThousandsCannotInsert() {
+        MoneyBox instance = new MoneyBox();
+        instance.insert(Money.FIVE_THOUSANDS);
     }
     
     @Test
@@ -99,6 +106,7 @@ public class MoneyBoxTest {
         expected.add(Money.ONE);
         expected.add(Money.ONE);
         expected.add(Money.ONE);
+        Collections.sort(expected);
         assertThat(result, is(expected));
     }
     
@@ -127,6 +135,7 @@ public class MoneyBoxTest {
         expected.add(Money.ONE);
         expected.add(Money.ONE);
         expected.add(Money.ONE_HUNDRED);
+        Collections.sort(expected);
         assertThat(result, is(expected));
     }
 

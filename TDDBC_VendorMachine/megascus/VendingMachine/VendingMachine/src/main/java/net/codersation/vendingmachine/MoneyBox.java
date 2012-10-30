@@ -5,6 +5,8 @@
 package net.codersation.vendingmachine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import megascus.util.ListUtils;
 
@@ -23,8 +25,18 @@ public class MoneyBox {
     private List<Money> insertedMoney = new ArrayList<>();
 
     void insert(Money money) {
+        if(!canInsert(money)) {
+            throw new IllegalArgumentException("cannot insert.");
+        }
         this.insertedMoney.add(money);
         totalAmount += money.getValue();
+    }
+    
+    private EnumSet<Money> canInsertMoney = EnumSet.of(Money.ONE_THOUSAND,
+            Money.FIVE_HUNDREDS,Money.ONE_HUNDRED,Money.FIFTY,Money.TEN);
+    
+    boolean canInsert(Money money) {
+        return canInsertMoney.contains(money);
     }
 
     /**
@@ -72,6 +84,7 @@ public class MoneyBox {
         i -= sum(insertedMoney);
         List<Money> change = amountToMoneys(i);
         change.addAll(insertedMoney);
+        Collections.sort(change);
         return change;
     }
     

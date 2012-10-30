@@ -4,8 +4,8 @@
  */
 package net.codersation.vendingmachine;
 
-import net.codersation.vendingmachine.Money;
-import net.codersation.vendingmachine.VendingMachine;
+import static org.hamcrest.CoreMatchers.*;
+import org.hamcrest.core.IsNull;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -46,10 +46,14 @@ public class VendingMachineTest {
     @Test
     public void canInsert10YenAndTotalAmountIs10Yen() {
         VendingMachine vm = new VendingMachine();
-        vm.insert(Money.TEN);
+        Money money = vm.insert(Money.TEN);
         assertEquals(vm.getTotalAmount(), 10);
-
-
-
+        assertThat(money, IsNull.nullValue());
+    }
+    
+    public void cannotInsert10000Yen() {
+        VendingMachine vm = new VendingMachine();
+        Money money = vm.insert(Money.TEN_THOUSANDS);
+        assertThat(money, is(Money.TEN_THOUSANDS));
     }
 }
