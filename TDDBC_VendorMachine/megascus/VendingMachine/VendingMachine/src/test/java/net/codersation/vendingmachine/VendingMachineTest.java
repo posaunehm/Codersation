@@ -55,5 +55,6 @@ public class VendingMachineTest {
         VendingMachine vm = new VendingMachine();
         Money money = vm.insert(Money.TEN_THOUSANDS);
         assertThat(money, is(Money.TEN_THOUSANDS));
+        assertThat(vm.getTotalAmount(), is(0));
     }
 }
