@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Ninject;
@@ -58,8 +59,40 @@ namespace VendingMachine.Test.Unit {
         }
 
         [Test]
-        public void _金銭を投入して商品を受け取る() {
+        public void _金銭を投入して商品を受け取る_釣り銭が発生する場合() {
+            var ctx = this.SetUpPurchaseContextKernel().Get<PurchaseContext>();
 
+            Assert.That(ctx.CanPurchase(0), Is.False);
+            
+            ctx.ReceiveMoney(Money.Coin100);                     
+            ctx.ReceiveMoney(Money.Coin100);                     
+
+            var item = ctx.Purchase(0);
+            Assert.That(item.Name, Is.EqualTo("Item0"));
+            Assert.That(ctx.ReceivedTotal, Is.EqualTo(80));
+
+            var changes = ctx.Eject()
+                .GroupBy(m => m)
+                .ToDictionary(g => g.Key, g => g.Count())
+            ;
+            var expected = new Dictionary<Money, int> {
+                {Money.Coin10, 3}, 
+                {Money.Coin50, 1},
+            };
+
+            foreach (var m in expected) {
+                Assert.That(changes.ContainsKey(m.Key), Is.True);
+                Assert.That(changes[m.Key], Is.EqualTo(m.Value));
+            }
+
+            var notContained = Enum.GetValues(typeof(Money))
+                .Cast<Money>()
+                .Where(m => ! expected.ContainsKey(m))
+            ;
+
+            foreach (var m in notContained) {
+                Assert.That(changes.ContainsKey(m), Is.False);
+            }
         }
     }
 }
