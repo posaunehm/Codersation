@@ -41,73 +41,73 @@ namespace Jihanki.TEST
         }
 
 
-         [TestCase]
-        public void お金の投入10円()
-        {
-            var target = new ReceiptMoney();
-            bool expected = true;
+        // [TestCase]
+        //public void お金の投入10円()
+        //{
+        //    var target = new ReceiptMoney();
+        //    bool expected = true;
 
-            bool actual;
-            actual = target.Receipt(this.yen10);
+        //    bool actual;
+        //    actual = target.Receipt(this.yen10);
 
-            Assert.AreEqual(expected, actual);
-        }
-
-
-
-
-         [Test]
-         public void お金の投入50円()
-         {
-             var target = new ReceiptMoney();
-             bool expected = true;
-
-             bool actual;
-             actual = target.Receipt(this.yen50);
-
-             Assert.AreEqual(expected, actual);
-         }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
 
 
-         [Test]
-         public void お金の投入100円()
-         {
-             var target = new ReceiptMoney();
-             bool expected = true;
 
-             bool actual;
-             actual = target.Receipt(this.yen100);
+        // [Test]
+        // public void お金の投入50円()
+        // {
+        //     var target = new ReceiptMoney();
+        //     bool expected = true;
 
-             Assert.AreEqual(expected, actual);
-         }
+        //     bool actual;
+        //     actual = target.Receipt(this.yen50);
 
-
-
-         [Test]
-         public void お金の投入500円()
-         {
-             var target = new ReceiptMoney();
-             bool expected = true;
-
-             bool actual;
-             actual = target.Receipt(this.yen500);
-
-             Assert.AreEqual(expected, actual);
-         }
+        //     Assert.AreEqual(expected, actual);
+        // }
 
 
-         [Test]
-         public void お金の投入1000円()
-         {
-             var target = new ReceiptMoney();
-             bool expected = true;
 
-             bool actual;
-             actual = target.Receipt(this.yen1000);
+        // [Test]
+        // public void お金の投入100円()
+        // {
+        //     var target = new ReceiptMoney();
+        //     bool expected = true;
 
-             Assert.AreEqual(expected, actual);
-         }
+        //     bool actual;
+        //     actual = target.Receipt(this.yen100);
+
+        //     Assert.AreEqual(expected, actual);
+        // }
+
+
+
+        // [Test]
+        // public void お金の投入500円()
+        // {
+        //     var target = new ReceiptMoney();
+        //     bool expected = true;
+
+        //     bool actual;
+        //     actual = target.Receipt(this.yen500);
+
+        //     Assert.AreEqual(expected, actual);
+        // }
+
+
+        // [Test]
+        // public void お金の投入1000円()
+        // {
+        //     var target = new ReceiptMoney();
+        //     bool expected = true;
+
+        //     bool actual;
+        //     actual = target.Receipt(this.yen1000);
+
+        //     Assert.AreEqual(expected, actual);
+        // }
 
     }
 }
