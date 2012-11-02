@@ -13,11 +13,22 @@ namespace Jihanki.TEST.Money
     {
 
         //投入金額
-        private Jihanki.Money.Base.Money yen10 
+        private Jihanki.Money.Base.Money yen10
             = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen10);
 
+        private Jihanki.Money.Base.Money yen50
+                    = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen50);
+
+
+        private Jihanki.Money.Base.Money yen100
+            = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen100);
+
+        private Jihanki.Money.Base.Money yen500
+            = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen500);
 
         
+
+
         /// <summary>
         /// 投入するお金ごとの金額指定
         /// </summary>
@@ -25,6 +36,9 @@ namespace Jihanki.TEST.Money
          public void SetMoneyNum(int num)
         {
             yen10.Add(num);
+            yen50.Add(num);
+            yen100.Add(num);
+            yen500.Add(num);
         }
 
 
@@ -36,13 +50,29 @@ namespace Jihanki.TEST.Money
 
              var target = new Jihanki.Money.MoneyController();
 
-             //お金を投入
+             //10円*1を投入
              target.InputMoneyAdd(this.yen10);
-
              var expect = 10;
              var actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
 
+             //50円*1を投入
+             target.InputMoneyAdd(this.yen50);
+             expect = 60;
+             actual = target.InputMoneySum();
+             Assert.AreEqual(expect, actual);
+
+             //100円*1を投入
+             target.InputMoneyAdd(this.yen100);
+             expect = 160;
+             actual = target.InputMoneySum();
+             Assert.AreEqual(expect, actual);
+
+             //500円*1を投入
+             target.InputMoneyAdd(this.yen500);
+             expect = 660;
+             actual = target.InputMoneySum();
+             Assert.AreEqual(expect, actual);
 
 
 
