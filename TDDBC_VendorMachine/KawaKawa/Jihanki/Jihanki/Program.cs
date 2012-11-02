@@ -8,8 +8,30 @@ namespace Jihanki
 {
     class Program
     {
+        /// <summary>
+        /// お金コントローラー
+        /// </summary>
+        static Money.MoneyController moneyControl;
+
+
+        /// <summary>
+        /// 自販機の挙動コントローラー
+        /// </summary>
+        static OperateController operateController;
+
+
+
         static void Main(string[] args)
         {
+            moneyControl = new Money.MoneyController();
+
+            operateController = new OperateController(moneyControl);
+
+
+
+
+
+
         }
     }
 }

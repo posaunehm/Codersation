@@ -7,12 +7,46 @@ using System.Threading.Tasks;
 namespace Jihanki
 {
 
-    public class OperateController
+    public class OperateController:IDisposable
     {
+        /// <summary>
+        /// お金コントローラー
+        /// </summary>
+        private Money.MoneyController moneyControl;
+
         /// <summary>
         /// お金の受付関係
         /// </summary>
         private ReceiptMoney receiptMoney = new ReceiptMoney();
+       
+
+
+        public OperateController(Money.MoneyController moneyControl)
+        {
+            // TODO: Complete member initialization
+            this.moneyControl = moneyControl;
+        }
+
+
+        /// <summary>
+        /// Event追加
+        /// </summary>
+        private void addEvent()
+        {
+            this.receiptMoney.ReceiptEvent += moneyControl.InputMoneyAdd;
+
+        }
+
+        /// <summary>
+        /// Event削除
+        /// </summary>
+        private void removeEvent()
+        {
+            this.receiptMoney.ReceiptEvent -= moneyControl.InputMoneyAdd;
+        }
+
+
+
 
 
 
@@ -28,5 +62,14 @@ namespace Jihanki
 
 
 
+
+
+
+
+
+        public void Dispose()
+        {
+            this.removeEvent();
+        }
     }
 }
