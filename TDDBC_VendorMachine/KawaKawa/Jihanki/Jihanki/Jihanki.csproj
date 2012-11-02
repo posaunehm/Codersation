@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IReceipt.cs" />
     <Compile Include="Money\Base\Money.cs" />
     <Compile Include="Money\Base\MoneyKind.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceiptMoney.cs" />
     <Compile Include="TEST\Money\Base\MoneyTest.cs" />
   </ItemGroup>
   <ItemGroup>
