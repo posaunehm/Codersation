@@ -9,9 +9,9 @@ namespace Jihanki.Money.Base
     public class Money
     {
         /// <summary>
-        /// 金額
+        /// 金額種別
         /// </summary>
-        private int _money=0;
+        private MoneyKind.Kind kind = MoneyKind.Kind.Yen1;
 
         /// <summary>
         /// 数
@@ -19,9 +19,9 @@ namespace Jihanki.Money.Base
         private int num = 0;
 
 
-        public Money(int money)
+        public Money(MoneyKind.Kind kind)
         {
-            this._money = money;
+            this.kind = kind;
         }
 
 
@@ -38,7 +38,7 @@ namespace Jihanki.Money.Base
         /// <returns></returns>
         public int Sum()
         {
-            return this._money*this.num;
+            return (int)(this.kind)*this.num;
         }
 
 
