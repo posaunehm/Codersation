@@ -8,6 +8,7 @@ using Jihanki.Money.Base;
 
 namespace Jihanki.TEST.Money.Base
 {
+     [TestFixture]
     class MoneyTest
     {
 
