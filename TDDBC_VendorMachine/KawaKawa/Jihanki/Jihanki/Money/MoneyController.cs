@@ -32,7 +32,7 @@ namespace Jihanki.Money
         /// </summary>
         public int InputMoneySum()
         {
-            return 0;
+            return inputMoney.Sum();
         }
 
 
