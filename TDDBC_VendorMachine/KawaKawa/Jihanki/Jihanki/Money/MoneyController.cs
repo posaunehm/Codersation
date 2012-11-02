@@ -27,6 +27,14 @@ namespace Jihanki.Money
             inputMoney.Add(money);
         }
 
+        /// <summary>
+        /// ユーザからの投入金総額
+        /// </summary>
+        public int InputMoneySum()
+        {
+            return 0;
+        }
+
 
 
 

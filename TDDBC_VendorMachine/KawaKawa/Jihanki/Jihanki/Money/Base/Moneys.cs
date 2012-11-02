@@ -10,13 +10,25 @@ namespace Jihanki.Money.Base
     {
         private List<Money> stock= new List<Money>();
 
-
+        /// <summary>
+        /// お金を追加
+        /// </summary>
+        /// <param name="money"></param>
         public void Add(Money money)
         {
             this.stock.Add(money);
         }
 
+        /// <summary>
+        /// 合計金額
+        /// </summary>
+        /// <returns></returns>
+        public int Sum()
+        {
+            var sum = this.stock.Sum(n => n.Sum());
 
+            return sum;
+        }
 
 
     }

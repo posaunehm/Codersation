@@ -13,11 +13,8 @@ namespace Jihanki
         /// お金を受け付ける
         /// </summary>
         /// <param name="money">投入されたお金</param>
-        /// <returns>受付結果
-        /// true･･･成功
-        /// false･･･失敗
-        /// </returns>
-        bool Receipt(Money.Base.Money money);
+
+        void Receipt(Money.Base.Money money);
 
 
     }

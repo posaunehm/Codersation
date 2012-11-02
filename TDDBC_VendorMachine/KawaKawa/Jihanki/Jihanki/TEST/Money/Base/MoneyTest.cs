@@ -22,7 +22,7 @@ namespace Jihanki.TEST.Money.Base
         [TestCase(MoneyKind.Kind.Yen1000, 10, 10000)]
         [TestCase(MoneyKind.Kind.Yen2000, 10, 20000)]
         [TestCase(MoneyKind.Kind.Yen10000, 10, 100000)]
-        public void 合計金額計算(MoneyKind.Kind kind,int addCount,int sum)
+        public void 金額種別ごとの合計金額計算(MoneyKind.Kind kind,int addCount,int sum)
         {
 
             var target = new Jihanki.Money.Base.Money(kind);
