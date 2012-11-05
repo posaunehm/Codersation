@@ -9,7 +9,7 @@ using Jihanki.Cashier.Base;
 
 
 
-namespace Jihanki.TEST.Money
+namespace Jihanki.TEST.Controllers
 {
     [TestFixture()]
     class MoneyControllerTest
