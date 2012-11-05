@@ -15,7 +15,7 @@ namespace Jihanki.Controllers
         /// <summary>
         /// 投入金額
         /// </summary>
-        private Jihanki.cashier.Base.Moneys inputMoney = new Jihanki.cashier.Base.Moneys();
+        private Jihanki.Cashier.Base.Moneys inputMoney = new Jihanki.Cashier.Base.Moneys();
 
         
 
@@ -25,7 +25,7 @@ namespace Jihanki.Controllers
         /// ユーザからの投入金を追加
         /// </summary>
         /// <param name="money">投入金額</param>
-        public void InputMoneyAdd(Jihanki.cashier.Base.Money money)
+        public void InputMoneyAdd(Jihanki.Cashier.Base.Money money)
         {
             inputMoney.Add(money);
         }

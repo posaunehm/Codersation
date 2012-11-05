@@ -1,4 +1,4 @@
-﻿using Jihanki.cashier.Base;
+﻿using Jihanki.Cashier.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

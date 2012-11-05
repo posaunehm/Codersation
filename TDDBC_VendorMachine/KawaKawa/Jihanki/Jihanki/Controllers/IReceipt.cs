@@ -14,7 +14,7 @@ namespace Jihanki.Controllers
         /// </summary>
         /// <param name="money">投入されたお金</param>
 
-        void Receipt(cashier.Base.Money money);
+        void Receipt(Cashier.Base.Money money);
 
 
     }

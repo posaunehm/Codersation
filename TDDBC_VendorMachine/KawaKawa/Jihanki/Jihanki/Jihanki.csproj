@@ -45,16 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\IReceipt.cs" />
-    <Compile Include="cashier\Base\Money.cs" />
-    <Compile Include="cashier\Base\MoneyKind.cs" />
-    <Compile Include="cashier\Base\Moneys.cs" />
+    <Compile Include="Cashier\Base\Money.cs" />
+    <Compile Include="Cashier\Base\MoneyKind.cs" />
+    <Compile Include="Cashier\Base\Moneys.cs" />
     <Compile Include="Controllers\MoneyController.cs" />
     <Compile Include="Controllers\OperateController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ReceiptMoney.cs" />
-    <Compile Include="TEST\cashier\Base\MoneyTest.cs" />
-    <Compile Include="TEST\cashier\MoneyControllerTest.cs" />
+    <Compile Include="TEST\Cashier\Base\MoneyTest.cs" />
+    <Compile Include="TEST\Cashier\MoneyControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
