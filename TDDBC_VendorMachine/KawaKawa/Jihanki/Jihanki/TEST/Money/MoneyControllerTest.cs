@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Jihanki.Controllers;
 
 
 namespace Jihanki.TEST.Money
@@ -48,7 +49,7 @@ namespace Jihanki.TEST.Money
              //投入するお金を用意
              this.SetMoneyNum(1);
 
-             var target = new Jihanki.Money.MoneyController();
+             var target = new MoneyController();
 
              //10円*1を投入
              target.InputMoneyAdd(this.yen10);

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Jihanki
+namespace Jihanki.Controllers
 {
     /// <summary>
     /// 挿入されたお金の受け入れ
@@ -37,7 +37,7 @@ namespace Jihanki
         
 
         /// <summary>
-        /// ユーザなどが挿入したお金の受け入れ
+        /// ユーザが挿入したお金の受け入れ
         /// </summary>
         /// <param name="money">投入されたお金</param>
         /// <returns>

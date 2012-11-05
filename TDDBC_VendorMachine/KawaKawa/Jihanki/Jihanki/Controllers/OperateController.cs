@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jihanki
+namespace Jihanki.Controllers
+
 {
 
     public class OperateController:IDisposable
@@ -12,7 +13,7 @@ namespace Jihanki
         /// <summary>
         /// お金コントローラー
         /// </summary>
-        private Money.MoneyController moneyControl;
+        private MoneyController moneyControl=new MoneyController();
 
         /// <summary>
         /// お金の受付関係
@@ -21,10 +22,10 @@ namespace Jihanki
        
 
 
-        public OperateController(Money.MoneyController moneyControl)
+
+        public OperateController()
         {
             // TODO: Complete member initialization
-            this.moneyControl = moneyControl;
         }
 
 

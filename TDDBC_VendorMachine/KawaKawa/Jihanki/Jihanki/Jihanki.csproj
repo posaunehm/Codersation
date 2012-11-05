@@ -44,16 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IReceipt.cs" />
+    <Compile Include="Controllers\IReceipt.cs" />
     <Compile Include="Money\Base\Money.cs" />
     <Compile Include="Money\Base\MoneyKind.cs" />
     <Compile Include="Money\Base\Moneys.cs" />
-    <Compile Include="Money\InputMoney.cs" />
-    <Compile Include="Money\MoneyController.cs" />
-    <Compile Include="OperateController.cs" />
+    <Compile Include="Controllers\MoneyController.cs" />
+    <Compile Include="Controllers\OperateController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReceiptMoney.cs" />
+    <Compile Include="Controllers\ReceiptMoney.cs" />
     <Compile Include="TEST\Money\Base\MoneyTest.cs" />
     <Compile Include="TEST\Money\MoneyControllerTest.cs" />
   </ItemGroup>

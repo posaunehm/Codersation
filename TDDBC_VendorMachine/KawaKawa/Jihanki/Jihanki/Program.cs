@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jihanki.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,7 @@ namespace Jihanki
 {
     class Program
     {
-        /// <summary>
-        /// お金コントローラー
-        /// </summary>
-        static Money.MoneyController moneyControl;
-
+      
 
         /// <summary>
         /// 自販機の挙動コントローラー
@@ -23,9 +20,8 @@ namespace Jihanki
 
         static void Main(string[] args)
         {
-            moneyControl = new Money.MoneyController();
 
-            operateController = new OperateController(moneyControl);
+            operateController = new OperateController();
 
 
 

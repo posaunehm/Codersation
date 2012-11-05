@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jihanki.Money
+namespace Jihanki.Controllers
 {
     /// <summary>
     /// お金の管理を行います。
@@ -15,14 +15,14 @@ namespace Jihanki.Money
         /// <summary>
         /// 投入金額
         /// </summary>
-        private Base.Moneys inputMoney = new InputMoney();
+        private Jihanki.Money.Base.Moneys inputMoney = new Jihanki.Money.Base.Moneys();
 
 
         /// <summary>
         /// ユーザからの投入金を追加
         /// </summary>
         /// <param name="money">投入金額</param>
-        public void InputMoneyAdd(Base.Money money)
+        public void InputMoneyAdd(Jihanki.Money.Base.Money money)
         {
             inputMoney.Add(money);
         }
