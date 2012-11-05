@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jihanki.cashier.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,7 +57,7 @@ namespace Jihanki.Controllers
         /// ユーザからの投入金の受付
         /// </summary>
         /// <param name="money">投入金</param>
-        public void ReceiptMoney(Money.Base.Money money)
+        public void ReceiptMoney(Money money)
         {
             this.receiptMoney.Receipt(money);
         }

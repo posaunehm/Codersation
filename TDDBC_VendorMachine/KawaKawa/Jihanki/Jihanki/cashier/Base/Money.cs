@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jihanki.Money.Base
+namespace Jihanki.cashier.Base
 {
     public class Money
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Jihanki.Money.Base;
+using Jihanki.cashier.Base;
 
-namespace Jihanki.TEST.Money.Base
+namespace Jihanki.TEST.cashier.Base
 {
      [TestFixture]
     class MoneyTest
@@ -25,7 +25,7 @@ namespace Jihanki.TEST.Money.Base
         public void 金額種別ごとの合計金額計算(MoneyKind.Kind kind,int addCount,int sum)
         {
 
-            var target = new Jihanki.Money.Base.Money(kind);
+            var target = new Jihanki.cashier.Base.Money(kind);
 
             target.Add(addCount);
 

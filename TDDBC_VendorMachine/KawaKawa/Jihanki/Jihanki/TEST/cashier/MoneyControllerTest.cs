@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Jihanki.Controllers;
+using Jihanki.cashier.Base;
+
 
 
 namespace Jihanki.TEST.Money
@@ -14,18 +16,18 @@ namespace Jihanki.TEST.Money
     {
 
         //投入金額
-        private Jihanki.Money.Base.Money yen10
-            = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen10);
+        private Jihanki.cashier.Base.Money yen10
+            = new Jihanki.cashier.Base.Money(Jihanki.cashier.Base.MoneyKind.Kind.Yen10);
 
-        private Jihanki.Money.Base.Money yen50
-                    = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen50);
+        private Jihanki.cashier.Base.Money yen50
+                    = new Jihanki.cashier.Base.Money(Jihanki.cashier.Base.MoneyKind.Kind.Yen50);
 
 
-        private Jihanki.Money.Base.Money yen100
-            = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen100);
+        private Jihanki.cashier.Base.Money yen100
+            = new Jihanki.cashier.Base.Money(Jihanki.cashier.Base.MoneyKind.Kind.Yen100);
 
-        private Jihanki.Money.Base.Money yen500
-            = new Jihanki.Money.Base.Money(Jihanki.Money.Base.MoneyKind.Kind.Yen500);
+        private Jihanki.cashier.Base.Money yen500
+            = new Jihanki.cashier.Base.Money(Jihanki.cashier.Base.MoneyKind.Kind.Yen500);
 
         
 
