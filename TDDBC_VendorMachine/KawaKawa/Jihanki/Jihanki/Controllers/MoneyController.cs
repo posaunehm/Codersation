@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jihanki.Cashier.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,12 @@ namespace Jihanki.Controllers
         /// <summary>
         /// 投入金額
         /// </summary>
-        private Jihanki.Cashier.Base.Moneys inputMoney = new Jihanki.Cashier.Base.Moneys();
+        private Moneys inputMoney = new Moneys();
 
-        
+        /// <summary>
+        /// 払い戻し金額
+        /// </summary>
+        private Moneys refundMoney = new Moneys();
 
 
 
@@ -38,7 +42,27 @@ namespace Jihanki.Controllers
             return inputMoney.Sum();
         }
 
+        /// <summary>
+        /// 払い戻し金額合計
+        /// </summary>
+        /// <returns></returns>
+        public int RefundMoneySum()
+        {
+            return this.refundMoney.Sum();
+        }
 
+        /// <summary>
+        /// 投入額を払い戻し金額へ移動
+        /// </summary>
+        public void MoveInput2Refund()
+        {
+            var moneyList = this.inputMoney.GetStockList();
+
+            this.refundMoney.Add(moneyList);
+
+            this.inputMoney.Clear();
+
+        }
 
 
 

@@ -18,6 +18,10 @@ namespace Jihanki.Cashier.Base
         {
             this.stock.Add(money);
         }
+        public void Add(List<Money> moneyList)
+        {
+            this.stock.AddRange(moneyList);
+        }
 
         /// <summary>
         /// 合計金額
@@ -28,6 +32,24 @@ namespace Jihanki.Cashier.Base
             var sum = this.stock.Sum(n => n.Sum());
 
             return sum;
+        }
+
+
+        /// <summary>
+        /// お金の初期化
+        /// </summary>
+        public void Clear()
+        {
+            this.stock.Clear();
+        }
+
+        /// <summary>
+        /// 現在のストックリストを取得
+        /// </summary>
+        /// <returns></returns>
+        public List<Money> GetStockList()
+        {
+            return this.stock;
         }
 
 
