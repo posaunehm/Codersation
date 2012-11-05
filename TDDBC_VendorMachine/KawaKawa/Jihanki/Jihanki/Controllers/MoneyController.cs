@@ -25,6 +25,25 @@ namespace Jihanki.Controllers
 
 
 
+        //----------------------//
+        // Clear
+        //----------------------//
+        /// <summary>
+        /// 払い戻し金額初期化
+        /// </summary>
+        public void RefundMoneyClear()
+        {
+            this.refundMoney.Clear();
+        }
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// ユーザからの投入金を追加
         /// </summary>
@@ -33,6 +52,19 @@ namespace Jihanki.Controllers
         {
             inputMoney.Add(money);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// ユーザからの投入金総額
@@ -61,7 +93,6 @@ namespace Jihanki.Controllers
             this.refundMoney.Add(moneyList);
 
             this.inputMoney.Clear();
-
         }
 
 

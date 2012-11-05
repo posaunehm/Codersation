@@ -102,6 +102,16 @@ namespace Jihanki.TEST.Controllers
              
              var actual = target.RefundMoneySum();
              Assert.AreEqual(expect, actual);
+
+             //払い戻し金額を初期化
+             target.RefundMoneyClear();
+
+             //100円*1を投入
+             target.InputMoneyAdd(this.yen100);
+             expect = 100;
+             target.MoveInput2Refund();
+             actual = target.RefundMoneySum();
+             Assert.AreEqual(expect, actual);
          }
 
 
