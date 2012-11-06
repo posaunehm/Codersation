@@ -21,5 +21,15 @@ namespace Jihanki.DrinkrRlations.Base
         {
             this.stocks.Add(drink);
         }
+
+        /// <summary>
+        /// ストック数を取得
+        /// </summary>
+        /// <returns></returns>
+        internal int Count()
+        {
+            return this.stocks.Count();
+        }
+
     }
 }

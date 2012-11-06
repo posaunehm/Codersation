@@ -37,7 +37,7 @@ namespace Jihanki.Controllers
 
         internal int Count()
         {
-            return 5;
+            return this.drinkList.Count();
         }
 
 

@@ -13,10 +13,15 @@ namespace Jihanki.TEST.Controllers
     class DrinkControllerTest
     {
 
-
-        private Drink SetDorink()
+        /// <summary>
+        /// ドリンクの用意
+        /// </summary>
+        /// <param name="price"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private Drink SetDorink(int price,string name)
         {
-            var drink = new Drink(120,"コーラ");
+            var drink = new Drink(price,name);
             return drink;
         }
 
@@ -29,12 +34,11 @@ namespace Jihanki.TEST.Controllers
             var target=new DrinkController();
 
             //ドリンクを追加
-            target.Add(this.SetDorink());
-            target.Add(this.SetDorink());
-            target.Add(this.SetDorink());
-            target.Add(this.SetDorink());
-            target.Add(this.SetDorink());
-
+            var cola = this.SetDorink(120, "コーラ");
+            for (var i = 0; i < 5; i++)
+            {
+                target.Add(cola);
+            }
 
 
             //5本格納しているか
