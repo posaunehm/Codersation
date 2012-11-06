@@ -49,35 +49,38 @@ namespace Jihanki.TEST.Controllers
         }
 
 
-         [Test]
-         public void 投入金額と投入金額総計が一致するかテスト()
-         {
+
+        [TestCase(1,10,60,160,660)]
+        [TestCase(2,20,120,320,1320)]
+        [TestCase(5,50,300,800,3300)]
+        public void 投入金額と投入金額総計が一致するかテスト(int insertNum,int exp1,int exp2 ,int exp3,int exp4)
+        {
              //投入するお金を用意
-             this.SetMoneyNum(1);
+             this.SetMoneyNum(insertNum);
 
              var target = new MoneyController();
 
              //10円*1を投入
              target.InputMoneyAdd(this.yen10);
-             var expect = 10;
+             var expect = exp1;
              var actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
 
-             //50円*1を投入
+             //50円を投入
              target.InputMoneyAdd(this.yen50);
-             expect = 60;
+             expect = exp2;
              actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
 
-             //100円*1を投入
+             //100円を投入
              target.InputMoneyAdd(this.yen100);
-             expect = 160;
+             expect = exp3;
              actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
 
-             //500円*1を投入
+             //500円を投入
              target.InputMoneyAdd(this.yen500);
-             expect = 660;
+             expect = exp4;
              actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
 
