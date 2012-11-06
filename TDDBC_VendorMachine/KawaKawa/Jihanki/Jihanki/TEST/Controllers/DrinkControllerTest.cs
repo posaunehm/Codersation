@@ -47,9 +47,33 @@ namespace Jihanki.TEST.Controllers
             var expectNum=num;
             var actualNum=target.Count();
             Assert.AreEqual(expectNum, actualNum);
-
-
         }
+
+        [Test]
+        public void 格納したドリンクが全て指定金額かテスト()
+        {
+            var target=new DrinkController();
+
+
+            //ドリンクを追加
+            var cola = this.SetDorink(120, "コーラ");
+            for (var i = 0; i < 5; i++)
+            {
+                target.Add(cola);
+            }
+
+            var expected=120;
+
+            var allList=target.AllList();
+            
+            foreach(var n in allList)
+            {
+                var actual=n.Price();
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+
 
 
 

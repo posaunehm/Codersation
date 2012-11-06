@@ -8,19 +8,27 @@ namespace Jihanki.DrinkrRlations.Base
 {
     public class Drink
     {
-        public int Price;
-        public string Name;
+        private int price;
+        private string name;
 
 
         public Drink(int price, string name)
         {
-            this.Price = price;
-            this.Name = name;
+            this.price = price;
+            this.name = name;
         }
 
 
 
 
 
+        /// <summary>
+        /// 値段を取得
+        /// </summary>
+        /// <returns></returns>
+        internal object Price()
+        {
+            return 0;
+        }
     }
 }

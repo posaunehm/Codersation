@@ -49,5 +49,14 @@ namespace Jihanki.Controllers
         {
             return null;
         }
+
+        /// <summary>
+        /// 全リスト取得
+        /// </summary>
+        /// <returns></returns>
+        internal List<Drink> AllList()
+        {
+            return this.drinkList.GetList();
+        }
     }
 }

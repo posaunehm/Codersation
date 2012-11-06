@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,15 @@ namespace Jihanki.DrinkrRlations.Base
         internal int Count()
         {
             return this.stocks.Count();
+        }
+
+        /// <summary>
+        /// 全リスト取得
+        /// </summary>
+        /// <returns></returns>
+        internal List<Drink> GetList()
+        {
+            return this.stocks;
         }
 
     }
