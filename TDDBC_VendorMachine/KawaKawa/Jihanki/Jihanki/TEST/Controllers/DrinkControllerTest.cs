@@ -49,20 +49,21 @@ namespace Jihanki.TEST.Controllers
             Assert.AreEqual(expectNum, actualNum);
         }
 
-        [Test]
-        public void 格納したドリンクが全て指定金額かテスト()
+        [TestCase(120)]
+        [TestCase(300)]
+        public void 格納したドリンクが全て指定金額かテスト(int price)
         {
             var target=new DrinkController();
 
 
             //ドリンクを追加
-            var cola = this.SetDorink(120, "コーラ");
+            var cola = this.SetDorink(price, "コーラ");
             for (var i = 0; i < 5; i++)
             {
                 target.Add(cola);
             }
 
-            var expected=120;
+            var expected=price;
 
             var allList=target.AllList();
             

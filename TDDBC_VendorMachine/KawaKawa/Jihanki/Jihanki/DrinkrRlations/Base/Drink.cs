@@ -26,9 +26,9 @@ namespace Jihanki.DrinkrRlations.Base
         /// 値段を取得
         /// </summary>
         /// <returns></returns>
-        internal object Price()
+        internal int Price()
         {
-            return 120;
+            return this.price;
         }
     }
 }
