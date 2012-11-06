@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cashier\HandingMoney.cs" />
     <Compile Include="Controllers\IReceipt.cs" />
     <Compile Include="Cashier\Base\Money.cs" />
     <Compile Include="Cashier\Base\MoneyKind.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ReceiptMoney.cs" />
     <Compile Include="TEST\Cashier\Base\MoneyTest.cs" />
+    <Compile Include="TEST\Cashier\HandingMoneyTest.cs" />
     <Compile Include="TEST\Controllers\MoneyControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
