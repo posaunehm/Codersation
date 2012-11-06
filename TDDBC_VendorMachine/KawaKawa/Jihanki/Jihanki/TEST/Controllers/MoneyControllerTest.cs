@@ -89,32 +89,31 @@ namespace Jihanki.TEST.Controllers
          }
 
 
-         [Test]
-         public void 投入金額がそのまま払い戻し金額になるかテスト()
-         {
+         
+        [TestCase(1,660)]
+        [TestCase(2,1320)]
+        [TestCase(10,6600)]
+        public void 投入金額がそのまま払い戻し金額になるかテスト(int insertNum,int exp)
+        {
              //投入するお金を用意
-             this.SetMoneyNum(1);
+             this.SetMoneyNum(insertNum);
 
              var target = new MoneyController();
 
-             //50円*1を投入
+             //お金を投入
+             target.InputMoneyAdd(this.yen10);
              target.InputMoneyAdd(this.yen50);
-             var expect = 50;
+             target.InputMoneyAdd(this.yen100);
+             target.InputMoneyAdd(this.yen500);
+             
+             
+             var expect = exp;
 
              target.MoveInput2Refund();
              
              var actual = target.RefundMoneySum();
              Assert.AreEqual(expect, actual);
-
-             //払い戻し金額を初期化
-             target.RefundMoneyClear();
-
-             //100円*1を投入
-             target.InputMoneyAdd(this.yen100);
-             expect = 100;
-             target.MoveInput2Refund();
-             actual = target.RefundMoneySum();
-             Assert.AreEqual(expect, actual);
+             
          }
 
 
