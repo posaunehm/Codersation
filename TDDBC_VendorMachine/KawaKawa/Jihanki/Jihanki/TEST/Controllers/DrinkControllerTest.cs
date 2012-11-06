@@ -76,7 +76,30 @@ namespace Jihanki.TEST.Controllers
 
 
 
+        [Test]
+        public void 格納したドリンクが全て指定銘柄かテスト()
+        {
+            var target = new DrinkController();
 
+
+            //ドリンクを追加
+            var cola = this.SetDorink(120, "コーラ");
+            for (var i = 0; i < 5; i++)
+            {
+                target.Add(cola);
+            }
+
+            var expected = "コーラ";
+
+            var allList = target.AllList();
+
+            foreach (var n in allList)
+            {
+                var actual = n.Name();
+                Assert.AreEqual(expected, actual);
+            }
+
+        }
 
 
     }

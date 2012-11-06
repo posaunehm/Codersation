@@ -30,5 +30,14 @@ namespace Jihanki.DrinkrRlations.Base
         {
             return this.price;
         }
+
+        /// <summary>
+        /// 名前を取得
+        /// </summary>
+        /// <returns></returns>
+        internal string Name()
+        {
+            return null;
+        }
     }
 }
