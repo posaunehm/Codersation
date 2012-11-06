@@ -11,6 +11,36 @@ namespace Jihanki.Cashier
     /// </summary>
     public class HandingMoney
     {
+        /// <summary>
+        /// 取り扱いする金額種別リスト
+        /// </summary>
+        private List<Base.MoneyKind.Kind> handlingMoneyKindList = new List<Base.MoneyKind.Kind>();
+
+
+
+        public HandingMoney()
+        {
+            this.SetHandlingMoneyKindList();
+        }
+
+
+        /// <summary>
+        /// 取り扱う金額種別を指定
+        /// </summary>
+        private void SetHandlingMoneyKindList()
+        {
+
+            this.handlingMoneyKindList.Clear();
+            this.handlingMoneyKindList.Add(Base.MoneyKind.Kind.Yen10);
+            this.handlingMoneyKindList.Add(Base.MoneyKind.Kind.Yen50);
+            this.handlingMoneyKindList.Add(Base.MoneyKind.Kind.Yen100);
+            this.handlingMoneyKindList.Add(Base.MoneyKind.Kind.Yen500);
+            this.handlingMoneyKindList.Add(Base.MoneyKind.Kind.Yen1000);
+            
+        }
+        
+
+
 
         /// <summary>
         /// 取り扱いしているお金かチェック
@@ -19,8 +49,15 @@ namespace Jihanki.Cashier
         /// <returns></returns>
         public bool IsHandling(Base.Money money)
         {
-            return true;
+            //指定されたお金が取り扱い金額種別かチェック
+            var query = this.handlingMoneyKindList.Contains(money.GetKind());
+
+
+            return query;
         }
+
+
+        
 
 
 

@@ -25,6 +25,15 @@ namespace Jihanki.Cashier.Base
         }
 
 
+        /// <summary>
+        /// 金額の種別
+        /// </summary>
+        /// <returns></returns>
+        public MoneyKind.Kind GetKind()
+        {
+            return this.kind;
+        }
+
 
         public void Add(int num)
         {
