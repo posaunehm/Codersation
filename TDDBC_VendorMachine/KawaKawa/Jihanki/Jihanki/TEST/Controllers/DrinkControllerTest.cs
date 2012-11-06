@@ -27,22 +27,24 @@ namespace Jihanki.TEST.Controllers
 
 
 
-        [Test]
-        public void ドリンク5本格納できるかテスト()
+        [TestCase(5)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void ドリンクを指定本数格納できるかテスト(int num)
         {
 
             var target=new DrinkController();
 
             //ドリンクを追加
             var cola = this.SetDorink(120, "コーラ");
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < num; i++)
             {
                 target.Add(cola);
             }
 
 
             //5本格納しているか
-            var expectNum=5;
+            var expectNum=num;
             var actualNum=target.Count();
             Assert.AreEqual(expectNum, actualNum);
 
