@@ -9,7 +9,7 @@ namespace Jihanki.Cashier
     /// <summary>
     /// 自販機が取り扱う金額種別を判定
     /// </summary>
-    public class HandingMoney
+    public class HandingMoney:IDisposable
     {
         /// <summary>
         /// 取り扱いする金額種別リスト
@@ -57,9 +57,15 @@ namespace Jihanki.Cashier
         }
 
 
-        
 
 
 
+
+
+        public void Dispose()
+        {
+            this.handlingMoneyKindList.Clear();
+            this.handlingMoneyKindList = null;
+        }
     }
 }

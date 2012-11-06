@@ -38,11 +38,10 @@ namespace Jihanki.Controllers
 
 
 
-
-
-
-
-
+        //----------------------//
+        // Add
+        //----------------------//
+        
 
         /// <summary>
         /// ユーザからの投入金を追加
@@ -50,6 +49,18 @@ namespace Jihanki.Controllers
         /// <param name="money">投入金額</param>
         public void InputMoneyAdd(Jihanki.Cashier.Base.Money money)
         {
+            //取り扱い可能なお金種別かチェック
+            using (var handling = new Cashier.HandingMoney())
+            {
+                //取り扱いしていない種別
+                if (handling.IsHandling(money) == false)
+                {
+                    this.refundMoney.Add(money);
+                    return;
+                }
+            }
+
+            //投入額に追加
             inputMoney.Add(money);
         }
 
@@ -61,6 +72,9 @@ namespace Jihanki.Controllers
 
 
 
+        //----------------------//
+        // Sum
+        //----------------------//
 
 
 
