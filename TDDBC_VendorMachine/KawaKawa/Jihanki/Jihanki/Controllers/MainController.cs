@@ -77,7 +77,14 @@ namespace Jihanki.Controllers
         }
 
 
-
+        /// <summary>
+        /// ドリンクが購入可能かチェック
+        /// </summary>
+        /// <returns></returns>
+        internal bool IsBuy()
+        {
+            return false;
+        }
 
 
 
@@ -85,5 +92,6 @@ namespace Jihanki.Controllers
         {
             this.removeEvent();
         }
+
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="TEST\Cashier\Base\MoneyTest.cs" />
     <Compile Include="TEST\Cashier\HandingMoneyTest.cs" />
     <Compile Include="TEST\Controllers\DrinkControllerTest.cs" />
+    <Compile Include="TEST\Controllers\MainControllerTest.cs" />
     <Compile Include="TEST\Controllers\MoneyControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>

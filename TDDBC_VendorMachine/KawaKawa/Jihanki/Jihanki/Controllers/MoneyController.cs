@@ -19,7 +19,7 @@ namespace Jihanki.Controllers
         private Moneys inputMoney = new Moneys();
 
         /// <summary>
-        /// 払い戻し金額
+        /// 払い戻し金額（おつり）
         /// </summary>
         private Moneys refundMoney = new Moneys();
 
