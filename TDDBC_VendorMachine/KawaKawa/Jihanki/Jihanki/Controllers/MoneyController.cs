@@ -52,16 +52,18 @@ namespace Jihanki.Controllers
             //取り扱い可能なお金種別かチェック
             using (var handling = new Cashier.HandingMoney())
             {
-                //取り扱いしていない種別
-                if (handling.IsHandling(money) == false)
+                //取り扱いしているお金種別
+                if (handling.IsHandling(money) == true)
                 {
-                    this.refundMoney.Add(money);
+                    //投入額に追加
+                    inputMoney.Add(money);
+
                     return;
                 }
             }
 
-            //投入額に追加
-            inputMoney.Add(money);
+            //払い戻し金額に追加
+            this.refundMoney.Add(money);
         }
 
 
