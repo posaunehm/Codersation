@@ -76,20 +76,20 @@ namespace Jihanki.TEST.Controllers
 
 
 
-        [Test]
-        public void 格納したドリンクが全て指定銘柄かテスト()
+        [TestCase("コーラ")]
+        public void 格納したドリンクが全て指定銘柄かテスト(string name)
         {
             var target = new DrinkController();
 
 
             //ドリンクを追加
-            var cola = this.SetDorink(120, "コーラ");
+            var cola = this.SetDorink(120, name);
             for (var i = 0; i < 5; i++)
             {
                 target.Add(cola);
             }
 
-            var expected = "コーラ";
+            var expected = name;
 
             var allList = target.AllList();
 
