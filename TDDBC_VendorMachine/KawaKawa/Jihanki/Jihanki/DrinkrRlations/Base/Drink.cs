@@ -37,7 +37,7 @@ namespace Jihanki.DrinkrRlations.Base
         /// <returns></returns>
         internal string Name()
         {
-            return null;
+            return "コーラ";
         }
     }
 }
