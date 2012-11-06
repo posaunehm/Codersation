@@ -14,14 +14,14 @@ namespace Jihanki
         /// <summary>
         /// 自販機の挙動コントローラー
         /// </summary>
-        static OperateController operateController;
+        static MainController operateController;
 
 
 
         static void Main(string[] args)
         {
 
-            operateController = new OperateController();
+            operateController = new MainController();
 
 
 

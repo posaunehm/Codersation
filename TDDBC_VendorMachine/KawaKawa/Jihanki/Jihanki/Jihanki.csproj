@@ -50,7 +50,7 @@
     <Compile Include="Cashier\Base\MoneyKind.cs" />
     <Compile Include="Cashier\Base\Moneys.cs" />
     <Compile Include="Controllers\MoneyController.cs" />
-    <Compile Include="Controllers\OperateController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="DrinkrRlations\Base\Drink.cs" />
     <Compile Include="DrinkrRlations\Base\DrinkStocks.cs" />
     <Compile Include="Program.cs" />

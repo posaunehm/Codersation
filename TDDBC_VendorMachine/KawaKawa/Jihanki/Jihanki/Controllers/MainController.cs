@@ -9,7 +9,7 @@ namespace Jihanki.Controllers
 
 {
 
-    public class OperateController:IDisposable
+    public class MainController:IDisposable
     {
         /// <summary>
         /// お金コントローラー
@@ -24,7 +24,7 @@ namespace Jihanki.Controllers
 
 
 
-        public OperateController()
+        public MainController()
         {
             // TODO: Complete member initialization
         }
