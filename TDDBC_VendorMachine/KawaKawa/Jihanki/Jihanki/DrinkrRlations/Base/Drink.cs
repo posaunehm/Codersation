@@ -28,7 +28,7 @@ namespace Jihanki.DrinkrRlations.Base
         /// <returns></returns>
         internal object Price()
         {
-            return 0;
+            return 120;
         }
     }
 }
