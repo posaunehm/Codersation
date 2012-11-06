@@ -1,4 +1,5 @@
 ﻿using Jihanki.Cashier.Base;
+using Jihanki.DrinkrRlations.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,11 @@ namespace Jihanki.Controllers
         /// お金の受付関係
         /// </summary>
         private ReceiptMoney receiptMoney = new ReceiptMoney();
-       
 
+        /// <summary>
+        /// ドリンク操作
+        /// </summary>
+        private DrinkController drinkControl = new DrinkController();
 
 
         public MainController()
@@ -63,6 +67,14 @@ namespace Jihanki.Controllers
         }
 
 
+        /// <summary>
+        /// ドリンクを補充
+        /// </summary>
+        /// <param name="drink"></param>
+        public void AddDrink(Drink drink)
+        {
+            this.drinkControl.Add(drink);
+        }
 
 
 
