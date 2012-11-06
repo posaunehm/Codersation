@@ -83,7 +83,7 @@ namespace Jihanki.Controllers
         /// <returns></returns>
         internal bool IsBuy()
         {
-            return false;
+            return true;
         }
 
 
