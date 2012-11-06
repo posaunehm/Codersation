@@ -137,11 +137,13 @@ namespace Jihanki.TEST.Controllers
 
 
 
-        [Test]
-        public void 取り扱い外の投入金がそのまま払い戻し金額になるかテスト()
+        [TestCase(1)]
+        [TestCase(5)]
+        [TestCase(10)]
+        public void 取り扱い外の投入金がそのまま払い戻し金額になるかテスト(int insertNum)
         {
             //投入するお金を用意
-            this.SetMoneyNum(1);
+            this.SetMoneyNum(insertNum);
 
             var target = new MoneyController();
             var expect = 0;
