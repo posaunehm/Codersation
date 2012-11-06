@@ -11,7 +11,7 @@ namespace Jihanki.Controllers
     /// <summary>
     /// 挿入されたお金の受け入れ
     /// </summary>
-    public class ReceiptMoney:IReceipt
+    public class ReceiptMoney
     {
 
         #region Event

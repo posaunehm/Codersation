@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Cashier\HandingMoney.cs" />
     <Compile Include="Controllers\DrinkController.cs" />
-    <Compile Include="Controllers\IReceipt.cs" />
     <Compile Include="Cashier\Base\Money.cs" />
     <Compile Include="Cashier\Base\MoneyKind.cs" />
     <Compile Include="Cashier\Base\Moneys.cs" />
