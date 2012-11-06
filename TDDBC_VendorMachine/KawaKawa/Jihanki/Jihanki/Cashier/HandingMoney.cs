@@ -19,7 +19,7 @@ namespace Jihanki.Cashier
         /// <returns></returns>
         public bool IsHandling(Base.Money money)
         {
-            return false;
+            return true;
         }
 
 
