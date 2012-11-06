@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Jihanki.DrinkrRlations.Base;
+using Jihanki.Cashier.Base;
 
 namespace Jihanki.TEST.Controllers
 {
@@ -43,6 +44,13 @@ namespace Jihanki.TEST.Controllers
         [Test]
         public void ドリンクが購入可能かテスト()
         {
+
+            //お金を投入
+            var money = new Money(MoneyKind.Kind.Yen100);
+            money.Add(2);
+            this.target.ReceiptMoney(money);
+
+
 
             var expected = true;
             var actual = this.target.IsBuy();

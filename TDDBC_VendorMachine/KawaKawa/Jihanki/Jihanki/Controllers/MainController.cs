@@ -30,7 +30,8 @@ namespace Jihanki.Controllers
 
         public MainController()
         {
-            // TODO: Complete member initialization
+            //Event設定
+            addEvent();
         }
 
 
@@ -83,7 +84,20 @@ namespace Jihanki.Controllers
         /// <returns></returns>
         internal bool IsBuy()
         {
-            return true;
+            //投入金額を取得
+            var insertMoney = this.moneyControl.InputMoneySum();
+
+            //ドリンクの単価を取得
+            var price = this.drinkControl.AllList()
+                                         .Select(n => n.Price())
+                                         .FirstOrDefault();
+
+            if (insertMoney >= price)
+            {
+                return true;
+            }
+            
+            return false;
         }
 
 

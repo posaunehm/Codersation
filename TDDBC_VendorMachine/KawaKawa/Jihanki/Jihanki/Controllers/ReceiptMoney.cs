@@ -48,9 +48,9 @@ namespace Jihanki.Controllers
         {
             
             //登録されているユーザ投入金Event分実行
-            foreach (Func<Money, bool> n in this._receiptEvemt
-                                                           .GetInvocationList()
-                                                           .Where(s => s != null))
+            foreach (Action<Money> n in this._receiptEvemt
+                                            .GetInvocationList()
+                                            .Where(s => s != null))
             {
                 n(money);
             }
