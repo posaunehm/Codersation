@@ -12,6 +12,13 @@ namespace Jihanki.DrinkrRlations.Base
         public string Name;
 
 
+        public Drink(int price, string name)
+        {
+            this.Price = price;
+            this.Name = name;
+        }
+
+
 
 
 

@@ -45,26 +45,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cashier\HandingMoney.cs" />
+    <Compile Include="Controllers\DrinkController.cs" />
     <Compile Include="Controllers\IReceipt.cs" />
     <Compile Include="Cashier\Base\Money.cs" />
     <Compile Include="Cashier\Base\MoneyKind.cs" />
     <Compile Include="Cashier\Base\Moneys.cs" />
     <Compile Include="Controllers\MoneyController.cs" />
     <Compile Include="Controllers\OperateController.cs" />
+    <Compile Include="DrinkrRlations\Base\Drink.cs" />
+    <Compile Include="DrinkrRlations\Base\DrinkStocks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ReceiptMoney.cs" />
     <Compile Include="TEST\Cashier\Base\MoneyTest.cs" />
     <Compile Include="TEST\Cashier\HandingMoneyTest.cs" />
+    <Compile Include="TEST\Controllers\DrinkControllerTest.cs" />
     <Compile Include="TEST\Controllers\MoneyControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Drink\Base\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
