@@ -78,11 +78,11 @@ public class VendingMachine {
 	}
 
 	/**
-	 * 購入可能なジュースのリストを取得する。
-	 * @return ジュースリスト
+	 * 購入可能レポートを取得する。
+	 * @return 購入可能情報
 	 */
-	public List<Juice> getPurchasable() {
-		List<Juice> list = new ArrayList<>();
+	public PurchasableReport getPurchasable() {
+		PurchasableReport list = new PurchasableReport();
 		for (JuiceRack rack : juiceStock) {
 			if (rack.isInStock() && rack.getJuice().isEnough(getCreditAmount())) {
 				list.add(rack.getJuice());
