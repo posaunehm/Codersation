@@ -42,7 +42,7 @@ namespace Jihanki.TEST.Controllers
 
 
         [Test]
-        public void ドリンクが購入可能かテスト()
+        public void ドリンクが購入可能と判定されるかテスト()
         {
 
             //お金を投入
