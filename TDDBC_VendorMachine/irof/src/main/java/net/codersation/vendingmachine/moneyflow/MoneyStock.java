@@ -39,7 +39,7 @@ public class MoneyStock {
 		stock.remove(e);
 	}
 
-	public List<Money> getUseMoneyList(int i) {
+	private List<Money> getUseMoneyList(int i) {
 
 		List<Money> result = new ArrayList<>();
 
