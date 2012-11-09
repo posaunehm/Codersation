@@ -41,18 +41,18 @@ namespace Jihanki.TEST.Controllers
 
 
 
-        [Test]
-        public void ドリンクが購入可能と判定されるかテスト()
+        [TestCase(MoneyKind.Kind.Yen10, 12,true)]
+        [TestCase(MoneyKind.Kind.Yen50, 3, true)]
+        [TestCase(MoneyKind.Kind.Yen100, 2, true)]
+        public void ドリンクが購入可能か判定テスト(MoneyKind.Kind kind,int num,bool expected)
         {
 
             //お金を投入
-            var money = new Money(MoneyKind.Kind.Yen100);
-            money.Add(2);
+            var money = new Money(kind);
+            money.Add(num);
             this.target.ReceiptMoney(money);
-
-
-
-            var expected = true;
+            
+            //var expected = true;
             var actual = this.target.IsBuy();
 
             Assert.AreEqual(expected, actual);
