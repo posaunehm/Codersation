@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Jihanki.Cashier.Base;
 
 namespace Jihanki.TEST.Cashier
 {
@@ -12,77 +13,25 @@ namespace Jihanki.TEST.Cashier
     class HandingMoneyTest
     {
 
-        [Test]
-        public void 取り扱い可能なお金種別であることを確認()
+        [TestCase(MoneyKind.Kind.Yen1, false)]
+        [TestCase(MoneyKind.Kind.Yen5, false)]
+        [TestCase(MoneyKind.Kind.Yen10,true)]
+        [TestCase(MoneyKind.Kind.Yen50, true)]
+        [TestCase(MoneyKind.Kind.Yen100, true)]
+        [TestCase(MoneyKind.Kind.Yen500, true)]
+        [TestCase(MoneyKind.Kind.Yen1000, true)]
+        [TestCase(MoneyKind.Kind.Yen2000, false)]
+        [TestCase(MoneyKind.Kind.Yen5000, false)]
+        [TestCase(MoneyKind.Kind.Yen10000, false)]
+        public void お金種別の取り扱い可否を判定テスト(MoneyKind.Kind kind,bool expected)
         {
             var target = new Jihanki.Cashier.HandingMoney();
 
-            //10円投下
-            var yen 
-                = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen10);
-            var expect = true;
+            var yen = new Money(kind);
             var actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-
-            //50円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen50);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-            //100円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen100);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-
-            //500円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen500);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-            //1000円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen1000);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
+            Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void 取り扱い不可能なお金種別であることを確認()
-        {
-            var target = new Jihanki.Cashier.HandingMoney();
-
-            //1円投下
-            var yen
-                = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen1);
-            var expect = false;
-            var actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-
-            //5円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen5);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-            //2000円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen2000);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-
-            //5000円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen5000);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-            //10000円投下
-            yen = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen10000);
-            actual = target.IsHandling(yen);
-            Assert.AreEqual(expect, actual);
-
-        }
 
 
     }
