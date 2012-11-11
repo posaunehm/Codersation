@@ -11,6 +11,18 @@ Money::~Money()
 {
 
 }
+Money::Money(const Money& rmoney)
+{
+  val_ = rmoney.getVal();
+}
+
+Money&
+Money::operator =(const Money& rmoney)
+{
+  val_ = rmoney.getVal();
+  return *this;
+}
+
 Money::Money(int money)
   :val_(money)
 {

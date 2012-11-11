@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../Product/JuiceRack.cpp \
 ../Product/JuiceStock.cpp \
 ../Product/Money.cpp \
+../Product/MoneyRack.cpp \
 ../Product/MoneyStock.cpp \
 ../Product/VendingMachine.cpp 
 
@@ -18,6 +19,7 @@ OBJS += \
 ./Product/JuiceRack.o \
 ./Product/JuiceStock.o \
 ./Product/Money.o \
+./Product/MoneyRack.o \
 ./Product/MoneyStock.o \
 ./Product/VendingMachine.o 
 
@@ -27,6 +29,7 @@ CPP_DEPS += \
 ./Product/JuiceRack.d \
 ./Product/JuiceStock.d \
 ./Product/Money.d \
+./Product/MoneyRack.d \
 ./Product/MoneyStock.d \
 ./Product/VendingMachine.d 
 

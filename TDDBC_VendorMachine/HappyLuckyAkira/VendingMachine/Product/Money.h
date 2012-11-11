@@ -10,6 +10,7 @@
 
 class Money {
 public:
+  Money(const Money& rmaney);
   virtual ~Money();
 
   int
@@ -28,6 +29,7 @@ public:
   static Money Yen5000()  {return Money(5000);}
   static Money Yen10000() {return Money(10000);}
   bool operator==(const Money& rmoney) ;
+  Money& operator=(const Money& rmoney) ;
 private:
   explicit Money(int money);
   int val_;

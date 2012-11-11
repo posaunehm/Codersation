@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../Test/JuiceRack_test.cpp \
 ../Test/JuiceStock_test.cpp \
 ../Test/Juice_test.cpp \
+../Test/MoneyRack_test.cpp \
 ../Test/MoneyStock_test.cpp \
 ../Test/Money_test.cpp \
 ../Test/RunAllTest.cpp \
@@ -18,6 +19,7 @@ OBJS += \
 ./Test/JuiceRack_test.o \
 ./Test/JuiceStock_test.o \
 ./Test/Juice_test.o \
+./Test/MoneyRack_test.o \
 ./Test/MoneyStock_test.o \
 ./Test/Money_test.o \
 ./Test/RunAllTest.o \
@@ -28,6 +30,7 @@ CPP_DEPS += \
 ./Test/JuiceRack_test.d \
 ./Test/JuiceStock_test.d \
 ./Test/Juice_test.d \
+./Test/MoneyRack_test.d \
 ./Test/MoneyStock_test.d \
 ./Test/Money_test.d \
 ./Test/RunAllTest.d \
