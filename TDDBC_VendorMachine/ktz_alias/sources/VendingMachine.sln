@@ -5,16 +5,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine", "VendingMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Test", "VendingMachine.Test\VendingMachine.Test.csproj", "{DADBD17D-3640-488F-A1AA-FED15EA1D077}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Console", "VendingMachine.Console\VendingMachine.Console.csproj", "{1C820F1B-A713-4DEC-B5C9-A2C46E6298FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Console.Test", "VendingMachine.Console.Test\VendingMachine.Console.Test.csproj", "{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C820F1B-A713-4DEC-B5C9-A2C46E6298FF}.Debug|x86.ActiveCfg = Debug|x86
+		{1C820F1B-A713-4DEC-B5C9-A2C46E6298FF}.Debug|x86.Build.0 = Debug|x86
+		{1C820F1B-A713-4DEC-B5C9-A2C46E6298FF}.Release|x86.ActiveCfg = Release|x86
+		{1C820F1B-A713-4DEC-B5C9-A2C46E6298FF}.Release|x86.Build.0 = Release|x86
 		{69045954-09E5-4186-B5BA-506555177051}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{69045954-09E5-4186-B5BA-506555177051}.Debug|x86.Build.0 = Debug|Any CPU
 		{69045954-09E5-4186-B5BA-506555177051}.Release|x86.ActiveCfg = Release|Any CPU
 		{69045954-09E5-4186-B5BA-506555177051}.Release|x86.Build.0 = Release|Any CPU
+		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Release|x86.Build.0 = Release|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.Build.0 = Debug|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Release|x86.ActiveCfg = Release|Any CPU
