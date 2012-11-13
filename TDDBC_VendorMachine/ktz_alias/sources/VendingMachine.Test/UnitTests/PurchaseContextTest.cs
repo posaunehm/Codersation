@@ -7,6 +7,8 @@ using VendingMachine.Model;
 
 using NUnit.Framework;
 
+using TestUtils;
+
 namespace VendingMachine.Test.Unit { 
     [TestFixture]
     public class _商品購入を扱うContextのTestSuite {

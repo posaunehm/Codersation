@@ -3,7 +3,7 @@ using System.Linq;
 
 using VendingMachine.Model;
 
-namespace VendingMachine.Test {
+namespace TestUtils {
     public static class TestHelper {
         public static ChangePool InitInfinityReservedChange() {
             var result = new ChangePool();

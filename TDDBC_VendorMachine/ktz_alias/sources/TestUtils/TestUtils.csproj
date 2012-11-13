@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DADBD17D-3640-488F-A1AA-FED15EA1D077}</ProjectGuid>
+    <ProjectGuid>{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>VendingMachine.Test</RootNamespace>
-    <AssemblyName>VendingMachine.Test</AssemblyName>
+    <RootNamespace>TestUtils</RootNamespace>
+    <AssemblyName>TestUtils</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -31,19 +31,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject\Ninject.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="UnitTests\CoinMeckRoleTest.cs" />
-    <Compile Include="UnitTests\PurchaseTest.cs" />
-    <Compile Include="UnitTests\PurchaseContextTest.cs" />
-    <Compile Include="End2EndTests\PurchaseE2ETest.cs" />
+    <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -51,13 +42,5 @@
       <Project>{69045954-09E5-4186-B5BA-506555177051}</Project>
       <Name>VendingMachine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
-      <Project>{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}</Project>
-      <Name>TestUtils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\" />
-    <Folder Include="End2EndTests\" />
   </ItemGroup>
 </Project>

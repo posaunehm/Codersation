@@ -63,6 +63,16 @@ namespace VendingMachine.Console {
                         };
                     }
                 },
+                { "help", (tokens) => {
+                        throw new NotImplementedException();
+
+                        // [TODO:]
+                        // ins
+                        // buy
+                        // show
+                        // change
+                    }
+                },
             };
         }
 

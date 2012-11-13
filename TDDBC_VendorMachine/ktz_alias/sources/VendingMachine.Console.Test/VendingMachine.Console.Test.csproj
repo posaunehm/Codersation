@@ -34,6 +34,9 @@
       <HintPath>..\packages\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject\Ninject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserTest.cs" />
@@ -47,6 +50,10 @@
     <ProjectReference Include="..\VendingMachine\VendingMachine.csproj">
       <Project>{69045954-09E5-4186-B5BA-506555177051}</Project>
       <Name>VendingMachine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}</Project>
+      <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
