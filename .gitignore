@@ -34,3 +34,8 @@ _ReSharper*/
 .DS_Store
 
 *test-results/
+
+.classpath
+.project
+.settings/
+target/

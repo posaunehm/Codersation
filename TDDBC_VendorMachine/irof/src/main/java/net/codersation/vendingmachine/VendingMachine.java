@@ -78,11 +78,11 @@ public class VendingMachine {
 	}
 
 	/**
-	 * 購入可能なジュースのリストを取得する。
-	 * @return ジュースリスト
+	 * 購入可能レポートを取得する。
+	 * @return 購入可能情報
 	 */
-	public List<Juice> getPurchasable() {
-		List<Juice> list = new ArrayList<>();
+	public PurchasableReport getPurchasable() {
+		PurchasableReport list = new PurchasableReport();
 		for (JuiceRack rack : juiceStock) {
 			if (rack.isInStock() && rack.getJuice().isEnough(getCreditAmount())) {
 				list.add(rack.getJuice());
@@ -91,16 +91,11 @@ public class VendingMachine {
 		return list;
 	}
 
-	public StockReport getAllJuiceStock() {
-		return juiceStock.getStockReport();
-	}
-
 	/**
-	 * ジュースの在庫数を取得する。
-	 * @param juice 在庫数を知りたいジュース
-	 * @return 在庫数
+	 * 在庫情報レポートを取得する。
+	 * @return 在庫情報
 	 */
-	public int getStockCount(Juice juice) {
-		return juiceStock.getRack(juice).getCount();
+	public StockReport getStockReport() {
+		return juiceStock.getStockReport();
 	}
 }
