@@ -14,9 +14,7 @@
 //countが0になったら、自動的に削除するという設計が良さそう
 MoneyRack::MoneyRack(const Money& money, int count)
 {
-  std::cout << "想定しているコンストラクタが呼び出された" << std::endl;
   //強い保証をするには、ここで例外を受けるようにしとけばいける。
-  //boost::shared_ptr<Money> pMoney_ = boost::shared_ptr<Money>;
   pMoney_ = MoneyPointer(new Money(money));
   count_ = count;
 

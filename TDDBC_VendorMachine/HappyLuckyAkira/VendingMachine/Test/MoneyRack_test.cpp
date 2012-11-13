@@ -14,17 +14,20 @@ TEST_GROUP(TestSuiteMoneyRack)
 {
   void setup()
   {
+    pMoneyYen500Rack_= new MoneyRack(Money::Yen500(),10);
     pMoneyYen100Rack_ = new MoneyRack(Money::Yen100(),50);
     pMoneyYen50Rack_  = new MoneyRack(Money::Yen50(),10);
     pMoneyYen10Rack_  = new MoneyRack(Money::Yen10(),10);
   }
   void teardown()
   {
-    delete pMoneyYen100Rack_;
-    delete pMoneyYen50Rack_;
-    delete pMoneyYen10Rack_;
+    delete pMoneyYen500Rack_    ;
+    delete pMoneyYen100Rack_    ;
+    delete pMoneyYen50Rack_     ;
+    delete pMoneyYen10Rack_     ;
   }
 protected:
+  MoneyRack *pMoneyYen500Rack_;
   MoneyRack *pMoneyYen100Rack_;
   MoneyRack *pMoneyYen50Rack_;
   MoneyRack *pMoneyYen10Rack_;
@@ -66,9 +69,15 @@ TEST(TestSuiteMoneyRack, TestCaseGetAddCount)
   LONGS_EQUAL(11,pMoneyYen10Rack_->getCount());
 }
 
-//10円を1枚使用したら1枚増える（別の演算子）
+//50円を1枚使用したら1枚減る
 TEST(TestSuiteMoneyRack, TestCaseGetSubCount)
 {
   *pMoneyYen50Rack_ =  *pMoneyYen50Rack_ - Money::Yen50();
   LONGS_EQUAL(9,pMoneyYen50Rack_->getCount());
+}
+//500円を1枚使用したら1枚減る（別の演算子）
+TEST(TestSuiteMoneyRack, TestCaseGetSubEqualCount)
+{
+  *pMoneyYen500Rack_ -=  Money::Yen500();
+  LONGS_EQUAL(9,pMoneyYen500Rack_->getCount());
 }
