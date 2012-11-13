@@ -40,6 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserTest.cs" />
+    <Compile Include="AppRunnerTest.cs" />
+    <Compile Include="..\VendingMachine.Test\TestHelper.cs">
+      <Link>TestHelper.cs</Link>
+    </Compile>
+    <Compile Include="ConsoleTestHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -50,10 +55,6 @@
     <ProjectReference Include="..\VendingMachine\VendingMachine.csproj">
       <Project>{69045954-09E5-4186-B5BA-506555177051}</Project>
       <Name>VendingMachine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
-      <Project>{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}</Project>
-      <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

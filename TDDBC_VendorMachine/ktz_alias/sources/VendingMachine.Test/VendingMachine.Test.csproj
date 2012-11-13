@@ -44,16 +44,13 @@
     <Compile Include="UnitTests\PurchaseTest.cs" />
     <Compile Include="UnitTests\PurchaseContextTest.cs" />
     <Compile Include="End2EndTests\PurchaseE2ETest.cs" />
+    <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\VendingMachine\VendingMachine.csproj">
       <Project>{69045954-09E5-4186-B5BA-506555177051}</Project>
       <Name>VendingMachine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
-      <Project>{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}</Project>
-      <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Console", "V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Console.Test", "VendingMachine.Console.Test\VendingMachine.Console.Test.csproj", "{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtils", "TestUtils\TestUtils.csproj", "{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -29,10 +27,6 @@ Global
 		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Debug|x86.Build.0 = Debug|Any CPU
 		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D8C746F-F91D-400B-89EC-5975EB6EE6C7}.Release|x86.Build.0 = Release|Any CPU
-		{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}.Debug|x86.Build.0 = Debug|Any CPU
-		{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}.Release|x86.ActiveCfg = Release|Any CPU
-		{B37F4E55-2A24-4DC8-AAD5-E256E961C5ED}.Release|x86.Build.0 = Release|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Debug|x86.Build.0 = Debug|Any CPU
 		{DADBD17D-3640-488F-A1AA-FED15EA1D077}.Release|x86.ActiveCfg = Release|Any CPU

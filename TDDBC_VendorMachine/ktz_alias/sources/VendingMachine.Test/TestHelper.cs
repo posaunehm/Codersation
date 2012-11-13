@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 
+using Ninject;
+
 using VendingMachine.Model;
 
 namespace TestUtils {
@@ -36,6 +38,18 @@ namespace TestUtils {
 
         public static TParamItem[] AsArray<TParamItem>(params TParamItem[] inItems) {
             return inItems;
+        }
+    }
+
+    public static class VendingMachineDIExtensions {
+        public static IKernel BindPurchaseContext(this IKernel inSelf) {
+            inSelf.Bind<ChangePool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
+            inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
+            inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
+            inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
+            inSelf.Bind<PurchaseContext>().ToSelf();
+            
+            return inSelf;
         }
     }
 }

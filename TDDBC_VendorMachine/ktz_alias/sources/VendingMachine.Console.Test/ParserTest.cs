@@ -130,23 +130,16 @@ namespace VendingMachine.Console.Test {
 
     [TestFixture]
     public class _ドメインからの応答を整形して返すところのTestSuite {
-        private IKernel SetUpPurchaseContextKernel() {
-            var kernel = new Ninject.StandardKernel();
-            kernel.Bind<ChangePool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
-            kernel.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
-            kernel.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
-            kernel.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
-            kernel.Bind<PurchaseContext>().ToSelf();
-            kernel.Bind<IRunnerRepository>().ToMethod(ctx => new CommandRunnerRepository());
-
-            return kernel;
-        }
-
         [Test]
         public void _パースされた投入金額を処理する(
             [ValueSource(typeof(_コマンドパーサに渡すTestFixture), "InsMoneyParams")] _コマンドパーサに渡すTestFixture.Parameter inParameter) 
         {
-            var repo = this.SetUpPurchaseContextKernel().Get<IRunnerRepository>();
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+
             var runner = repo.FindRunner(inParameter.Expected);
 
             runner();
@@ -156,13 +149,22 @@ namespace VendingMachine.Console.Test {
         }
 
         [Test]
-        public void _パースされた投入金額を処理する_連続投入 () {
+        public void _パースされた投入金額を処理する_連続投入() {
             var parameters = new _コマンドパーサに渡すTestFixture().InsMoneyParams
                 .Select(p => p.Expected)
-                .Cast<MoneyInsertionParseResult>()
+                .Cast<MoneyInsertionParseResult>();
+
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
             ;
 
-            var repo = this.SetUpPurchaseContextKernel().Get<IRunnerRepository>();
+            foreach (var parameter in parameters) {
+                var runner = repo.FindRunner(parameter);
+                       
+                runner();
+            }
 
             var totalAmount = parameters
                 .Sum(r => (r.Money.Value() * r.Count))
