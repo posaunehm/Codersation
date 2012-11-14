@@ -6,6 +6,8 @@ using VendingMachine.Console;
 
 using NUnit.Framework;
 
+using TestUtils;
+
 namespace VendingMachine.Console.Test {
     [TestFixture]
     public class _コンソール実行環境本体に関するTestCase {
@@ -19,13 +21,9 @@ namespace VendingMachine.Console.Test {
 
             var expected = new List<string> {
                 "money: 100 was received.",
-                "total money is 100.",
-                "money: 10 was received.",
-                "total money is 110.",
-                "money: 10 was received.",
-                "total money is 120.",
+                "money: 20 was received.",
                 "some money was ejected",
-                "total money is 0.",
+//                "total money is 0.",
             };
             var it = expected.GetEnumerator();
 
@@ -44,7 +42,9 @@ namespace VendingMachine.Console.Test {
     internal class FakeConsoleRunner : AbstractApplicationRunner {
         private IEnumerator<string> mCommandItertor;
 
-        public FakeConsoleRunner(params string[] inCommands) {
+        public FakeConsoleRunner(params string[] inCommands) 
+            : base (new Ninject.StandardKernel().BindPurchaseContext().BindRunnerRepository())
+        {
             mCommandItertor = inCommands.AsEnumerable()
                 .GetEnumerator()
             ;
@@ -57,7 +57,6 @@ namespace VendingMachine.Console.Test {
             else {
                 return TerminateCommand; // Ctrl + C
             }
-
         }
     }
 }

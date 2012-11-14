@@ -140,7 +140,7 @@ namespace VendingMachine.Console.Test {
                 .Get<IRunnerRepository>()
             ;
 
-            var runner = repo.FindRunner(inParameter.Expected);
+            var runner = repo.FindRunner(inParameter.Expected, null);
 
             runner();
 
@@ -161,7 +161,7 @@ namespace VendingMachine.Console.Test {
             ;
 
             foreach (var parameter in parameters) {
-                var runner = repo.FindRunner(parameter);
+                var runner = repo.FindRunner(parameter, null);
                        
                 runner();
             }

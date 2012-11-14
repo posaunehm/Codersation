@@ -1,5 +1,7 @@
 using System;
 
+using Ninject;
+
 namespace VendingMachine.Console {
     public delegate void ConsoleLogEventHandler(string inMessage);
 
@@ -9,8 +11,9 @@ namespace VendingMachine.Console {
         private CommandParserRepository mParserRepo;
         private IRunnerRepository mRunnerRepo;
 
-        protected AbstractApplicationRunner() {
-
+        protected AbstractApplicationRunner(IKernel inKernel) {
+            mParserRepo = new CommandParserRepository();
+            mRunnerRepo = inKernel.Get<IRunnerRepository>();
         }
 
         public void Run() {
@@ -27,7 +30,9 @@ namespace VendingMachine.Console {
 
             // if parse error was reported ...
 
-            var runner = mRunnerRepo.FindRunner(parseResult);
+            var runner = mRunnerRepo.FindRunner(parseResult, this.LogUpdated);
+
+            runner();
 
             return true;
         }
