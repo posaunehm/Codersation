@@ -115,6 +115,16 @@ namespace VendingMachine.Console.Test {
         }
 
         [Test]
+        public void _お金の排出依頼をパースする() {
+            var repo = new CommandParserRepository();
+            var parser = repo.FindParser("eject");
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(MoneyEjectParseResult)));
+        }
+
+        [Test]
         public void _未定義のコマンドをパースする(
             [ValueSource(typeof(_コマンドパーサに渡すTestFixture), "InvalidCommandParams")] _コマンドパーサに渡すTestFixture.Parameter inParameter) 
         {
@@ -170,6 +180,49 @@ namespace VendingMachine.Console.Test {
                 .Sum(r => (r.Money.Value() * r.Count))
             ;
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(totalAmount));
+        }
+        
+        [Test]
+        public void _お金の排出依頼を処理する_入金がない場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            var runner = repo.FindRunner(new MoneyEjectParseResult(), null);
+            
+            runner();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+        }
+        
+        [Test]
+        public void _お金の排出依頼を処理する() {
+            var parameters = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(p => p.Expected)
+                    .Cast<MoneyInsertionParseResult>();
+            
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+            Action runner;
+            foreach (var parameter in parameters) {
+                runner = repo.FindRunner(parameter, null);               
+                runner();
+            }
+
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.GreaterThan(0));
+            
+            runner = repo.FindRunner(new MoneyEjectParseResult(), null);            
+            runner();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
         }
     }
 }

@@ -63,14 +63,22 @@ namespace VendingMachine.Console {
                         };
                     }
                 },
+                { "eject", (token) => {
+                        return new MoneyEjectParseResult {
+                            Status = ParseResultStatus.Success,
+                        };
+                    }
+                },
                 { "help", (tokens) => {
                         throw new NotImplementedException();
 
                         // [TODO:]
                         // ins
                         // buy
-                        // show
-                        // change
+                        // show item
+                        // show amount
+                        // eject
+
                     }
                 },
             };
@@ -98,6 +106,9 @@ namespace VendingMachine.Console {
     internal class MoneyInsertionParseResult : AbstractCommandParseResult {
         public Money Money {get; internal set; }
         public int Count {get; internal set; }
+    }
+
+    internal class MoneyEjectParseResult : AbstractCommandParseResult {
     }
 
     internal class ParseErrorResult : AbstractCommandParseResult {

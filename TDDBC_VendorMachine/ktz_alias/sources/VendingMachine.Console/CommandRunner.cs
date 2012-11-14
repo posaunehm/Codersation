@@ -29,6 +29,14 @@ namespace VendingMachine.Console {
                         this.OnLogUpdated(ev, string.Format("money: {0} was received.", r.Money.Value() * r.Count));
                     }
                 },
+                {
+                    typeof (MoneyEjectParseResult),
+                    (result, ev) => {
+                        this.PurchaseContext.Eject();
+                        
+                        this.OnLogUpdated(ev, "some money was ejected.");
+                    }
+                },
                 { 
                     typeof (ParseErrorResult), 
                     (result, ev) => {
@@ -54,7 +62,7 @@ namespace VendingMachine.Console {
                 };
             }
 
-            throw new NotSupportedException();
+            throw new NotSupportedException(inResult.GetType().ToString());
         }
 
         [Inject]
