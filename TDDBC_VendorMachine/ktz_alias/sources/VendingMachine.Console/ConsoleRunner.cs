@@ -52,6 +52,7 @@ namespace VendingMachine.Console {
             };
 
             this.OnLogUpdated("Enter 'Ctrl + C' for exit application.");
+            this.OnLogUpdated("Enter 'help' for instructions.");
         }
 
         protected override string ReadCommand() {
@@ -62,7 +63,7 @@ namespace VendingMachine.Console {
             }
             while (string.IsNullOrWhiteSpace(command));
 
-            return command;         
+            return command.Trim();         
         }
     }
 }

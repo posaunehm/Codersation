@@ -37,27 +37,19 @@ namespace VendingMachine.Console.Test {
             get {
                 yield return new _コマンドパーサに渡すTestFixture.Parameter {
                     Input = "ins 256",
-                    Expected = new MoneyInsertionParseResult {
-                        Status = ParseResultStatus.InvalidMoney,
-                    },
+                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
                 yield return new _コマンドパーサに渡すTestFixture.Parameter {
                     Input = "ins 128 8",
-                    Expected = new MoneyInsertionParseResult {
-                        Status = ParseResultStatus.InvalidMoney,
-                    },
+                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
                 yield return new _コマンドパーサに渡すTestFixture.Parameter {
                     Input = "ins 50 0",
-                    Expected = new MoneyInsertionParseResult {
-                        Status = ParseResultStatus.InvalidMoney,
-                    },
+                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
                 yield return new _コマンドパーサに渡すTestFixture.Parameter {
                     Input = "ins 10 -10",
-                    Expected = new MoneyInsertionParseResult {
-                        Status = ParseResultStatus.InvalidMoney,
-                    },
+                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
             }
         }
@@ -122,6 +114,49 @@ namespace VendingMachine.Console.Test {
             
             Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
             Assert.That(result, Is.InstanceOf(typeof(MoneyEjectParseResult)));
+        }
+
+        private HashSet<string> ListExpectedHelpContents() {
+            return new HashSet<string> {
+                "ins", 
+                "buy",
+                "show-item",
+                "show-amount",
+                "eject", 
+                "help",
+            };
+        }
+
+        [Test]
+        public void _ヘルプ表示依頼をパースする() {
+            var repo = new CommandParserRepository();
+            var parser = repo.FindParser("help");
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(HelpParseResult)));
+            
+            var actual = (HelpParseResult)result;
+            var expected = this.ListExpectedHelpContents();
+            
+            Assert.That(actual.HelpContents.Keys.All(command => expected.Contains(command)), Is.True);
+            Assert.That(actual.Command, Is.Null.Or.Empty);
+        }
+        
+        [Test]
+        public void _ヘルプ表示依頼をパースする_コマンド指定() {
+            var repo = new CommandParserRepository();
+            var parser = repo.FindParser("help ins");
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(HelpParseResult)));
+            
+            var actual = (HelpParseResult)result;
+            var expected = this.ListExpectedHelpContents();
+            
+            Assert.That(actual.HelpContents.Keys.All(command => expected.Contains(command)), Is.True);
+            Assert.That(actual.Command, Is.EqualTo("ins"));
         }
 
         [Test]
@@ -223,6 +258,51 @@ namespace VendingMachine.Console.Test {
             runner();
             
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void _ヘルプ表示依頼を処理する() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+
+            var it = ConsoleTestHelper.ListExpectedHelpContents().GetEnumerator();
+
+            var runner = repo.FindRunner(new HelpParseResult(), (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _ヘルプ表示依頼を処理する_コマンド指定() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+
+            var result = new HelpParseResult { Command = "ins"};
+            var content = result.HelpContents[result.Command];
+
+            var it = (new string[] {content.Usage, content.Description}).GetEnumerator();
+
+            var runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);
         }
     }
 }

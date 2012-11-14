@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Ninject;
 
@@ -35,6 +36,29 @@ namespace VendingMachine.Console {
                         this.PurchaseContext.Eject();
                         
                         this.OnLogUpdated(ev, "some money was ejected.");
+                    }
+                },
+                {
+                    typeof(HelpParseResult),
+                    (result, ev) => {
+                        var r = (HelpParseResult)result;
+
+                        if (! string.IsNullOrEmpty(r.Command)) {
+                            var contents = r.HelpContents[r.Command];
+
+                            this.OnLogUpdated(ev, contents.Usage);
+                            this.OnLogUpdated(ev, contents.Description);
+                        }
+                        else {
+                            var contents = r.HelpContents.Values.Where(c => ! c.Ignored).OrderBy(c => c.Command);
+                            var commandLength = r.HelpContents.Values.Max(c => c.Command.Length)+2;
+
+                            foreach (var content in contents) {
+                                this.OnLogUpdated(
+                                    ev, string.Format("{0}{1}", content.Command.PadRight(commandLength), content.Description)
+                                );
+                            }
+                        }
                     }
                 },
                 { 

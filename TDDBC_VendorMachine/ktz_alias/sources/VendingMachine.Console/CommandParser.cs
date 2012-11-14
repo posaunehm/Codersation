@@ -10,6 +10,7 @@ namespace VendingMachine.Console {
         NotSupportedCommand,
         Success,
         InvalidMoney,
+        NotSupportedHelpCommand,
     }
 
     public interface IParseResult {
@@ -37,22 +38,22 @@ namespace VendingMachine.Console {
                         var count = 1;
                         if (it.MoveNext()) {
                             int v;
-                            if (int.TryParse(it.Current, out v)) {
-                                var m = MoneyResolver.Resolve(v);
-
-                                if (m.Status == MoneyStatus.Available) {
-                                    status = ParseResultStatus.Success;
-                                    money = m.Type;
-                                }
+                            if (! int.TryParse(it.Current, out v)) {
+                                return new ParseErrorResult(ParseResultStatus.InvalidMoney);
                             }
+
+                            var m = MoneyResolver.Resolve(v);
+
+                            if (m.Status != MoneyStatus.Available) {
+                                return new ParseErrorResult(ParseResultStatus.InvalidMoney);
+                            }
+
+                            status = ParseResultStatus.Success;
+                            money = m.Type;
                         }
                         if (it.MoveNext()) {
-                            int c;
-                            if (int.TryParse(it.Current, out c)) {
-                                if (c <= 0) {
-                                    status = ParseResultStatus.InvalidMoney;
-                                }
-                                count = c;
+                            if (! int.TryParse(it.Current, out count) || count <= 0) {
+                                return new ParseErrorResult(ParseResultStatus.InvalidMoney);
                             }
                         }
 
@@ -70,15 +71,22 @@ namespace VendingMachine.Console {
                     }
                 },
                 { "help", (tokens) => {
-                        throw new NotImplementedException();
+                        var it = tokens.Skip(1).GetEnumerator();
 
-                        // [TODO:]
-                        // ins
-                        // buy
-                        // show item
-                        // show amount
-                        // eject
+                        var result = new HelpParseResult {
+                            Status = ParseResultStatus.Success
+                        };
 
+                        if (it.MoveNext()) {
+                            if (result.HelpContents.ContainsKey(it.Current)) {
+                                result.Command = it.Current;
+                            }
+                            else {
+                                return new ParseErrorResult(ParseResultStatus.NotSupportedHelpCommand);
+                            }
+                        }
+
+                        return result;
                     }
                 },
             };
@@ -109,6 +117,61 @@ namespace VendingMachine.Console {
     }
 
     internal class MoneyEjectParseResult : AbstractCommandParseResult {
+    }
+
+    internal struct HelpContent {
+        public string Command;
+        public string Description;
+        public string Usage;
+        public bool Ignored;
+    }
+
+    internal class HelpParseResult : AbstractCommandParseResult {
+        public HelpParseResult() {
+            var contents = new HelpContent[] {
+                new HelpContent {
+                    Command = "ins", 
+                    Description = "To insert money is requested.",
+                    Usage = "ins <money value> [<count>]",
+                },
+                new HelpContent {
+                    Command = "buy",
+                    Description = "",
+                    Usage = "",
+                    Ignored = true
+                },
+                new HelpContent {
+                    Command = "show-item",
+                    Description = "",
+                    Usage = "",
+                    Ignored = true
+                },
+                new HelpContent {
+                    Command = "show-amount",
+                    Description = "",
+                    Usage = "",
+                    Ignored = true
+                },
+                new HelpContent {
+                    Command = "eject", 
+                    Description = "To eject inserted money is requested.",
+                    Usage = "eject",
+                },
+                new HelpContent {
+                    Command = "help",
+                    Description = "This message(s) is displayed.",
+                    Usage = "help [<command name>]"
+                }
+            };
+
+            this.HelpContents = contents.ToDictionary(
+                content => content.Command, 
+                content => content
+            );
+        }
+
+        public IDictionary<string, HelpContent> HelpContents {get; private set;}
+        public string Command { get; internal set; }
     }
 
     internal class ParseErrorResult : AbstractCommandParseResult {

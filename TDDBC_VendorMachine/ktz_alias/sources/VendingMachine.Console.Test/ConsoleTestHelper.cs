@@ -10,5 +10,18 @@ namespace VendingMachine.Console.Test {
             return inSelf;
         }
     }
+
+    public static class ConsoleTestHelper {
+        public static string[] ListExpectedHelpContents() {
+            return new string[] {
+                //                "buy",
+                "eject        To eject inserted money is requested.", 
+                "help         This message(s) is displayed.",
+                "ins          To insert money is requested.", 
+                //                "show-amount  ",
+                //                "show-item    ",
+            };
+        }
+    }
 }
 

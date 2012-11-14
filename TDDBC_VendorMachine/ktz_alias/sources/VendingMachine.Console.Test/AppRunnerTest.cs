@@ -19,7 +19,7 @@ namespace VendingMachine.Console.Test {
                 "eject"
             );
 
-            var expected = new List<string> {
+            var expected = new string[] {
                 "money: 100 was received.",
                 "money: 20 was received.",
                 "some money was ejected.",
@@ -29,12 +29,50 @@ namespace VendingMachine.Console.Test {
 
             app.LogUpdated += (message) => {
                 Assert.That(it.MoveNext(), Is.True);
-                Assert.That(message, Is.Not.Null.Or.Not.Empty);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
                 Assert.That(message, Is.EqualTo(it.Current));
             };
 
             app.Run();
 
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _ヘルプ表示依頼() {
+            var app = new FakeConsoleRunner(
+                "help"
+                );
+            
+            var it = ConsoleTestHelper.ListExpectedHelpContents().GetEnumerator();
+            
+            app.LogUpdated += (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            };
+            
+            app.Run();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _ヘルプ表示依頼_コマンド指定() {
+            var app = new FakeConsoleRunner(
+                "help eject"
+                );
+            
+            var it = (new string[] { "eject", "To eject inserted money is requested."}).GetEnumerator();
+            
+            app.LogUpdated += (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            };
+            
+            app.Run();
+            
             Assert.That(it.MoveNext(), Is.False);
         }
     }
