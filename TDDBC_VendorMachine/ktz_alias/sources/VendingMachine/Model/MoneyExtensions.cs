@@ -26,15 +26,15 @@ namespace VendingMachine.Model {
         Available,
     }
 
-    internal class InternalMoney {
-        internal MoneyStatus Status {get; set;}        
-
+    public class InternalMoney {
+        public MoneyStatus Status {get; set;}        
         public Money Type {get; internal set; }
         public int Value {get; internal set; }
     }
 
-    internal static class MoneyResolver {
+    public static class MoneyResolver {
         private static Dictionary<Money, InternalMoney> sLookup;
+        private static Dictionary<int, InternalMoney> sReverseLookup;
         private static readonly InternalMoney sUnknownMoney;
 
         static MoneyResolver() {
@@ -61,6 +61,10 @@ namespace VendingMachine.Model {
                 })              
             ;
 
+            sReverseLookup = sLookup
+                .ToDictionary(item => item.Value.Value, item => item.Value)
+            ;
+
             sUnknownMoney = new InternalMoney { 
                 Type = Money.Unknown, 
                 Status = MoneyStatus.Unavailable, 
@@ -74,6 +78,15 @@ namespace VendingMachine.Model {
                 result = sUnknownMoney;
             }
 
+            return result;
+        }
+
+        public static InternalMoney Resolve(int inMoneyValue) {
+            InternalMoney result;
+            if (! sReverseLookup.TryGetValue(inMoneyValue, out result)) {
+                result = sUnknownMoney;
+            }
+            
             return result;
         }
     }

@@ -30,7 +30,7 @@ namespace VendingMachine.Model {
     }
 
     public class ItemRackPosition {
-        internal ItemRackPosition(params Tuple<int, ItemRack>[] inRack) {
+        public ItemRackPosition(params Tuple<int, ItemRack>[] inRack) {
             this.Positions = inRack
                 .ToDictionary(
                     rack => rack.Item1,

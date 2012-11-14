@@ -6,7 +6,7 @@ using VendingMachine.Model;
 
 using NUnit.Framework;
 
-using VendingMachine.Test;
+using TestUtils;
 
 namespace VendingMachine.Test.Unit {
     [TestFixture]

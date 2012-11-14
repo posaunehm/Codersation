@@ -64,12 +64,12 @@ public class VendingMachineTest {
 		@Test
 		public void 買えない状態で購入しても在庫は減らない() throws Exception {
 			sut.purchase(コーラ);
-			assertThat(sut.getStockCount(コーラ), is(5));
+			assertThat(sut.getStockReport().get(コーラ), is(5));
 		}
 
 		@Test
 		public void 在庫情報を取得できる() throws Exception {
-			StockReport actual = sut.getAllJuiceStock();
+			StockReport actual = sut.getStockReport();
 			assertThat(actual.size(), is(3));
 			assertThat(actual.get(コーラ), is(5));
 			assertThat(actual.get(JuiceFactory.create("レッドブル")), is(5));
@@ -147,7 +147,7 @@ public class VendingMachineTest {
 		@Test
 		public void 購入したら在庫が減る() throws Exception {
 			sut.purchase(コーラ);
-			assertThat(sut.getStockCount(コーラ), is(4));
+			assertThat(sut.getStockReport().get(コーラ), is(4));
 		}
 
 		@Test

@@ -6,7 +6,7 @@ using VendingMachine.Model;
 
 using NUnit.Framework;
 
-using VendingMachine.Test;
+using TestUtils;
 
 namespace VendingMachine.Test.Unit {
 	[TestFixture]
@@ -30,6 +30,26 @@ namespace VendingMachine.Test.Unit {
 			Assert.That(money.Value, Is.EqualTo(inValue));	
 		}
 		
+        [TestCase(10, Money.Coin10, MoneyStatus.Available)]
+        [TestCase(50, Money.Coin50, MoneyStatus.Available)]
+        [TestCase(100, Money.Coin100, MoneyStatus.Available)]
+        [TestCase(500, Money.Coin500, MoneyStatus.Available)]
+        [TestCase(1000, Money.Bill1000, MoneyStatus.Available)]
+        [TestCase(1, Money.Coin1, MoneyStatus.Unavailable)]
+        [TestCase(5, Money.Coin5, MoneyStatus.Unavailable)]
+        [TestCase(2000, Money.Bill2000, MoneyStatus.Unavailable)]
+        [TestCase(5000, Money.Bill5000, MoneyStatus.Unavailable)]
+        [TestCase(10000, Money.Bill10000, MoneyStatus.Unavailable)]     
+        [TestCase(0, Money.Unknown, MoneyStatus.Unavailable)]
+        [TestCase(128, Money.Unknown, MoneyStatus.Unavailable)]
+        [TestCase(-512, Money.Unknown, MoneyStatus.Unavailable)]
+        public void _価値から金種への変換(int inValue, Money inType, MoneyStatus inStatus) {
+            var money = MoneyResolver.Resolve(inValue);
+            
+            Assert.That(money.Type, Is.EqualTo(inType));    
+            Assert.That(money.Status, Is.EqualTo(inStatus));    
+        }
+
 		[Test]
 		public void _投入するお金の利用可不可を判定する() {
 			var role = new CoinMeckRole();
