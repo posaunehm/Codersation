@@ -9,10 +9,10 @@ public class MoneyFlow {
 	private int saleAmount = 0;
 	private final MoneyStock credit = new MoneyStock();
 	private final MoneyStock change = new MoneyStock();
-	private final MoneyStock pool;
+	private final MoneyStock pool = new MoneyStock();
 
-	MoneyFlow(MoneyStock pool) {
-		this.pool = pool;
+	MoneyFlow(MoneyStock initialStock) {
+		initialStock.moveTo(this.pool);
 	}
 
 	public int getSaleAmount() {
