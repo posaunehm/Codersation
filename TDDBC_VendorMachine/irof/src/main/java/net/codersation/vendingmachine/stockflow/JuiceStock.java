@@ -1,30 +1,29 @@
 package net.codersation.vendingmachine.stockflow;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 import net.codersation.vendingmachine.Juice;
 import net.codersation.vendingmachine.JuiceFactory;
 import net.codersation.vendingmachine.StockReport;
 
-public class JuiceStock implements Iterable<JuiceRack> {
+public class JuiceStock {
 
 	private List<JuiceRack> racks = new ArrayList<JuiceRack>();
+	private Collection<Juice> juices = new ArrayList<>();
 
 	public JuiceStock() {
 		initialize();
 	}
 
-	@Override
-	public Iterator<JuiceRack> iterator() {
-		return racks.iterator();
-	}
-
 	private void initialize() {
-		racks.add(new JuiceRack(JuiceFactory.create("コーラ"), 5));
-		racks.add(new JuiceRack(JuiceFactory.create("水"), 5));
-		racks.add(new JuiceRack(JuiceFactory.create("レッドブル"), 5));
+		juices.add(JuiceFactory.create("コーラ"));
+		juices.add(JuiceFactory.create("水"));
+		juices.add(JuiceFactory.create("レッドブル"));
+		for (Juice j : juices) {
+			racks.add(new JuiceRack(j, 5));
+		}
 	}
 
 	private JuiceRack getRack(Juice juice) {
@@ -50,5 +49,13 @@ public class JuiceStock implements Iterable<JuiceRack> {
 			report.put(rack.getJuice(), rack.getCount());
 		}
 		return report;
+	}
+
+	/**
+	 * 取り扱っている商品
+	 * @return
+	 */
+	public Collection<Juice> getJuices() {
+		return juices;
 	}
 }

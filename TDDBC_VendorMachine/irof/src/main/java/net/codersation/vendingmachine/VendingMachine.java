@@ -2,7 +2,6 @@ package net.codersation.vendingmachine;
 
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
 import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
-import net.codersation.vendingmachine.stockflow.JuiceRack;
 import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 /**
@@ -79,9 +78,9 @@ public class VendingMachine {
 	 */
 	public PurchasableReport getPurchasable() {
 		PurchasableReport list = new PurchasableReport();
-		for (JuiceRack rack : juiceStock) {
-			if (rack.isInStock() && rack.getJuice().isEnough(getCreditAmount())) {
-				list.add(rack.getJuice());
+		for (Juice juice : juiceStock.getJuices()) {
+			if (juiceStock.isInStock(juice) && juice.isEnough(getCreditAmount())) {
+				list.add(juice);
 			}
 		}
 		return list;
