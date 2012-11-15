@@ -40,6 +40,10 @@ public class JuiceStock implements Iterable<JuiceRack> {
 		return getRack(juice).isInStock();
 	}
 
+	public void remove(Juice juice) {
+		getRack(juice).remove();
+	}
+
 	public StockReport getStockReport() {
 		StockReport report = new StockReport();
 		for (JuiceRack rack : racks) {
