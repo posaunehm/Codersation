@@ -33,9 +33,15 @@ namespace VendingMachine.Console {
                 {
                     typeof (MoneyEjectParseResult),
                     (result, ev) => {
-                        this.PurchaseContext.Eject();
-                        
-                        this.OnLogUpdated(ev, "some money was ejected.");
+                         var changes = this.PurchaseContext.Eject()
+                            .GroupBy(m => m)
+                            .Select(g => Tuple.Create(g.Key.Value(), g.Count()))
+                            .OrderBy(m => m.Item1)
+                            .Select(m => string.Format("{0}({1})", m.Item1, m.Item2))
+                            .ToArray()
+                         ;
+
+                        this.OnLogUpdated(ev, string.Format("{0} was ejected.", string.Join(", ", changes)));
                     }
                 },
                 {
