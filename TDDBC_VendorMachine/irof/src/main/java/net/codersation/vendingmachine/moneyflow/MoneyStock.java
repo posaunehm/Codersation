@@ -22,24 +22,17 @@ public class MoneyStock {
 		stock.add(e);
 	}
 
-	public void addAll(List<Money> l) {
-		stock.addAll(l);
-	}
-
 	/**
 	 * 引数のMoneyStockにこのオブジェクトに全てのStockを移す。移されたほうは空になる。
 	 * @param s
 	 */
-	void moveTo(MoneyStock s) {
+	void moveAllMoneyTo(MoneyStock s) {
 		s.stock.addAll(stock);
 		stock.clear();
 	}
 
-	void remove(Money e) {
-		stock.remove(e);
-	}
-
 	private List<Money> getUseMoneyList(int i) {
+		// TODO 指定された金額のお金を出すための見苦しいコード
 
 		List<Money> result = new ArrayList<>();
 
@@ -67,6 +60,13 @@ public class MoneyStock {
 
 	}
 
+	/**
+	 * 指定された金額のMoneStockを取り出す。
+	 * 取り出された分の金額は減る。
+	 * TODO 丁度、多め、などは TakeOutRule とかにしたい
+	 * @param price 取り出したい金額
+	 * @return 取り出されたMoneyStock
+	 */
 	public MoneyStock takeOut(int price) {
 		if (price > getAmount())
 			throw new IllegalArgumentException("cannot take out. price:" + price + ", amount " + getAmount());
@@ -76,5 +76,9 @@ public class MoneyStock {
 			remove(money);
 		}
 		return res;
+	}
+
+	private void remove(Money e) {
+		stock.remove(e);
 	}
 }

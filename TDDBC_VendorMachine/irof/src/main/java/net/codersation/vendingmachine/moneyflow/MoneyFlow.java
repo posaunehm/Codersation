@@ -12,7 +12,7 @@ public class MoneyFlow {
 	private final MoneyStock pool = new MoneyStock();
 
 	MoneyFlow(MoneyStock initialStock) {
-		initialStock.moveTo(this.pool);
+		initialStock.moveAllMoneyTo(this.pool);
 	}
 
 	public int getSaleAmount() {
@@ -36,7 +36,7 @@ public class MoneyFlow {
 	}
 
 	public void payBack() {
-		credit.moveTo(change);
+		credit.moveAllMoneyTo(change);
 	}
 
 	public int getChangeAmount() {
@@ -49,8 +49,8 @@ public class MoneyFlow {
 		// poolからお釣りのために差額のお金を取り出す
 		MoneyStock change = pool.takeOut(sale.getAmount() - price);
 
-		sale.moveTo(pool);
-		change.moveTo(credit);
+		sale.moveAllMoneyTo(pool);
+		change.moveAllMoneyTo(credit);
 
 		addSale(price);
 	}
