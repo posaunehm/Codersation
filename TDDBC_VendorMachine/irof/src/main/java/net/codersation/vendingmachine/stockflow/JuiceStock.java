@@ -27,7 +27,7 @@ public class JuiceStock implements Iterable<JuiceRack> {
 		racks.add(new JuiceRack(JuiceFactory.create("レッドブル"), 5));
 	}
 
-	public JuiceRack getRack(Juice juice) {
+	private JuiceRack getRack(Juice juice) {
 		for (JuiceRack rack : racks) {
 			if (rack.getJuice().equals(juice)) {
 				return rack;
