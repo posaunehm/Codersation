@@ -1,8 +1,5 @@
 package net.codersation.vendingmachine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
 import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
 import net.codersation.vendingmachine.stockflow.JuiceRack;
