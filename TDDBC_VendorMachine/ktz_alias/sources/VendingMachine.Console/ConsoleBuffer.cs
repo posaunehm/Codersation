@@ -22,6 +22,8 @@ namespace VendingMachine.Console {
             return inPhrases
                 .Select(p => p.Split(' '))
                 .SelectMany(words => words.Select((_, i) => string.Join(" ", words, 0, i+1)))
+                .GroupBy(item => item)
+                .Select(item => item.Key)
                 .ToList()
             ;
         }
@@ -34,12 +36,7 @@ namespace VendingMachine.Console {
 
         public char Read() {
             var c = this.ReadCore();
-            if (c == '\n') {
-                this.History.Add(this.Current);
-
-                this.ClearBuffer();
-            } 
-            else if (c == '\t') {
+            if (c == '\t') {
                 if (! this.InCompleting) {
                     mGenerator = this.InitCompletement(this.GetCurrentText(false));
                 }
@@ -48,15 +45,22 @@ namespace VendingMachine.Console {
 
                 c = string.IsNullOrEmpty(mCompletement) ? '\0': mCompletement.Last();
             }
-            else if (c != '\0') {
+            else {
                 if (this.InCompleting) {
-                     mBuf = new StringBuilder(mCompletement);
-
+                    mBuf = new StringBuilder(mCompletement);
+                    
                     mGenerator = null;
                     mCompletement = null;
                 }
 
-                mBuf.Append(c);
+                if (c == '\n') {
+                    this.History.Add(this.Current);
+                    
+                    this.ClearBuffer();
+                }  
+                else if (c != '\0') {
+                    mBuf.Append(c);
+                }
             }
 
             return c;
@@ -78,9 +82,9 @@ namespace VendingMachine.Console {
             var indent = inTarget.TakeWhile(ch => ch == ' ').Count();
             var t = inTarget.TrimStart();
 
-            var items = mDic
-                .Where(item => string.IsNullOrWhiteSpace(t) || item.StartsWith(t))
-                .Select(item => item.PadLeft(indent+item.Length, ' '))
+            var items = this.FilterCompletion(t)
+                .Select(item => item.PadLeft(item.Length+indent))
+                .OrderBy(item => item)
                 .ToList()
             ;
 
@@ -94,6 +98,21 @@ namespace VendingMachine.Console {
                         yield return item;
                     }
                 }
+            }
+        }
+
+        private IEnumerable<string> FilterCompletion(string inTarget) {
+            if (string.IsNullOrEmpty(inTarget)) {
+                return mDic
+                    .Select(item => item.Split(' ').First())
+                    .GroupBy(item => item)
+                    .Select(item => item.Key)
+                ;
+            }
+            else {
+                return mDic
+                    .Where(item => item.StartsWith(inTarget))
+                ;
             }
         }
 

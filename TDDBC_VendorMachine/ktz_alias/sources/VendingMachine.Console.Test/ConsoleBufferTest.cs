@@ -42,15 +42,11 @@ namespace VendingMachine.Console.Test {
             Assert.That(buf.Cursor, Is.EqualTo(0));
             Assert.That(buf.Current, Is.Null.Or.Empty);
             Assert.That(buf.History.Any(), Is.True);
-            Assert.That(buf.History.Last(), Is.EqualTo(inExpected.Trim()));
+            Assert.That(buf.History.Last(), Is.EqualTo(inExpected));
         }
 
-        [TestCase("in", "ins")] 
-        [TestCase("bu", "buy")]
-        [TestCase("eje", "eject")] 
-        [TestCase("   eje", "   eject")] 
-        public void _標準入力からの取得をシミュレーション_入力補完あり(string inPartial, string inExpected) {
-            var dic = new List<string> {
+        private IEnumerable<string> ListDictionary() {
+            return new List<string> {
                 "ins",
                 "buy",
                 "show ins",
@@ -63,9 +59,18 @@ namespace VendingMachine.Console.Test {
                 "help show ins",
                 "help show item",
                 "help show amount",
-                "help elect",
+                "help eject",
+                "help help",
             };
+        }
 
+        [TestCase("in", "ins")] 
+        [TestCase("bu", "buy")]
+        [TestCase("eje", "eject")] 
+        [TestCase("   eje", "   eject")] 
+        [TestCase("dummy", "dummy")] 
+        public void _標準入力からの取得をシミュレーション_入力補完あり(string inPartial, string inExpected) {
+            var dic = this.ListDictionary();
             var buf = new FakeConsoleReadBuffer(dic, inPartial) {
                 Prompt = "> ",
             };
@@ -87,7 +92,84 @@ namespace VendingMachine.Console.Test {
             Assert.That(buf.ReadExtraSpace(), Is.EqualTo(' '));
             Assert.That(buf.Current, Is.EqualTo(inExpected + ' '));
             Assert.That(buf.InCompleting, Is.False);
+        }
 
+        [TestCase("in", "ins")] 
+        [TestCase("bu", "buy")]
+        [TestCase("eje", "eject")] 
+        [TestCase("   eje", "   eject")] 
+        [TestCase("dummy", "dummy")] 
+        public void _標準入力からの取得をシミュレーション_入力補完あり2(string inPartial, string inExpected) {
+            var dic = this.ListDictionary();
+            var buf = new FakeConsoleReadBuffer(dic, inPartial) {
+                Prompt = "> ",
+            };
+            
+            Assert.That(buf.InCompleting, Is.False);
+            
+            buf.ReadToEnd();
+            Assert.That(buf.Current, Is.EqualTo(inPartial));
+            Assert.That(buf.InCompleting, Is.False);
+            
+            Assert.That(buf.ReadExtraTab(), Is.EqualTo(inExpected.Last()));
+            Assert.That(buf.Current, Is.EqualTo(inExpected));
+            Assert.That(buf.InCompleting, Is.True);
+            
+            Assert.That(buf.ReadExtraTab(), Is.EqualTo(inExpected.Last()));
+            Assert.That(buf.Current, Is.EqualTo(inExpected));
+            Assert.That(buf.InCompleting, Is.True);
+            
+            Assert.That(buf.ReadExtraNewLine(), Is.EqualTo('\n'));
+            Assert.That(buf.Current, Is.Null.Or.Empty);
+            Assert.That(buf.History.Any(), Is.True);
+            Assert.That(buf.History.Last(), Is.EqualTo(inExpected));
+        }
+
+        public class _複数候補の入力補完Fixture {
+            public IEnumerable<Tuple<string, string[]>> Params {
+                get {
+                    yield return Tuple.Create(
+                        "sho", 
+                        TestUtils.TestHelper.AsArray("show", "show amount", "show ins", "show item", "show")
+                    );
+                    yield return Tuple.Create(
+                        "he", 
+                        TestUtils.TestHelper.AsArray(
+                            "help", "help buy", "help eject", "help help", "help ins", 
+                            "help show", "help show amount", "help show ins", "help show item",
+                            "help"
+                    ));
+                    yield return Tuple.Create(
+                        "",
+                        TestUtils.TestHelper.AsArray("buy", "eject", "help", "ins", "show", "buy")
+                    );
+                }
+            }
+        }
+
+        [Test]
+        public void _標準入力からの取得をシミュレーション_入力補完あり_複数候補あり(
+            [ValueSource(typeof(_複数候補の入力補完Fixture), "Params")] Tuple<string, string[]> inParameter) {
+            var dic = this.ListDictionary();
+            var buf = new FakeConsoleReadBuffer(dic, inParameter.Item1) {
+                Prompt = "> ",
+            };
+            
+            Assert.That(buf.InCompleting, Is.False);
+            
+            buf.ReadToEnd();
+            Assert.That(buf.Current, Is.EqualTo(inParameter.Item1));
+            Assert.That(buf.InCompleting, Is.False);
+
+            foreach (var expected in inParameter.Item2) {
+                Assert.That(buf.ReadExtraTab(), Is.EqualTo(expected.Last()));
+                Assert.That(buf.Current, Is.EqualTo(expected));
+                Assert.That(buf.InCompleting, Is.True);
+            }
+
+            Assert.That(buf.ReadExtraSpace(), Is.EqualTo(' '));
+            Assert.That(buf.Current, Is.EqualTo(inParameter.Item2.Last() + ' '));
+            Assert.That(buf.InCompleting, Is.False);
         }
     }
 
