@@ -48,6 +48,7 @@ namespace VendingMachine.Console.Test {
         [TestCase("in", "ins")] 
         [TestCase("bu", "buy")]
         [TestCase("eje", "eject")] 
+        [TestCase("   eje", "   eject")] 
         public void _標準入力からの取得をシミュレーション_入力補完あり(string inPartial, string inExpected) {
             var dic = new List<string> {
                 "ins",

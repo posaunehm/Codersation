@@ -50,7 +50,8 @@ namespace VendingMachine.Console {
             }
             else if (c != '\0') {
                 if (this.InCompleting) {
-                    mBuf = new StringBuilder(mCompletement);
+                     mBuf = new StringBuilder(mCompletement);
+
                     mGenerator = null;
                     mCompletement = null;
                 }
@@ -74,8 +75,13 @@ namespace VendingMachine.Console {
         }
 
         private IEnumerator<string> InitCompletementCore(string inTarget) {
+            var indent = inTarget.TakeWhile(ch => ch == ' ').Count();
+            var t = inTarget.TrimStart();
+
             var items = mDic
-                .Where(phrase => string.IsNullOrWhiteSpace(inTarget) || phrase.StartsWith(inTarget))
+                .Where(item => string.IsNullOrWhiteSpace(t) || item.StartsWith(t))
+                .Select(item => item.PadLeft(indent+item.Length, ' '))
+                .ToList()
             ;
 
             var noMatch = ! items.Any();
