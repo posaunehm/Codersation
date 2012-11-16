@@ -22,7 +22,7 @@ namespace VendingMachine.Console.Test {
             var expected = new string[] {
                 "money: 100 was received.",
                 "money: 20 was received.",
-                "some money was ejected.",
+                "10(2), 100(1) was ejected.",
 //                "total money is 0.",
             };
             var it = expected.GetEnumerator();

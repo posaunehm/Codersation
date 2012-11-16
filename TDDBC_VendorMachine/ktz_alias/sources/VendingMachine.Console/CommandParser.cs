@@ -52,7 +52,10 @@ namespace VendingMachine.Console {
                             money = m.Type;
                         }
                         if (it.MoveNext()) {
-                            if (! int.TryParse(it.Current, out count) || count <= 0) {
+                            if (! int.TryParse(it.Current, out count)) {
+                                return new ParseErrorResult(ParseResultStatus.InvalidMoney);
+                            }
+                            if (count <= 0 || count > 100) {
                                 return new ParseErrorResult(ParseResultStatus.InvalidMoney);
                             }
                         }
@@ -132,7 +135,7 @@ namespace VendingMachine.Console {
                 new HelpContent {
                     Command = "ins", 
                     Description = "To insert money is requested.",
-                    Usage = "ins <money value> [<count>]",
+                    Usage = "ins <money value> [<count>] (where counter is > 0 and <= 100)",
                 },
                 new HelpContent {
                     Command = "buy",

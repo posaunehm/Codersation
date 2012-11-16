@@ -31,6 +31,14 @@ namespace VendingMachine.Console.Test {
                         Count = 4,
                     },
                 };
+                yield return new _コマンドパーサに渡すTestFixture.Parameter {
+                    Input = "ins 10 100",
+                    Expected = new MoneyInsertionParseResult {
+                        Status = ParseResultStatus.Success,
+                        Money = Money.Coin10,
+                        Count = 100,
+                    },
+                };
             }
         }
         public IEnumerable<Parameter> InvalidInsMoneyParams {
@@ -49,6 +57,10 @@ namespace VendingMachine.Console.Test {
                 };
                 yield return new _コマンドパーサに渡すTestFixture.Parameter {
                     Input = "ins 10 -10",
+                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
+                };
+                yield return new _コマンドパーサに渡すTestFixture.Parameter {
+                    Input = "ins 10 101",
                     Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
             }
