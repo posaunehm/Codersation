@@ -36,6 +36,9 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -43,6 +46,7 @@
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandRunner.cs" />
     <Compile Include="ConsoleRunner.cs" />
+    <Compile Include="ConsoleBuffer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

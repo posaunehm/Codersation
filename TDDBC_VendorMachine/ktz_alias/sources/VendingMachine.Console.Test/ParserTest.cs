@@ -133,6 +133,7 @@ namespace VendingMachine.Console.Test {
                 "ins", 
                 "buy",
                 "show-item",
+                "show-ins",
                 "show-amount",
                 "eject", 
                 "help",

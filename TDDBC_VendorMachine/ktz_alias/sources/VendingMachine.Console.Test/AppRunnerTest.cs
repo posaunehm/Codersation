@@ -75,7 +75,7 @@ namespace VendingMachine.Console.Test {
             
             Assert.That(it.MoveNext(), Is.False);
         }
-    }
+     }
 
     internal class FakeConsoleRunner : AbstractApplicationRunner {
         private IEnumerator<string> mCommandItertor;

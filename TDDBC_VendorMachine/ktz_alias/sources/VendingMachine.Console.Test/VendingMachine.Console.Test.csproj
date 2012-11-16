@@ -45,6 +45,7 @@
       <Link>TestHelper.cs</Link>
     </Compile>
     <Compile Include="ConsoleTestHelper.cs" />
+    <Compile Include="ConsoleBufferTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
