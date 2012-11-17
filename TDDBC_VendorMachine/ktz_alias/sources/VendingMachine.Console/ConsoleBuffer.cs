@@ -89,6 +89,7 @@ namespace VendingMachine.Console {
             ;
 
             var noMatch = ! items.Any();
+
             while (true) {
                 if (noMatch) {
                     yield return inTarget;

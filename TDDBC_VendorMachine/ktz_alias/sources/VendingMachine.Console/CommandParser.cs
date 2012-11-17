@@ -144,13 +144,19 @@ namespace VendingMachine.Console {
                     Ignored = true
                 },
                 new HelpContent {
-                    Command = "show-item",
+                    Command = "show item",
                     Description = "",
                     Usage = "",
                     Ignored = true
                 },
                 new HelpContent {
-                    Command = "show-amount",
+                    Command = "show ins",
+                    Description = "",
+                    Usage = "",
+                    Ignored = true
+                },
+                new HelpContent {
+                    Command = "show amount",
                     Description = "",
                     Usage = "",
                     Ignored = true

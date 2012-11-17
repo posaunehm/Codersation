@@ -132,9 +132,9 @@ namespace VendingMachine.Console.Test {
             return new HashSet<string> {
                 "ins", 
                 "buy",
-                "show-item",
-                "show-ins",
-                "show-amount",
+                "show item",
+                "show ins",
+                "show amount",
                 "eject", 
                 "help",
             };
