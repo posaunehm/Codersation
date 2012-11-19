@@ -13,10 +13,23 @@ namespace VendingMachine.Console {
         PurchaseContext PurchaseContext { get; }
     }
 
+    public struct HelpContent {
+        public string Command;
+        public string Description;
+        public string Usage;
+        public bool Ignored;
+    }
+
     internal class CommandRunnerRepository : IRunnerRepository {
         private Dictionary<Type, Action<IParseResult, ConsoleLogEventHandler>> mLookups;
+        private Dictionary<string, HelpContent> mHelp;
 
-        public CommandRunnerRepository() {
+        [Inject]
+        public CommandRunnerRepository(IEnumerable<HelpContent> inHelp) {
+            mHelp = inHelp
+                .Where(content => ! content.Ignored)
+                .ToDictionary(content => content.Command, content => content);
+
             mLookups = new Dictionary<Type, Action<IParseResult, ConsoleLogEventHandler>> {
                 { 
                     typeof(MoneyInsertionParseResult), 
@@ -33,15 +46,20 @@ namespace VendingMachine.Console {
                 {
                     typeof (MoneyEjectParseResult),
                     (result, ev) => {
-                         var changes = this.PurchaseContext.Eject()
+                        var changes = this.PurchaseContext.Eject()
                             .GroupBy(m => m)
                             .Select(g => Tuple.Create(g.Key.Value(), g.Count()))
                             .OrderBy(m => m.Item1)
                             .Select(m => string.Format("{0}({1})", m.Item1, m.Item2))
                             .ToArray()
-                         ;
+                        ;
 
-                        this.OnLogUpdated(ev, string.Format("{0} was ejected.", string.Join(", ", changes)));
+                        if (changes.Length == 0) {
+                            this.OnLogUpdated(ev, "money is not inserted.");
+                        }
+                        else {
+                            this.OnLogUpdated(ev, string.Format("{0} was ejected.", string.Join(", ", changes)));
+                        }
                     }
                 },
                 {
@@ -50,14 +68,19 @@ namespace VendingMachine.Console {
                         var r = (HelpParseResult)result;
 
                         if (! string.IsNullOrEmpty(r.Command)) {
-                            var contents = r.HelpContents[r.Command];
+                            if (! mHelp.ContainsKey(r.Command)) {
+                                this.OnLogUpdated(ev, "command does not exist.");
+                            }
+                            else {
+                                var contents = mHelp[r.Command];
 
-                            this.OnLogUpdated(ev, contents.Usage);
-                            this.OnLogUpdated(ev, contents.Description);
+                                this.OnLogUpdated(ev, contents.Usage);
+                                this.OnLogUpdated(ev, contents.Description);
+                            }
                         }
                         else {
-                            var contents = r.HelpContents.Values.Where(c => ! c.Ignored).OrderBy(c => c.Command);
-                            var commandLength = r.HelpContents.Values.Max(c => c.Command.Length)+2;
+                            var contents = mHelp.Values.Where(c => ! c.Ignored).OrderBy(c => c.Command);
+                            var commandLength = mHelp.Values.Max(c => c.Command.Length)+2;
 
                             foreach (var content in contents) {
                                 this.OnLogUpdated(

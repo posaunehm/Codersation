@@ -47,6 +47,7 @@
     <Compile Include="CommandRunner.cs" />
     <Compile Include="ConsoleRunner.cs" />
     <Compile Include="ConsoleBuffer.cs" />
+    <Compile Include="CommandCompletionHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

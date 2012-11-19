@@ -145,14 +145,12 @@ namespace VendingMachine.Console.Test {
             var repo = new CommandParserRepository();
             var parser = repo.FindParser("help");
             var result = parser();            
-            
+
             Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
             Assert.That(result, Is.InstanceOf(typeof(HelpParseResult)));
             
             var actual = (HelpParseResult)result;
-            var expected = this.ListExpectedHelpContents();
-            
-            Assert.That(actual.HelpContents.Keys.All(command => expected.Contains(command)), Is.True);
+
             Assert.That(actual.Command, Is.Null.Or.Empty);
         }
         
@@ -166,9 +164,7 @@ namespace VendingMachine.Console.Test {
             Assert.That(result, Is.InstanceOf(typeof(HelpParseResult)));
             
             var actual = (HelpParseResult)result;
-            var expected = this.ListExpectedHelpContents();
-            
-            Assert.That(actual.HelpContents.Keys.All(command => expected.Contains(command)), Is.True);
+
             Assert.That(actual.Command, Is.EqualTo("ins"));
         }
 
@@ -303,7 +299,8 @@ namespace VendingMachine.Console.Test {
             ;
 
             var result = new HelpParseResult { Command = "ins"};
-            var content = result.HelpContents[result.Command];
+            var content = CommandCompletionHelper.ListHelpContents()
+                .Where(c => c.Command == result.Command).FirstOrDefault();
 
             var it = (new string[] {content.Usage, content.Description}).GetEnumerator();
 

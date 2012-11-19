@@ -44,6 +44,8 @@ namespace VendingMachine.Console {
                 mCompletement = mGenerator();
 
                 c = string.IsNullOrEmpty(mCompletement) ? '\0': mCompletement.Last();
+
+                this.OnBufferUpdated();
             }
             else {
                 if (this.InCompleting) {
@@ -58,12 +60,23 @@ namespace VendingMachine.Console {
                     
                     this.ClearBuffer();
                 }  
+                else if (c == '\b') {
+                    if (mBuf.Length > 0) {
+                        mBuf.Remove(mBuf.Length-1, 1);
+                    }
+                }
                 else if (c != '\0') {
                     mBuf.Append(c);
                 }
             }
 
             return c;
+        }
+
+        public string ReadLine() {
+            while (this.Read() != '\n');
+
+            return this.History.Last();
         }
 
         protected abstract char ReadCore();
@@ -117,6 +130,12 @@ namespace VendingMachine.Console {
             }
         }
 
+        private void OnBufferUpdated() {
+            if (this.BufferUpdated != null) {
+                this.BufferUpdated();
+            }
+        }
+
         public bool InCompleting { 
             get {
                 return mGenerator != null;
@@ -137,6 +156,8 @@ namespace VendingMachine.Console {
         public int Cursor { get; set; }
 
         public IList<string> History { get; private set; }
+
+        public event Action BufferUpdated;
     }
 }
 

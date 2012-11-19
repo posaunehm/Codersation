@@ -12,6 +12,28 @@ namespace VendingMachine.Console.Test {
     [TestFixture]
     public class _コンソール実行環境本体に関するTestCase {
         [Test]
+        public void _お金投入せずに排出を試みる() {
+            var app = new FakeConsoleRunner(
+                "eject"
+            );
+            var expected = new string[] {
+                "money is not inserted.",
+            };
+
+            var it = expected.GetEnumerator();
+            
+            app.LogUpdated += (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            };
+            
+            app.Run();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
         public void _お金投入するが購入せずただ排出するだけ() {
             var app = new FakeConsoleRunner(
                 "ins 100",

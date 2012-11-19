@@ -45,32 +45,13 @@ namespace VendingMachine.Console.Test {
             Assert.That(buf.History.Last(), Is.EqualTo(inExpected));
         }
 
-        private IEnumerable<string> ListDictionary() {
-            return new List<string> {
-                "ins",
-                "buy",
-                "show ins",
-                "show item",
-                "show amount",
-                "eject", 
-                "help",
-                "help ins", 
-                "help buy",
-                "help show ins",
-                "help show item",
-                "help show amount",
-                "help eject",
-                "help help",
-            };
-        }
-
         [TestCase("in", "ins")] 
         [TestCase("bu", "buy")]
         [TestCase("eje", "eject")] 
         [TestCase("   eje", "   eject")] 
         [TestCase("dummy", "dummy")] 
         public void _標準入力からの取得をシミュレーション_入力補完あり(string inPartial, string inExpected) {
-            var dic = this.ListDictionary();
+            var dic = CommandCompletionHelper.ListCommands();
             var buf = new FakeConsoleReadBuffer(dic, inPartial) {
                 Prompt = "> ",
             };
@@ -100,7 +81,7 @@ namespace VendingMachine.Console.Test {
         [TestCase("   eje", "   eject")] 
         [TestCase("dummy", "dummy")] 
         public void _標準入力からの取得をシミュレーション_入力補完あり2(string inPartial, string inExpected) {
-            var dic = this.ListDictionary();
+            var dic = CommandCompletionHelper.ListCommands();
             var buf = new FakeConsoleReadBuffer(dic, inPartial) {
                 Prompt = "> ",
             };
@@ -150,7 +131,7 @@ namespace VendingMachine.Console.Test {
         [Test]
         public void _標準入力からの取得をシミュレーション_入力補完あり_複数候補あり(
             [ValueSource(typeof(_複数候補の入力補完Fixture), "Params")] Tuple<string, string[]> inParameter) {
-            var dic = this.ListDictionary();
+            var dic = ConsoleTestHelper.ListHelpCommands();
             var buf = new FakeConsoleReadBuffer(dic, inParameter.Item1) {
                 Prompt = "> ",
             };

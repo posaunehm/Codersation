@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 using Ninject;
 
 namespace VendingMachine.Console {
@@ -46,7 +46,21 @@ namespace VendingMachine.Console {
     }
 
     public class ConsoleAppRunner : AbstractApplicationRunner {
-        public ConsoleAppRunner(IKernel inKernel) : base (inKernel) {
+        private AbstractConsoleReadBuffer mReadBuffer;
+
+        public ConsoleAppRunner(IKernel inKernel, IEnumerable<string> inDictionary) : base (inKernel) {
+            mReadBuffer = new ConsoleReadBuffer(inDictionary);
+            mReadBuffer.Prompt = "> ";
+            mReadBuffer.BufferUpdated += () => {
+                var text = mReadBuffer.Prompt + mReadBuffer.Current;
+
+                System.Console.Write(new String('\b', System.Console.CursorLeft));
+
+                System.Console.CursorLeft = 0;
+                System.Console.CursorTop -= text.Length / System.Console.WindowWidth;
+                System.Console.Write(mReadBuffer.Prompt + mReadBuffer.Current);
+            };
+
             this.LogUpdated += (message) => {
                 System.Console.WriteLine(message);
             };
@@ -58,12 +72,35 @@ namespace VendingMachine.Console {
         protected override string ReadCommand() {
             string command = "";
             do {
-                System.Console.Write("> ");
-                command = System.Console.ReadLine();
+                System.Console.Write(mReadBuffer.Prompt);
+                command = mReadBuffer.ReadLine();
             }
             while (string.IsNullOrWhiteSpace(command));
 
             return command.Trim();         
+        }
+    }
+
+    internal class ConsoleReadBuffer : AbstractConsoleReadBuffer {
+        public ConsoleReadBuffer(IEnumerable<string> inDictionary) : base(inDictionary) {
+        }
+
+        protected override char ReadCore() {
+            var k = System.Console.ReadKey(true);
+            var c = k.KeyChar;
+
+            if (! char.IsControl(c) || c == '\n') {
+                System.Console.Write(c);
+            } else if (k.Key == ConsoleKey.Backspace) {
+                if (this.Current.Length > 0) {
+                    c = '\b';
+                    System.Console.Write(c);
+                } else {
+                    c = '\0';
+                }
+            }
+
+            return c;
         }
     }
 }
