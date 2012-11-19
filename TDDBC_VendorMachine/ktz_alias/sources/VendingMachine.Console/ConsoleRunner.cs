@@ -66,6 +66,7 @@ namespace VendingMachine.Console {
             };
 
             this.OnLogUpdated("Enter 'Ctrl + C' for exit application.");
+            this.OnLogUpdated("Enter 'Tab' key for word completion.");
             this.OnLogUpdated("Enter 'help' for instructions.");
         }
 
