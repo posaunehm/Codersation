@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NaturalSpec</id>
+    <version>1.4.16.1</version>
+    <authors>Steffen Forkmann</authors>
+    <owners>Steffen Forkmann</owners>
+    <licenseUrl>https://github.com/forki/NaturalSpec/blob/master/License.txt</licenseUrl>
+    <projectUrl>https://github.com/forki/NaturalSpec</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NaturalSpec is a .NET UnitTest framework which provides automatically testable specs in natural language.</description>
+    <language>en-US</language>
+    <tags>tdd bdd testing unittest</tags>
+    <dependencies>
+      <dependency id="NUnit" version="2.6.0.12051" />
+    </dependencies>
+  </metadata>
+</package>
