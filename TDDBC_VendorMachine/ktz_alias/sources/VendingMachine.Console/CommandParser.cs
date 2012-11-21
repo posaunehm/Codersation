@@ -83,6 +83,11 @@ namespace VendingMachine.Console {
                                 return new ShowAmountParseResult {
                                     Status = ParseResultStatus.Success,
                                 };
+                          
+                            case "item":
+                                return new ShowItemParseResult {
+                                    Status = ParseResultStatus.Success,
+                                };
                             }
                         }
 
@@ -134,6 +139,9 @@ namespace VendingMachine.Console {
     }
 
     internal class ShowAmountParseResult : AbstractCommandParseResult {
+    }
+    
+    internal class ShowItemParseResult : AbstractCommandParseResult {
     }
 
     internal class HelpParseResult : AbstractCommandParseResult {

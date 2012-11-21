@@ -28,6 +28,7 @@ namespace VendingMachine.Console.Test {
                 "help".PadRight(len)            + "This message(s) is displayed.",
                 "ins".PadRight(len)             + "To insert money is requested.", 
                 "show amount".PadRight(len)     + "To display the total amount of money inserted is requested.",
+                "show item".PadRight(len)       + "To display the layouted items is requested.",
             };
         }
 

@@ -19,9 +19,8 @@ namespace VendingMachine.Console {
                 },
                 new HelpContent {
                     Command = "show item",
-                    Description = "",
-                    Usage = "",
-                    Ignored = true
+                    Description = "To display the layouted items is requested.",
+                    Usage = "show item",
                 },
                 new HelpContent {
                     Command = "show amount",

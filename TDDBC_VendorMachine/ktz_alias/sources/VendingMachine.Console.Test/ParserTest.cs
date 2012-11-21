@@ -131,13 +131,24 @@ namespace VendingMachine.Console.Test {
         [Test]
         public void _投入合計金額表示依頼をパースする() {
             var repo = new CommandParserRepository();
-
+            
             var parser = repo.FindParser("show amount");
             var result = parser();            
-
+            
             Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
             Assert.That(result, Is.InstanceOf(typeof(ShowAmountParseResult)));
-      }
+        }
+        
+        [Test]
+        public void _陳列された商品の表示依頼をパースする() {
+            var repo = new CommandParserRepository();
+            
+            var parser = repo.FindParser("show item");
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(ShowItemParseResult)));
+        }
 
         private HashSet<string> ListExpectedHelpContents() {
             return new HashSet<string> {

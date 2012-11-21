@@ -98,7 +98,7 @@ namespace VendingMachine.Console.Test {
         public void _ヘルプ表示依頼() {
             var app = new FakeConsoleRunner(
                 "help"
-                );
+            );
             
             var it = ConsoleTestHelper.ListExpectedHelpContents().GetEnumerator();
             
@@ -117,7 +117,7 @@ namespace VendingMachine.Console.Test {
         public void _ヘルプ表示依頼_コマンド指定() {
             var app = new FakeConsoleRunner(
                 "help eject"
-                );
+            );
             
             var it = (new string[] { "eject", "To eject inserted money is requested."}).GetEnumerator();
             
