@@ -63,6 +63,18 @@ namespace VendingMachine.Console {
                     }
                 },
                 {
+                    typeof (ShowAmountParseResult),
+                    (result, ev) => {
+                        var amount = this.PurchaseContext.ReceivedTotal;
+                        if (amount > 0) {
+                            this.OnLogUpdated(ev, string.Format("{0} received.", amount));
+                        }
+                        else {
+                            this.OnLogUpdated(ev, "Not received.");
+                        }
+                    }
+                },
+                {
                     typeof(HelpParseResult),
                     (result, ev) => {
                         var r = (HelpParseResult)result;

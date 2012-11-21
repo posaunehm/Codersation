@@ -245,37 +245,66 @@ namespace VendingMachine.Console.Test {
                     ;
             
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
-            
-            var runner = repo.FindRunner(new MoneyEjectParseResult(), null);
-            
+
+            var passed = false;
+            var runner = repo.FindRunner(new MoneyEjectParseResult(), (message) => {
+                Assert.That(message, Is.EqualTo("money is not inserted."));
+                passed = true;
+            });
             runner();
             
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+
+            Assert.That(passed, Is.True);
         }
 
-        [Ignore]
         [Test]
         public void _投入合計金額表示を処理する_未入金の場合() {
             var repo = new Ninject.StandardKernel()
                 .BindPurchaseContext()
                     .BindRunnerRepository()
                     .Get<IRunnerRepository>()
-                    ;
-
+                ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            var passed = false;
+            var runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
+                Assert.That(message, Is.EqualTo("Not received."));
+                passed = true;
+            });
+            runner();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));           
+            Assert.That(passed, Is.True);
         }
 
-        [Ignore]
         [Test]
         public void _投入合計金額表示を処理する_受け付けない金種を投入した場合() {
             var repo = new Ninject.StandardKernel()
                 .BindPurchaseContext()
                     .BindRunnerRepository()
                     .Get<IRunnerRepository>()
-                    ;
+                ;
 
+            Action runner;
+            var fixtures = new _コマンドパーサに渡すTestFixture().InvalidInsMoneyParams;
+            foreach (var param in fixtures.Select(f => f.Expected)) {
+                runner = repo.FindRunner(param, null);
+                runner();
+            }
+
+            var passed = false;
+            runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
+                Assert.That(message, Is.EqualTo("Not received."));
+                passed = true;
+            });
+            runner();
+
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            Assert.That(passed, Is.True);
         }
 
-        [Ignore]
         [Test]
         public void _投入合計金額表示を処理する_お金を投入した場合() {
             var repo = new Ninject.StandardKernel()
@@ -285,27 +314,38 @@ namespace VendingMachine.Console.Test {
                     ;
 
             Action runner;
-            //            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams;
-            //            foreach (var param in fixtures.Select(f => f.Expected)) {
-            //                runner = repo.FindRunner(param);
-            //
-            //                insParser();
-            //
-            //            }
-            runner = repo.FindRunner(new ShowAmountParseResult(), null);
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams;
+            foreach (var param in fixtures.Select(f => f.Expected)) {
+                runner = repo.FindRunner(param, null);
+                runner();
+
+            }
+
+            var expected = fixtures
+                .Select(f => f.Expected)
+                    .Cast<MoneyInsertionParseResult>()
+                    .Sum(r => r.Money.Value() * r.Count)
+            ;
+
+            var passed = false;
+            runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
+                Assert.That(message, Is.EqualTo(string.Format("{0} received.", expected)));
+                Assert.That(message, Is.EqualTo(string.Format("{0} received.", repo.PurchaseContext.ReceivedTotal)));
+                passed = true;
+            });
+            runner();
+            Assert.That(passed, Is.True);
+
+            runner = repo.FindRunner(new MoneyEjectParseResult(), null);
             runner();
 
-            //            var actual = (ShowAmountParseResult)result;
-            //            var expected = fixtures
-            //                .Select(f => f.Expected)
-            //                .Cast<MoneyInsertionParseResult>()
-            //                .Sum(r => r.Money.Value() * r.Count)
-            //            ;
-            //
-            //            Assert.That(actual.TotalAmount, Is.EqualTo);
-            //
-            //            var ejectParser = repo.FindParser("eject");
-            //            ejectParser();
+            passed = false;
+            runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
+                Assert.That(message, Is.EqualTo("Not received."));
+                passed = true;
+            });
+            runner();
+            Assert.That(passed, Is.True);
         }
 
         [Test]
