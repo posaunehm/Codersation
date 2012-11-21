@@ -329,8 +329,8 @@ namespace VendingMachine.Console.Test {
 
             var passed = false;
             runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
-                Assert.That(message, Is.EqualTo(string.Format("{0} received.", expected)));
-                Assert.That(message, Is.EqualTo(string.Format("{0} received.", repo.PurchaseContext.ReceivedTotal)));
+                Assert.That(message, Is.EqualTo(string.Format("total money is {0}.", expected)));
+                Assert.That(message, Is.EqualTo(string.Format("total money is {0}.", repo.PurchaseContext.ReceivedTotal)));
                 passed = true;
             });
             runner();

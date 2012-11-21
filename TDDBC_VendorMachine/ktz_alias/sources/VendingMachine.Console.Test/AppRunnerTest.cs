@@ -61,6 +61,40 @@ namespace VendingMachine.Console.Test {
         }
 
         [Test]
+        public void _お金投入するが購入せずただ排出するだけ_合間で合計金額確認() {
+            var app = new FakeConsoleRunner(
+                "show amount",
+                "ins 100",
+                "show amount",
+                "ins 10 2",
+                "show amount",
+                "eject",
+                "show amount"
+            );
+            
+            var expected = new string[] {
+                "Not received.",
+                "money: 100 was received.",
+                "total money is 100.",
+                "money: 20 was received.",
+                "total money is 120.",
+                "10(2), 100(1) was ejected.",
+                "Not received.",
+            };
+            var it = expected.GetEnumerator();
+            
+            app.LogUpdated += (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            };
+            
+            app.Run();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
         public void _ヘルプ表示依頼() {
             var app = new FakeConsoleRunner(
                 "help"

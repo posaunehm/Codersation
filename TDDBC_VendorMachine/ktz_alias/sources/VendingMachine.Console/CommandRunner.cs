@@ -67,7 +67,7 @@ namespace VendingMachine.Console {
                     (result, ev) => {
                         var amount = this.PurchaseContext.ReceivedTotal;
                         if (amount > 0) {
-                            this.OnLogUpdated(ev, string.Format("{0} received.", amount));
+                            this.OnLogUpdated(ev, string.Format("total money is {0}.", amount));
                         }
                         else {
                             this.OnLogUpdated(ev, "Not received.");
