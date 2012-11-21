@@ -24,16 +24,9 @@ namespace VendingMachine.Console {
                     Ignored = true
                 },
                 new HelpContent {
-                    Command = "show ins",
-                    Description = "",
-                    Usage = "",
-                    Ignored = true
-                },
-                new HelpContent {
                     Command = "show amount",
-                    Description = "",
-                    Usage = "",
-                    Ignored = true
+                    Description = "To display the total amount of money inserted is requested.",
+                    Usage = "show amount",
                 },
                 new HelpContent {
                     Command = "eject", 

@@ -111,13 +111,13 @@ namespace VendingMachine.Console.Test {
                 get {
                     yield return Tuple.Create(
                         "sho", 
-                        TestUtils.TestHelper.AsArray("show", "show amount", "show ins", "show item", "show")
+                        TestUtils.TestHelper.AsArray("show", "show amount", "show item", "show")
                     );
                     yield return Tuple.Create(
                         "he", 
                         TestUtils.TestHelper.AsArray(
                             "help", "help buy", "help eject", "help help", "help ins", 
-                            "help show", "help show amount", "help show ins", "help show item",
+                            "help show", "help show amount", "help show item",
                             "help"
                     ));
                     yield return Tuple.Create(

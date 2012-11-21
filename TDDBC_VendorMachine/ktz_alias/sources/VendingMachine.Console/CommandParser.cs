@@ -73,6 +73,22 @@ namespace VendingMachine.Console {
                         };
                     }
                 },
+                { "show", (tokens) => {
+                        var it = tokens.Skip(1).GetEnumerator();
+
+                        if (it.MoveNext()) {
+                            var subCommand = it.Current;
+                            switch (subCommand) {
+                            case "amount":
+                                return new ShowAmountParseResult {
+                                    Status = ParseResultStatus.Success,
+                                };
+                            }
+                        }
+
+                        return new ParseErrorResult(ParseResultStatus.NotSupportedCommand);
+                    }
+                },
                 { "help", (tokens) => {
                         var it = tokens.Skip(1).GetEnumerator();
 
@@ -113,8 +129,11 @@ namespace VendingMachine.Console {
         public Money Money {get; internal set; }
         public int Count {get; internal set; }
     }
-
+    
     internal class MoneyEjectParseResult : AbstractCommandParseResult {
+    }
+
+    internal class ShowAmountParseResult : AbstractCommandParseResult {
     }
 
     internal class HelpParseResult : AbstractCommandParseResult {

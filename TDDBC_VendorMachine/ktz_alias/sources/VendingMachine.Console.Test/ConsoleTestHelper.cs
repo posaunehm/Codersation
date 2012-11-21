@@ -24,11 +24,10 @@ namespace VendingMachine.Console.Test {
 
             return new string[] {
                 //                "buy",
-                "eject".PadRight(len) + "To eject inserted money is requested.", 
-                "help".PadRight(len)  + "This message(s) is displayed.",
-                "ins".PadRight(len)   + "To insert money is requested.", 
-                //                "show-amount  ",
-                //                "show-item    ",
+                "eject".PadRight(len)           + "To eject inserted money is requested.", 
+                "help".PadRight(len)            + "This message(s) is displayed.",
+                "ins".PadRight(len)             + "To insert money is requested.", 
+                "show amount".PadRight(len)     + "To display the total amount of money inserted is requested.",
             };
         }
 

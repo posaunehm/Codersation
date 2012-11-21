@@ -128,12 +128,22 @@ namespace VendingMachine.Console.Test {
             Assert.That(result, Is.InstanceOf(typeof(MoneyEjectParseResult)));
         }
 
+        [Test]
+        public void _投入合計金額表示依頼をパースする() {
+            var repo = new CommandParserRepository();
+
+            var parser = repo.FindParser("show amount");
+            var result = parser();            
+
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(ShowAmountParseResult)));
+      }
+
         private HashSet<string> ListExpectedHelpContents() {
             return new HashSet<string> {
                 "ins", 
                 "buy",
                 "show item",
-                "show ins",
                 "show amount",
                 "eject", 
                 "help",
@@ -242,7 +252,62 @@ namespace VendingMachine.Console.Test {
             
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
         }
-        
+
+        [Ignore]
+        [Test]
+        public void _投入合計金額表示を処理する_未入金の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+        }
+
+        [Ignore]
+        [Test]
+        public void _投入合計金額表示を処理する_受け付けない金種を投入した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+        }
+
+        [Ignore]
+        [Test]
+        public void _投入合計金額表示を処理する_お金を投入した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+            Action runner;
+            //            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams;
+            //            foreach (var param in fixtures.Select(f => f.Expected)) {
+            //                runner = repo.FindRunner(param);
+            //
+            //                insParser();
+            //
+            //            }
+            runner = repo.FindRunner(new ShowAmountParseResult(), null);
+            runner();
+
+            //            var actual = (ShowAmountParseResult)result;
+            //            var expected = fixtures
+            //                .Select(f => f.Expected)
+            //                .Cast<MoneyInsertionParseResult>()
+            //                .Sum(r => r.Money.Value() * r.Count)
+            //            ;
+            //
+            //            Assert.That(actual.TotalAmount, Is.EqualTo);
+            //
+            //            var ejectParser = repo.FindParser("eject");
+            //            ejectParser();
+        }
+
         [Test]
         public void _お金の排出依頼を処理する() {
             var parameters = new _コマンドパーサに渡すTestFixture().InsMoneyParams
