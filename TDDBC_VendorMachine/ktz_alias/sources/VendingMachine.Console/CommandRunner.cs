@@ -74,6 +74,23 @@ namespace VendingMachine.Console {
                         }
                     }
                 },
+                { 
+                    typeof (ShowItemParseResult),
+                    (result, ev) => {
+                        this.OnLogUpdated(ev, "       # Name                     Price");
+                        this.OnLogUpdated(ev, "-----+--+------------------------+------");
+
+                        var racks = this.PurchaseContext.Racks.Select((item, i) => Tuple.Create(i+1, item));
+                        foreach (var pair in racks) {
+                            var itemName = pair.Item2.Item.Name.PadRight(24, '.');
+                            var state = this.RackStatusToString(pair.Item2);
+                            this.OnLogUpdated(ev, 
+                              string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, pair.Item2.Item.Price)
+                            );
+
+                        }
+                    }
+                },
                 {
                     typeof(HelpParseResult),
                     (result, ev) => {
@@ -111,6 +128,17 @@ namespace VendingMachine.Console {
                     }
                 }
             };
+        }
+
+        private string RackStatusToString(ItemRackInfo inRack) {
+            switch (inRack.State) {
+            case ItemRackState.CanPurchase: 
+                return "*";
+            case ItemRackState.Soldout:
+                return "-";
+            default:
+                return " ";
+            }
         }
 
         private void OnLogUpdated(ConsoleLogEventHandler inEvent, string inMessage) {

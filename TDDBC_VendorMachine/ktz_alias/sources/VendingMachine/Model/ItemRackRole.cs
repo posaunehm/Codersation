@@ -24,7 +24,7 @@ namespace VendingMachine.Model {
             return inRack.State == ItemRackState.CanPurchase;
         }
 
-        public Item Purchase(ItemRack inRack) {
+        public ItemInfo Purchase(ItemRack inRack) {
             --inRack.Count;
 
             return inRack.Item;

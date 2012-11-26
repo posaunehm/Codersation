@@ -47,7 +47,7 @@ namespace VendingMachine.Model {
             return mItemRole.CanItemPurchase(rack);
         }
 
-        public Item Purchase(int inPosition) {
+        public ItemInfo Purchase(int inPosition) {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
             if (rack == null) {
                 // error
@@ -60,6 +60,12 @@ namespace VendingMachine.Model {
             mCoinMeckRole.Purchase(mDealAmount, rack.Item.Price);
 
             return mItemRole.Purchase(rack);
+        }
+
+        public ItemRackInfo[] Racks {
+            get {
+                return mItems.Items;
+            } 
         }
 
         public int ReceivedTotal {

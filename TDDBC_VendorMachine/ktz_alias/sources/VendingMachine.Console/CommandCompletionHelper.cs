@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using VendingMachine.Model;
+
 namespace VendingMachine.Console {
-    public static class CommandCompletionHelper {
+    public static class ConsoleAppHelper {
         public static IEnumerable<HelpContent> ListHelpContents() {
             return  new HelpContent[] {
                 new HelpContent {
@@ -19,7 +21,7 @@ namespace VendingMachine.Console {
                 },
                 new HelpContent {
                     Command = "show item",
-                    Description = "To display the layouted items is requested.",
+                    Description = @"To display the layouted items is requested, where blank is unselectable, '*' is selectable, and '-' is soldout.",
                     Usage = "show item",
                 },
                 new HelpContent {
@@ -42,6 +44,54 @@ namespace VendingMachine.Console {
 
         public static IEnumerable<string> ListCommands() {
             return ListHelpContents().Select(content => content.Command);
+        }
+
+        public static IEnumerable<ItemRack> ListRacksDefault() {
+            yield return new ItemRack {
+                Item = new Item {
+                    Name = "Mugi Cola",
+                    Price = 110,
+                    Shape = ItemShapeType.Can200,
+                },
+                Count = 9999,
+                State = ItemRackState.CanNotPurchase,
+            };
+            yield return new ItemRack {
+                Item = new Item {
+                    Name = "Pure Water",
+                    Price = 150,
+                    Shape = ItemShapeType.Pet500,
+                },
+                Count = 9999,
+                State = ItemRackState.CanNotPurchase,
+            };
+            yield return new ItemRack {
+                Item = new Item {
+                    Name = "Blend Coffe",
+                    Price = 120,
+                    Shape = ItemShapeType.Can180,
+                },
+                Count = 9999,
+                State = ItemRackState.CanNotPurchase,
+            };
+            yield return new ItemRack {
+                Item = new Item {
+                    Name = "Stamina Drink 1024",
+                    Price = 300,
+                    Shape = ItemShapeType.Can200
+                },
+                Count = 9999,
+                State = ItemRackState.CanNotPurchase,
+            };
+            yield return new ItemRack {
+                Item = new Item {
+                    Name = "Mysterious Power",
+                    Price = 3000,
+                    Shape = ItemShapeType.Can500
+                },
+                Count = 9999,
+                State = ItemRackState.Soldout,
+            };
         }
     }
 }

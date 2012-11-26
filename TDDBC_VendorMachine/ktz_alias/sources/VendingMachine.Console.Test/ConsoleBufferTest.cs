@@ -51,7 +51,7 @@ namespace VendingMachine.Console.Test {
         [TestCase("   eje", "   eject")] 
         [TestCase("dummy", "dummy")] 
         public void _標準入力からの取得をシミュレーション_入力補完あり(string inPartial, string inExpected) {
-            var dic = CommandCompletionHelper.ListCommands();
+            var dic = ConsoleAppHelper.ListCommands();
             var buf = new FakeConsoleReadBuffer(dic, inPartial) {
                 Prompt = "> ",
             };
@@ -81,7 +81,7 @@ namespace VendingMachine.Console.Test {
         [TestCase("   eje", "   eject")] 
         [TestCase("dummy", "dummy")] 
         public void _標準入力からの取得をシミュレーション_入力補完あり2(string inPartial, string inExpected) {
-            var dic = CommandCompletionHelper.ListCommands();
+            var dic = ConsoleAppHelper.ListCommands();
             var buf = new FakeConsoleReadBuffer(dic, inPartial) {
                 Prompt = "> ",
             };

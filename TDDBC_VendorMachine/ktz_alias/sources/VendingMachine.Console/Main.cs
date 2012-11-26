@@ -9,10 +9,9 @@ using VendingMachine.Model;
 namespace VendingMachine.Console {
     class MainClass {
         public static void Main(string[] args) {
-            var help = CommandCompletionHelper.ListHelpContents();
+            var help = ConsoleAppHelper.ListHelpContents();
 
             var helpCommands = help.Where(content => ! content.Ignored).Select(content => content.Command);
-
 
             var app = new ConsoleAppRunner(
                 BuildKernel(args, help),
@@ -24,7 +23,11 @@ namespace VendingMachine.Console {
         private static IKernel BuildKernel(string[] args, IEnumerable<HelpContent> inHelp) {
             var kernel = new Ninject.StandardKernel();
             kernel.Bind<ChangePool>().ToMethod(ctx => new ChangePool());
-            kernel.Bind<ItemRackPosition>().ToMethod(ctx => new ItemRackPosition(new Tuple<int, ItemRack>[0]));
+            kernel.Bind<ItemRackPosition>().ToMethod(ctx => {
+                return new ItemRackPosition(
+                    ConsoleAppHelper.ListRacksDefault().Select((rack, i) => Tuple.Create(i+1, rack)).ToArray()
+                );
+            });
             kernel.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
             kernel.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
             kernel.Bind<PurchaseContext>().ToSelf();

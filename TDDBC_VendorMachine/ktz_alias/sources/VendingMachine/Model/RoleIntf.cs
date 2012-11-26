@@ -14,7 +14,7 @@ namespace VendingMachine.Model {
         bool UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, ChangePool inPool);
         ItemRack FindRackAt(ItemRackPosition inRacks, int inPosition);
         bool CanItemPurchase(ItemRack inRack);
-        Item Purchase(ItemRack inRack);
+        ItemInfo Purchase(ItemRack inRack);
     }
 }
 

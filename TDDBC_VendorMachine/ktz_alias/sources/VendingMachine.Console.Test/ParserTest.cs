@@ -303,17 +303,17 @@ namespace VendingMachine.Console.Test {
             foreach (var param in fixtures.Select(f => f.Expected)) {
                 runner = repo.FindRunner(param, null);
                 runner();
+
+                var passed = false;
+                runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
+                    Assert.That(message, Is.EqualTo("Not received."));
+                    passed = true;
+                });
+                runner();
+                
+                Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+                Assert.That(passed, Is.True);
             }
-
-            var passed = false;
-            runner = repo.FindRunner(new ShowAmountParseResult(), (message) => {
-                Assert.That(message, Is.EqualTo("Not received."));
-                passed = true;
-            });
-            runner();
-
-            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
-            Assert.That(passed, Is.True);
         }
 
         [Test]
@@ -360,16 +360,159 @@ namespace VendingMachine.Console.Test {
         }
 
         [Test]
+        public void _陳列された商品の表示依頼を処理する_未入金の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+
+            var expected = new string[] {
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [ ]   1 Item0...................   300",
+                " [ ]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [ ]   4 Item3...................   600"
+            };
+ 
+            var it = expected.GetEnumerator();
+
+            var runner = repo.FindRunner(new ShowItemParseResult(), (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            runner();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));           
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _陳列された商品の表示依頼を処理する_受け付けない金種を投入した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+
+            Action runner;
+            var fixtures = new _コマンドパーサに渡すTestFixture().InvalidInsMoneyParams;
+            foreach (var param in fixtures.Select(f => f.Expected)) {
+                var expected = new string[] {
+                    "       # Name                     Price",
+                    "-----+--+------------------------+------",
+                    " [ ]   1 Item0...................   300",
+                    " [ ]   2 Item1...................  1200",
+                    " [-]   3 Item2...................   900",
+                    " [ ]   4 Item3...................   600"
+                };               
+                var it = expected.GetEnumerator();
+
+                runner = repo.FindRunner(param, null);
+                runner();
+
+                runner = repo.FindRunner(new ShowItemParseResult(), (message) => {
+                    Assert.That(it.MoveNext(), Is.True);
+                    Assert.That(message, Is.EqualTo(it.Current));
+                });
+                runner();
+
+                Assert.That(it.MoveNext(), Is.False);
+                Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));           
+            }
+        }
+
+        [Test]
+        public void _陳列された商品の表示依頼を処理する_お金を投入した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+
+            Action runner;
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [ ]   1 Item0...................   300",
+                " [ ]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [ ]   4 Item3...................   600"
+            );               
+
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams.Select(f => f.Expected);
+            var money = fixtures.GetEnumerator();
+
+            money.MoveNext();
+            runner = repo.FindRunner(money.Current, null);
+            runner();
+            
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [*]   1 Item0...................   300",
+                " [ ]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [ ]   4 Item3...................   600"
+            );
+
+            money.MoveNext();
+            runner = repo.FindRunner(money.Current, null);
+            runner();
+            
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [*]   1 Item0...................   300",
+                " [ ]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [*]   4 Item3...................   600"
+            );
+
+            money.MoveNext();
+            runner = repo.FindRunner(money.Current, null);
+            runner();
+            
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [*]   1 Item0...................   300",
+                " [*]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [*]   4 Item3...................   600"
+            );
+        }
+
+        private void TestShowItemCore(IRunnerRepository inRepo, params string[] inExpected) {
+            var it = inExpected.GetEnumerator();
+
+            var runner = inRepo.FindRunner(new ShowItemParseResult(), (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
         public void _お金の排出依頼を処理する() {
             var parameters = new _コマンドパーサに渡すTestFixture().InsMoneyParams
                 .Select(p => p.Expected)
-                    .Cast<MoneyInsertionParseResult>();
+                .Cast<MoneyInsertionParseResult>()
+            ;
             
             var repo = new Ninject.StandardKernel()
                 .BindPurchaseContext()
-                    .BindRunnerRepository()
-                    .Get<IRunnerRepository>()
-                    ;
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
 
             Action runner;
             foreach (var parameter in parameters) {
@@ -415,7 +558,7 @@ namespace VendingMachine.Console.Test {
             ;
 
             var result = new HelpParseResult { Command = "ins"};
-            var content = CommandCompletionHelper.ListHelpContents()
+            var content = ConsoleAppHelper.ListHelpContents()
                 .Where(c => c.Command == result.Command).FirstOrDefault();
 
             var it = (new string[] {content.Usage, content.Description}).GetEnumerator();
