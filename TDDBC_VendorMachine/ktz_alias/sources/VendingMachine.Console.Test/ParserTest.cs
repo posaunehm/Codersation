@@ -150,6 +150,56 @@ namespace VendingMachine.Console.Test {
             Assert.That(result, Is.InstanceOf(typeof(ShowItemParseResult)));
         }
 
+        [TestCase("3")]
+        [TestCase("1")]
+        [TestCase("4")]
+        public void _商品の購入依頼をパースする_一件の場合 (string inPosition) {
+            var repo = new CommandParserRepository();
+            
+            var parser = repo.FindParser("buy " + inPosition);
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(PurchaseParseResult)));
+            
+            var actual = (PurchaseParseResult)result;
+            
+            Assert.That(actual.Positions.Length, Is.EqualTo(1));
+            Assert.That(actual.Positions[0].ToString(), Is.EqualTo(inPosition));
+        }
+
+        [TestCase("1 3")]
+        [TestCase("1 1 1 1")]
+        public void _商品の購入依頼をパースする_複数券同時の場合(string inPositions) {
+            var repo = new CommandParserRepository();
+            
+            var parser = repo.FindParser("buy " + inPositions);
+            var result = parser();            
+            
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.Success));
+            Assert.That(result, Is.InstanceOf(typeof(PurchaseParseResult)));
+            
+            var actual = (PurchaseParseResult)result;
+            var expected = inPositions.Split(' ');
+            Assert.That(actual.Positions.Length, Is.EqualTo(expected.Length));
+
+            for (var i = 0; i < expected.Length; ++i) {
+                Assert.That(actual.Positions[i].ToString(), Is.EqualTo(expected[i]));
+            }
+        }
+
+        [TestCase("")]
+        [TestCase("     ")]
+        public void _商品の購入依頼をパースする_インデックス未指定の場合(string inPosition) {
+            var repo = new CommandParserRepository();
+            
+            var parser = repo.FindParser("buy" + inPosition);
+            var result = parser();            
+
+            Assert.That(result.Status, Is.EqualTo(ParseResultStatus.InvalidArgs));
+            Assert.That(result, Is.InstanceOf(typeof(ParseErrorResult)));
+        }
+
         private HashSet<string> ListExpectedHelpContents() {
             return new HashSet<string> {
                 "ins", 

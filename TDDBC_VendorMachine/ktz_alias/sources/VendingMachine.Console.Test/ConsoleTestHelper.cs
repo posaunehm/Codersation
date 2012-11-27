@@ -23,7 +23,7 @@ namespace VendingMachine.Console.Test {
             ;
 
             return new string[] {
-                //                "buy",
+                "buy".PadRight(len)             + "To purchase a item is requested, but in range of inserted money.",
                 "eject".PadRight(len)           + "To eject inserted money is requested.", 
                 "help".PadRight(len)            + "This message(s) is displayed.",
                 "ins".PadRight(len)             + "To insert money is requested.", 

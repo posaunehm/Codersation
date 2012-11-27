@@ -11,6 +11,7 @@ namespace VendingMachine.Console {
         Success,
         InvalidMoney,
         NotSupportedHelpCommand,
+        InvalidArgs,
     }
 
     public interface IParseResult {
@@ -94,6 +95,29 @@ namespace VendingMachine.Console {
                         return new ParseErrorResult(ParseResultStatus.NotSupportedCommand);
                     }
                 },
+                { "buy", (tokens) => {
+                        var positions = tokens
+                            .Skip(1)
+                            .Select(s => {
+                                int p;
+
+                                return new { Valid = int.TryParse(s, out p), Position = p};
+                            })
+                            .Where(p => p.Valid)
+                            .Select(p => p.Position)
+                            .ToArray();
+
+                        if (positions.Length == 0) {
+                            return new ParseErrorResult(ParseResultStatus.InvalidArgs);
+                        }
+                        else {
+                            return new PurchaseParseResult {
+                                Status = ParseResultStatus.Success,
+                                Positions = positions
+                            };
+                        }
+                    }
+                },
                 { "help", (tokens) => {
                         var it = tokens.Skip(1).GetEnumerator();
 
@@ -142,6 +166,10 @@ namespace VendingMachine.Console {
     }
     
     internal class ShowItemParseResult : AbstractCommandParseResult {
+    }
+
+    internal class PurchaseParseResult : AbstractCommandParseResult {
+        public int[] Positions {get; internal set;}
     }
 
     internal class HelpParseResult : AbstractCommandParseResult {

@@ -15,9 +15,8 @@ namespace VendingMachine.Console {
                 },
                 new HelpContent {
                     Command = "buy",
-                    Description = "",
-                    Usage = "",
-                    Ignored = true
+                    Description = "To purchase a item is requested, but in range of inserted money.",
+                    Usage = "buy <position #> ...",
                 },
                 new HelpContent {
                     Command = "show item",
