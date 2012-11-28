@@ -25,7 +25,7 @@ namespace VendingMachine.Console {
             kernel.Bind<ChangePool>().ToMethod(ctx => new ChangePool());
             kernel.Bind<ItemRackPosition>().ToMethod(ctx => {
                 return new ItemRackPosition(
-                    ConsoleAppHelper.ListRacksDefault().Select((rack, i) => Tuple.Create(i+1, rack)).ToArray()
+                    ConsoleAppHelper.ListRacksDefault().Select((rack, i) => Tuple.Create(i, rack)).ToArray()
                 );
             });
             kernel.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());

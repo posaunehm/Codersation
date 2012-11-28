@@ -83,11 +83,42 @@ namespace VendingMachine.Console {
                         var racks = this.PurchaseContext.Racks.Select((item, i) => Tuple.Create(i+1, item));
                         foreach (var pair in racks) {
                             var itemName = pair.Item2.Item.Name.PadRight(24, '.');
-                            var state = this.RackStatusToString(pair.Item2);
+                            var state = this.RackStatusToString(this.PurchaseContext.Racks[pair.Item1-1].State);
                             this.OnLogUpdated(ev, 
                               string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, pair.Item2.Item.Price)
                             );
 
+                        }
+                    }
+                },
+                {
+                    typeof (PurchaseParseResult),
+                    (result, ev) => {
+                        var r = (PurchaseParseResult)result;
+
+                        foreach (var p in r.Positions) {
+                            switch (this.PurchaseContext.Racks[p-1].State) {
+                            case ItemRackState.CanPurchase:
+                                var item = this.PurchaseContext.Purchase(p-1);
+
+                                this.OnLogUpdated(ev, string.Format(
+                                    "Purchased !! [{0}]", item.Name
+                                ));
+                                break;
+                            case ItemRackState.RackNotExist:
+                                break;
+                            case ItemRackState.Soldout:
+                                this.OnLogUpdated(ev, "Sorry, this item has been sold out.");
+                                break;
+                            case ItemRackState.CanNotPurchase:
+                                var amount = this.PurchaseContext.ReceivedTotal;
+                                var price = this.PurchaseContext.Racks[p-1].Item.Price;
+
+                                this.OnLogUpdated(ev, string.Format(
+                                    "Money enough to purchase is not inserted. (left: {0})", price-amount
+                                ));
+                                break;
+                            }
                         }
                     }
                 },
@@ -130,11 +161,12 @@ namespace VendingMachine.Console {
             };
         }
 
-        private string RackStatusToString(ItemRackInfo inRack) {
-            switch (inRack.State) {
+        private string RackStatusToString(ItemRackState inState) {
+            switch (inState) {
             case ItemRackState.CanPurchase: 
                 return "*";
             case ItemRackState.Soldout:
+            case ItemRackState.RackNotExist: 
                 return "-";
             default:
                 return " ";

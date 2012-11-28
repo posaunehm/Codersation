@@ -189,11 +189,13 @@ namespace VendingMachine.Console.Test {
         }
 
         [TestCase("")]
+        [TestCase("FF")]
         [TestCase("     ")]
+        [TestCase("AA 3")]
         public void _商品の購入依頼をパースする_インデックス未指定の場合(string inPosition) {
             var repo = new CommandParserRepository();
             
-            var parser = repo.FindParser("buy" + inPosition);
+            var parser = repo.FindParser("buy " + inPosition);
             var result = parser();            
 
             Assert.That(result.Status, Is.EqualTo(ParseResultStatus.InvalidArgs));
@@ -440,6 +442,11 @@ namespace VendingMachine.Console.Test {
             Assert.That(it.MoveNext(), Is.False);
         }
 
+        [Ignore]
+        [Test]
+        public void _陳列された商品の表示依頼を処理する_未陳列の商品含む場合() {
+        }
+
         [Test]
         public void _陳列された商品の表示依頼を処理する_受け付けない金種を投入した場合() {
             var repo = new Ninject.StandardKernel()
@@ -549,6 +556,173 @@ namespace VendingMachine.Console.Test {
             runner();
             
             Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _商品の購入依頼を処理する_未入金で一件の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {1}
+            };
+
+            var expected = new string[] {
+                "Money enough to purchase is not inserted. (left: 300)",
+            };
+            var it = expected.GetEnumerator();
+
+            var runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+
+            runner();
+
+            Assert.That(it.MoveNext(), Is.False);
+        }
+        
+        [Test]
+        public void _商品の購入依頼を処理する_未入金で複数件同時の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {4, 1}
+            };
+            
+            var expected = new string[] {
+                "Money enough to purchase is not inserted. (left: 600)",
+                "Money enough to purchase is not inserted. (left: 300)",
+            };
+            var it = expected.GetEnumerator();
+            
+            var runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+        
+        [Test]
+        public void _商品の購入依頼を処理する_未入金で複数件同時_売り切れ選択含む場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {3, 1}
+            };
+            
+            var expected = new string[] {
+                "Sorry, this item has been sold out.",
+                "Money enough to purchase is not inserted. (left: 300)",
+            };
+            var it = expected.GetEnumerator();
+            
+            var runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Test]
+        public void _商品の購入依頼を処理する_一件の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(f => f.Expected)
+                .Cast<MoneyInsertionParseResult>()
+            ;
+
+            Action runner;
+            foreach (var f in fixtures) {
+                runner = repo.FindRunner(f, null);
+
+                runner();
+            }
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {1}
+            };
+            
+            var expected = new string[] {
+                "",
+            };
+            var it = expected.GetEnumerator();
+
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+
+            runner();
+
+            Assert.That(it.MoveNext(), Is.False);
+        }
+
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_複数件同時の場合 () {
+        }
+        
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_複数件同時_でも後半お金不足の場合 () {
+        }
+
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_正しくないインデックスを含む一件の場合() {
+        }
+
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_正しくないインデックスを含む複数件同時の場合 () {
+        }
+
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_範囲外の一件の場合() {
+        }
+
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_範囲外の複数件同時の場合 () {
+        }
+        
+        [Ignore]
+        [Test]
+        public void _商品の購入依頼を処理する_うっかり未陳列の商品を選択した場合 () {
         }
 
         [Test]

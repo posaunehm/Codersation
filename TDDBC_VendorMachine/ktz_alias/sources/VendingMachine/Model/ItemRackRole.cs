@@ -9,6 +9,9 @@ namespace VendingMachine.Model {
             if (inRack.Item.Price <= (inCredits.RecevedMoney.TotalAmount() - inCredits.UsedAmount)) {
                 inRack.State = ItemRackState.CanPurchase;
             }
+//            else {
+//                inRack.State = ItemRackState.CanNotPurchase;
+//            }
 
             return oldState != inRack.State;
         }
@@ -18,10 +21,6 @@ namespace VendingMachine.Model {
             inRacks.Positions.TryGetValue(inPosition, out result);
 
             return result;
-        }
-
-        public bool CanItemPurchase(ItemRack inRack) {
-            return inRack.State == ItemRackState.CanPurchase;
         }
 
         public ItemInfo Purchase(ItemRack inRack) {

@@ -96,25 +96,28 @@ namespace VendingMachine.Console {
                     }
                 },
                 { "buy", (tokens) => {
-                        var positions = tokens
+                        var tmp = tokens
                             .Skip(1)
                             .Select(s => {
                                 int p;
 
                                 return new { Valid = int.TryParse(s, out p), Position = p};
                             })
-                            .Where(p => p.Valid)
-                            .Select(p => p.Position)
-                            .ToArray();
+                        ;
 
-                        if (positions.Length == 0) {
-                            return new ParseErrorResult(ParseResultStatus.InvalidArgs);
-                        }
-                        else {
+                        if (tmp.All(t => t.Valid)) {
+                            var positions = tmp
+                                .Select(p => p.Position)
+                                .ToArray()
+                            ;
+
                             return new PurchaseParseResult {
                                 Status = ParseResultStatus.Success,
                                 Positions = positions
                             };
+                        }
+                        else {
+                            return new ParseErrorResult(ParseResultStatus.InvalidArgs);                        
                         }
                     }
                 },

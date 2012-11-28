@@ -29,7 +29,7 @@ namespace VendingMachine.Model {
         public void ReceiveMoney(Money inMoney) {
             mCoinMeckRole.Receive(mDealAmount, inMoney);
 
-            foreach (var rack in mItems.Items.Where(r => r.State == ItemRackState.CanNotPurchase)) {
+            foreach (var rack in mItems.Racks.Where(r => r.State == ItemRackState.CanNotPurchase)) {
                 mItemRole.UpdateItemSelectionState(rack, mDealAmount, mChanges);
             }
         }
@@ -38,34 +38,40 @@ namespace VendingMachine.Model {
             return mCoinMeckRole.Eject(mDealAmount, mChanges);
         }
 
-        public bool CanPurchase(int inPosition) {
-            var rack = mItemRole.FindRackAt(mItems, inPosition);
-            if (rack == null) {
-                // error
-            }
-
-            return mItemRole.CanItemPurchase(rack);
-        }
-
         public ItemInfo Purchase(int inPosition) {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
-            if (rack == null) {
-                // error
-            }
-
-            if (! mItemRole.CanItemPurchase(rack)) {
-                // error
+            System.Console.WriteLine("#debug: " + string.Join(" ", mItems.Positions.Keys) );
+            if (rack.State != ItemRackState.CanPurchase) {
+                // error [TODO:]
             }
 
             mCoinMeckRole.Purchase(mDealAmount, rack.Item.Price);
 
-            return mItemRole.Purchase(rack);
+            var result = mItemRole.Purchase(rack);
+
+            foreach (var r in mItems.Racks) {
+                mItemRole.UpdateItemSelectionState(r, mDealAmount, mChanges);
+            }
+
+            return result;
         }
 
         public ItemRackInfo[] Racks {
             get {
-                return mItems.Items;
+                return this.ListAllRacks().ToArray();
             } 
+        }
+
+        private IEnumerable<ItemRackInfo> ListAllRacks() {
+            var position = 0; 
+            foreach (var pair in mItems.Racks.Select((rack, i) => Tuple.Create(i, rack))) {
+                if (pair.Item1 == position++) {
+                    yield return pair.Item2;
+                }
+                else {
+                    yield return ItemRack.Empty;
+                }
+            }
         }
 
         public int ReceivedTotal {

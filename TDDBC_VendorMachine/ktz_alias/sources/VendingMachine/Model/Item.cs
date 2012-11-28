@@ -35,9 +35,19 @@ namespace VendingMachine.Model {
         public ItemInfo Item {get; set;}
         public int Count {get; set;}
         public ItemRackState State {get; set;}
+
+        public static ItemRack Empty {
+            get {
+                return new ItemRack {
+                    Item = new Item { Name = "" }, 
+                    State = ItemRackState.RackNotExist,
+                };
+            }
+        }
     }
 
     public enum ItemRackState {
+        RackNotExist,
         CanNotPurchase,
         CanPurchase,
         Soldout,
@@ -53,7 +63,7 @@ namespace VendingMachine.Model {
         }
 
         public IDictionary<int, ItemRack> Positions {get; internal set;}
-        public ItemRack[] Items {
+        public ItemRack[] Racks {
             get {
                 return this.Positions
                     .OrderBy(rack => rack.Key)

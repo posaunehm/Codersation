@@ -66,7 +66,7 @@ namespace VendingMachine.Test.Unit {
             [ValueSource(typeof(商品選択状態の変化Params), "Source")] 
             商品選択状態の変化Params.Param inParameter) 
         { 
-            var racks = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
+            var positions = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
             
             var pool = TestHelper.InitInfinityReservedChange();
             var credit = new CashDeal();
@@ -78,11 +78,11 @@ namespace VendingMachine.Test.Unit {
                 coinMeckRole.Receive(credit, c);
             }
             
-            foreach (var result in racks.Items.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
+            foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
-                Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            }
+                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.CanPurchase));            }
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace VendingMachine.Test.Unit {
             [ValueSource(typeof(商品選択状態の変化Params), "SoldOutSource")] 
             商品選択状態の変化Params.Param inParameter) 
         { 
-            var racks = TestHelper.InitInfinityItems(ItemRackState.Soldout);
+            var positions = TestHelper.InitInfinityItems(ItemRackState.Soldout);
             
             var pool = TestHelper.InitInfinityReservedChange();
             var credit = new CashDeal();
@@ -102,11 +102,11 @@ namespace VendingMachine.Test.Unit {
                 coinMeckRole.Receive(credit, c);
             }
             
-            foreach (var result in racks.Items.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
+            foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
-                Assert.That(itemRackRole.CanItemPurchase(result.Item1), Is.EqualTo(result.Item2 == ItemRackState.CanPurchase));            
+                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.CanPurchase));            
             }
         }
 
@@ -122,10 +122,10 @@ namespace VendingMachine.Test.Unit {
         
         [Test]
         public void _指定された位置の商品ラックを検索する_未配置の位置を指定する場合() {
-            var racks = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
+            var positions = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
             
             var itemRackRole = new  ItemRackRole();
-            var rack = itemRackRole.FindRackAt(racks, 3);
+            var rack = itemRackRole.FindRackAt(positions, 3);
             Assert.That(rack, Is.Null);
         }
 
@@ -134,7 +134,7 @@ namespace VendingMachine.Test.Unit {
             var racks = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
 
             var keys = racks.Positions.Keys.OrderBy(k => k);
-            foreach (var pair in keys.Zip(racks.Items, (n, rack) => Tuple.Create(n, rack))) {
+            foreach (var pair in keys.Zip(racks.Racks, (n, rack) => Tuple.Create(n, rack))) {
                 Assert.That(racks.Positions[pair.Item1], Is.EqualTo(pair.Item2));
             }
         }
@@ -157,7 +157,7 @@ namespace VendingMachine.Test.Unit {
             itemRackRole.UpdateItemSelectionState(rack, credit, pool);            
 
             var svCount = rack.Count;
-            Assert.That(itemRackRole.CanItemPurchase(rack), Is.True);
+            Assert.That(rack.State, Is.EqualTo(ItemRackState.CanPurchase));
 
             coinMeckRole.Purchase(credit, rack.Item.Price);
             var item = itemRackRole.Purchase(rack);

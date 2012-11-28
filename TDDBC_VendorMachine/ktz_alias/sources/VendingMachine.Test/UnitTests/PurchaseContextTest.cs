@@ -40,13 +40,13 @@ namespace VendingMachine.Test.Unit {
                 .Get<PurchaseContext>()
             ;
 
-            Assert.That(ctx.CanPurchase(0), Is.False);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
 
             ctx.ReceiveMoney(Money.Coin100);                     
             ctx.ReceiveMoney(Money.Coin10);                     
             ctx.ReceiveMoney(Money.Coin10);      
 
-            Assert.That(ctx.CanPurchase(0), Is.True, "should be purchased");
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase), "should be purchased");
 
             var item = ctx.Purchase(0);
             Assert.That(item.Name, Is.EqualTo("Item0"));
@@ -62,7 +62,7 @@ namespace VendingMachine.Test.Unit {
                 .Get<PurchaseContext>()
             ;           
 
-            Assert.That(ctx.CanPurchase(0), Is.False);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
             
             ctx.ReceiveMoney(Money.Coin100);                     
             ctx.ReceiveMoney(Money.Coin100);                     
