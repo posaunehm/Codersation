@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine", "..\VendingMachine\VendingMachine\VendingMachine.csproj", "{6A19719E-02CB-4596-8C7E-3DD2577FE29B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\VendingMachine\Test\Test.csproj", "{2B420094-A88B-44D0-B02F-7B9FF8EAE956}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Release|x86.Build.0 = Release|Any CPU
+		{6A19719E-02CB-4596-8C7E-3DD2577FE29B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A19719E-02CB-4596-8C7E-3DD2577FE29B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A19719E-02CB-4596-8C7E-3DD2577FE29B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A19719E-02CB-4596-8C7E-3DD2577FE29B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ..\VendingMachine\VendingMachine\VendingMachine.csproj
+	EndGlobalSection
+EndGlobal
