@@ -1,6 +1,6 @@
 using System;
 
-namespace VendingMachine
+namespace VendingMachine.Domain.Exceptions
 {
     public class DrinkNotFoundException : Exception
     {

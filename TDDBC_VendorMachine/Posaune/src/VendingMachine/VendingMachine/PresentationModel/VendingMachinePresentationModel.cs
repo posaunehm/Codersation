@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using VendingMachine.Domain;
+using VendingMachine.PresentationModel.EventArgs;
 
-namespace VendingMachine
+namespace VendingMachine.PresentationModel
 {
     public class VendingMachinePresentationModel : INotifyPropertyChanged
     {
-        private readonly VendingMachine _vendingMachine = new VendingMachine();
+        private readonly Domain.VendingMachine _vendingMachine = new Domain.VendingMachine();
 
         public VendingMachinePresentationModel()
         {
-            JuiceStockDataCollection = new ObservableCollection<JuiceStockData>();
+            JuiceStockDataCollection = new ObservableCollection<JuiceStockItemPresentationModel>();
         }
 
         public event EventHandler<MoneyBackedEventArgs> MoneyBacked;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<JuiceStockData> JuiceStockDataCollection { get; private set; }
+        public ObservableCollection<JuiceStockItemPresentationModel> JuiceStockDataCollection { get; private set; }
 
         public MoneyKind SelectedMoney { get; set; }
 
@@ -102,7 +104,7 @@ namespace VendingMachine
             foreach (var specification in newJuiceInfo)
             {
                 JuiceStockDataCollection.Add(
-                    new JuiceStockData
+                    new JuiceStockItemPresentationModel
                         {
                             Name = specification.Name,
                             Price = specification.Price,

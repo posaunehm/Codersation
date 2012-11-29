@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VendingMachine.Domain;
 using Xunit;
 using Xunit.Extensions;
 using VendingMachine;
@@ -11,7 +12,7 @@ namespace Test
 {
     public class VendingMachineTest
     {
-        private VendingMachine.VendingMachine _sut = new VendingMachine.VendingMachine();
+        private VendingMachine.Domain.VendingMachine _sut = new VendingMachine.Domain.VendingMachine();
 
 
         [Theory]

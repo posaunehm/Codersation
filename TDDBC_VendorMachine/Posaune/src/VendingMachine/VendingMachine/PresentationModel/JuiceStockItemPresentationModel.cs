@@ -1,22 +1,23 @@
 using System;
+using System.ComponentModel;
 
-namespace VendingMachine
+namespace VendingMachine.PresentationModel
 {
-    public class JuiceStockData : IEquatable<JuiceStockData>
+    public class JuiceStockItemPresentationModel : IEquatable<JuiceStockItemPresentationModel>, INotifyPropertyChanged
     {
         #region Equality members
 
-        public static bool operator !=(JuiceStockData left, JuiceStockData right)
+        public static bool operator !=(JuiceStockItemPresentationModel left, JuiceStockItemPresentationModel right)
         {
             return !Equals(left, right);
         }
 
-        public static bool operator ==(JuiceStockData left, JuiceStockData right)
+        public static bool operator ==(JuiceStockItemPresentationModel left, JuiceStockItemPresentationModel right)
         {
             return Equals(left, right);
         }
 
-        public bool Equals(JuiceStockData other)
+        public bool Equals(JuiceStockItemPresentationModel other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -47,7 +48,15 @@ namespace VendingMachine
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((JuiceStockData)obj);
+            return Equals((JuiceStockItemPresentationModel)obj);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

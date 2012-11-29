@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VendingMachine;
+using VendingMachine.Domain;
+using VendingMachine.Domain.Exceptions;
 using Xunit;
 using Xunit.Extensions;
 

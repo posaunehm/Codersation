@@ -1,6 +1,7 @@
 using System;
+using VendingMachine.Domain.Interfaces;
 
-namespace VendingMachine
+namespace VendingMachine.Domain
 {
     public class StandardMoneyAcceptor : IMoneyAcceptor
     {
