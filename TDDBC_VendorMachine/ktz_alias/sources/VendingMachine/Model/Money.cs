@@ -19,6 +19,10 @@ namespace VendingMachine.Model {
 
      public class CashDeal {
         public CashDeal() {
+            this.Clear();
+        }
+
+        public void Clear() {
             this.RecevedMoney = EnumHeler.Values<Money>()
                 .Where(m => m != Money.Unknown)
                 .Where(m => MoneyResolver.Resolve(m).Status == MoneyStatus.Available)

@@ -51,7 +51,7 @@ namespace VendingMachine.Model {
                 return result;
             }
             finally {
-                inCash.RecevedMoney.Clear();
+                inCash.Clear();
             }
         }
 
