@@ -21,8 +21,7 @@ class VendingMachineSpec extends Specification {
 		sut.changeAmount == 80
 	}
 
-	@Ignore("釣りを返しすぎる事案が発生")
-	def "釣り銭切れると返さない"() {
+	def "釣り銭切れると購入しても無反応、売上も増えない"() {
 		given:
 		sut.insert(Money.ThousandYen)
 		sut.purchase(JuiceFactory.create("コーラ"))
@@ -32,8 +31,9 @@ class VendingMachineSpec extends Specification {
 		sut.purchase(JuiceFactory.create("コーラ"))
 		sut.payBack()
 		then:
-		sut.saleAmount == 240
-		sut.changeAmount == 1760
+		sut.creditAmount == 0
+		sut.saleAmount == 120
+		sut.changeAmount == 1880
 	}
 
 	@Unroll

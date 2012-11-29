@@ -163,14 +163,24 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 在庫が無くなったら購入不可になる() throws Exception {
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
+		public void 在庫が無くなるまでは購入可能() throws Exception {
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
 
-			assertThat(sut.getPurchasable(), not(hasItem(コーラ)));
+			assertThat(sut.getPurchasable(), hasItem(水));
+		}
+
+		@Test
+		public void 在庫が無くなったら購入不可になる() throws Exception {
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+
+			assertThat(sut.getPurchasable(), not(hasItem(水)));
 		}
 
 		@Test

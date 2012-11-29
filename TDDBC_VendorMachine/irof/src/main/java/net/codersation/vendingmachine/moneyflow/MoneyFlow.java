@@ -58,4 +58,13 @@ public class MoneyFlow {
 
 		addSale(price);
 	}
+
+	/**
+	 * 指定金額を購入した時にお釣りが返せるか
+	 * @param price 購入する商品の金額
+	 * @return お釣りが返せるならtrue
+	 */
+	public boolean canPayBackChange(int price) {
+		return pool.canTakeOut(credit.getAmount() - price);
+	}
 }
