@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
 repositories {
   mavenCentral()
@@ -21,3 +22,4 @@ sourceSets {
   it.options.encoding = defaultEncoding
 }
 
+test.exclude '**/AllTests.class'
