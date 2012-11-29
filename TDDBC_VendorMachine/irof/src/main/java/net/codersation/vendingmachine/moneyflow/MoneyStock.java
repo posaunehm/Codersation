@@ -43,13 +43,8 @@ public class MoneyStock {
 			if (i <= 0) {
 				break;
 			}
-			if (money.getValue() < i) {
-				result.add(money);
-				i -= money.getValue();
-			} else {
-				result.add(money);
-				i -= money.getValue();
-			}
+			result.add(money);
+			i -= money.getValue();
 		}
 
 		for (Money money : result.toArray(new Money[0])) {
