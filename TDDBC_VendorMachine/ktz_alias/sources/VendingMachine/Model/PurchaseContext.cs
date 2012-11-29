@@ -40,7 +40,6 @@ namespace VendingMachine.Model {
 
         public ItemInfo Purchase(int inPosition) {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
-            System.Console.WriteLine("#debug: " + string.Join(" ", mItems.Positions.Keys) );
             if (rack.State != ItemRackState.CanPurchase) {
                 // error [TODO:]
             }
