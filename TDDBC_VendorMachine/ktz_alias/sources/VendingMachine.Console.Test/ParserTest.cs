@@ -546,6 +546,29 @@ namespace VendingMachine.Console.Test {
             );
         }
 
+        [Ignore]
+        [Test]
+        public void _陳列された商品の表示依頼を処理する_釣り銭切れが解消するまでは購入不可となる場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContextContainingSoldout()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>();
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            Action runner;
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [!]   1 Item0...................   300",
+                " [ ]   2 Item1...................  1200",
+                " [-]   3 Item2...................   900",
+                " [ ]   4 Item3...................   600"
+            );   
+
+
+        }
+
         private void TestShowItemCore(IRunnerRepository inRepo, params string[] inExpected) {
             var it = inExpected.GetEnumerator();
 

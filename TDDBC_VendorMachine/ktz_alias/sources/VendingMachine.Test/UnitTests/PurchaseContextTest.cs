@@ -19,13 +19,13 @@ namespace VendingMachine.Test.Unit {
                 .Get<PurchaseContext>()
             ;
 
-            ctx.ReceiveMoney(Money.Coin500);             
+            ctx.ReceiveMoney(Money.Coin500, 1);             
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(500));
 
-            ctx.ReceiveMoney(Money.Coin500);             
+            ctx.ReceiveMoney(Money.Coin500, 1);             
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(1000));
 
-            ctx.ReceiveMoney(Money.Coin100);             
+            ctx.ReceiveMoney(Money.Coin100, 1);             
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(1100));
 
             var changes = ctx.Eject();
@@ -42,9 +42,9 @@ namespace VendingMachine.Test.Unit {
 
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
 
-            ctx.ReceiveMoney(Money.Coin100);                     
-            ctx.ReceiveMoney(Money.Coin10);                     
-            ctx.ReceiveMoney(Money.Coin10);      
+            ctx.ReceiveMoney(Money.Coin100, 1);                     
+            ctx.ReceiveMoney(Money.Coin10, 1);                     
+            ctx.ReceiveMoney(Money.Coin10, 1);      
 
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase), "should be purchased");
 
@@ -64,8 +64,8 @@ namespace VendingMachine.Test.Unit {
 
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
             
-            ctx.ReceiveMoney(Money.Coin100);                     
-            ctx.ReceiveMoney(Money.Coin100);                     
+            ctx.ReceiveMoney(Money.Coin100, 1);                     
+            ctx.ReceiveMoney(Money.Coin100, 1);                     
 
             var item = ctx.Purchase(0);
             Assert.That(item.Name, Is.EqualTo("Item0"));
@@ -74,8 +74,7 @@ namespace VendingMachine.Test.Unit {
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
 
             var changes = ctx.Eject()
-                .GroupBy(m => m)
-                .ToDictionary(g => g.Key, g => g.Count())
+                .ToDictionary(g => g.Key, g => g.Value)
             ;
             var expected = new Dictionary<Money, int> {
                 {Money.Coin10, 3}, 
@@ -87,14 +86,18 @@ namespace VendingMachine.Test.Unit {
                 Assert.That(changes[m.Key], Is.EqualTo(m.Value));
             }
 
-            var notContained = Enum.GetValues(typeof(Money))
-                .Cast<Money>()
+            var notContained = EnumHeler.Values<Money>()
                 .Where(m => ! expected.ContainsKey(m))
             ;
 
             foreach (var m in notContained) {
                 Assert.That(changes.ContainsKey(m), Is.False);
             }
+        }
+
+        [Ignore]
+        [Test]
+        public void _金銭を投入して商品を受け取ろうとするも_釣り銭切れで買えない場合() {
         }
     }
 }

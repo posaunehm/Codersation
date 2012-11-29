@@ -5,9 +5,9 @@ namespace VendingMachine.Model {
 
     public interface IUserCoinMeckRole {
         bool IsAvailableMoney(Money inMoney);
-        bool Receive(CashDeal inCash, Money inMoney);
+        bool Receive(CashDeal inCash, Money inMoney, int inCount);
         bool Purchase(CashDeal inCash, int inItemValue);
-        IEnumerable<Money> Eject(CashDeal inCash, ChangePool inReservedMoney);
+        IEnumerable<KeyValuePair<Money, int>> Eject(CashDeal inCash, ChangePool inReservedMoney);
     }
 
     public interface IUserPurchaseRole {

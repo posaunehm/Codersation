@@ -35,6 +35,7 @@
     <Compile Include="Model\Money.cs" />
     <Compile Include="Model\ItemRackRole.cs" />
     <Compile Include="Model\RoleIntf.cs" />
+    <Compile Include="EnumExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

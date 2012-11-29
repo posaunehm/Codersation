@@ -3,6 +3,7 @@ using System.Linq;
 
 using Ninject;
 
+using VendingMachine;
 using VendingMachine.Model;
 
 namespace TestUtils {
@@ -10,7 +11,7 @@ namespace TestUtils {
         public static ChangePool InitInfinityReservedChange() {
             var result = new ChangePool();
             
-            foreach (var m in Enum.GetValues(typeof(Money)).Cast<Money>().Where (m => m != Money.Unknown)) {
+            foreach (var m in EnumHeler.Values<Money>().Where (m => m != Money.Unknown)) {
                 result.Items[m] = 10000;
             }
             

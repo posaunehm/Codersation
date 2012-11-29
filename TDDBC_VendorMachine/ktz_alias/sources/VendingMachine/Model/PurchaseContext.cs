@@ -26,15 +26,15 @@ namespace VendingMachine.Model {
             mItemRole = inPurchaseRole;
         }
 
-        public void ReceiveMoney(Money inMoney) {
-            mCoinMeckRole.Receive(mDealAmount, inMoney);
+        public void ReceiveMoney(Money inMoney, int inCount) {
+            mCoinMeckRole.Receive(mDealAmount, inMoney, inCount);
 
             foreach (var rack in mItems.Racks.Where(r => r.State == ItemRackState.CanNotPurchase)) {
                 mItemRole.UpdateItemSelectionState(rack, mDealAmount, mChanges);
             }
         }
 
-        public IEnumerable<Money> Eject() {
+        public IEnumerable<KeyValuePair<Money, int>> Eject() {
             return mCoinMeckRole.Eject(mDealAmount, mChanges);
         }
 

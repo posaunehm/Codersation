@@ -36,10 +36,7 @@ namespace VendingMachine.Console {
                     (result, ev) => {
                         var r = (MoneyInsertionParseResult)result;
 
-                        for (var i = 0; i < r.Count; ++i) {
-                            this.PurchaseContext.ReceiveMoney(r.Money);
-                        }
-
+                        this.PurchaseContext.ReceiveMoney(r.Money, r.Count);
                         this.OnLogUpdated(ev, string.Format("money: {0} was received.", r.Money.Value() * r.Count));
                     }
                 },
@@ -47,8 +44,7 @@ namespace VendingMachine.Console {
                     typeof (MoneyEjectParseResult),
                     (result, ev) => {
                         var changes = this.PurchaseContext.Eject()
-                            .GroupBy(m => m)
-                            .Select(g => Tuple.Create(g.Key.Value(), g.Count()))
+                            .Select(g => Tuple.Create(g.Key.Value(), g.Value))
                             .OrderBy(m => m.Item1)
                             .Select(m => string.Format("{0}({1})", m.Item1, m.Item2))
                             .ToArray()

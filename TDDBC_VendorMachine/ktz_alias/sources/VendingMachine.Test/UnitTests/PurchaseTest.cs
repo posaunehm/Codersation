@@ -75,7 +75,7 @@ namespace VendingMachine.Test.Unit {
             var itemRackRole = new  ItemRackRole();
             
             foreach (var c in inParameter.Credits) {
-                coinMeckRole.Receive(credit, c);
+                coinMeckRole.Receive(credit, c, 1);
             }
             
             foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
@@ -99,7 +99,7 @@ namespace VendingMachine.Test.Unit {
             var itemRackRole = new  ItemRackRole();
             
             foreach (var c in inParameter.Credits) {
-                coinMeckRole.Receive(credit, c);
+                coinMeckRole.Receive(credit, c, 1);
             }
             
             foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
@@ -149,9 +149,9 @@ namespace VendingMachine.Test.Unit {
             var coinMeckRole = new CoinMeckRole();
             var itemRackRole = new  ItemRackRole();
 
-            coinMeckRole.Receive(credit, Money.Coin100);
-            coinMeckRole.Receive(credit, Money.Coin10);
-            coinMeckRole.Receive(credit, Money.Coin10);
+            coinMeckRole.Receive(credit, Money.Coin100, 1);
+            coinMeckRole.Receive(credit, Money.Coin10, 1);
+            coinMeckRole.Receive(credit, Money.Coin10, 1);
 
             var rack = itemRackRole.FindRackAt(racks, 0);
             itemRackRole.UpdateItemSelectionState(rack, credit, pool);            

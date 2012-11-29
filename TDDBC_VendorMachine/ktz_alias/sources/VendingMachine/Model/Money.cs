@@ -19,10 +19,14 @@ namespace VendingMachine.Model {
 
      public class CashDeal {
         public CashDeal() {
-            this.RecevedMoney = new List<Money>();
+            this.RecevedMoney = EnumHeler.Values<Money>()
+                .Where(m => m != Money.Unknown)
+                .Where(m => MoneyResolver.Resolve(m).Status == MoneyStatus.Available)
+                .ToDictionary(m => m, m => 0)
+            ;
         }
 
-        public List<Money> RecevedMoney {get; private set;}
+        public  IDictionary<Money, int> RecevedMoney {get; private set;}
         public int UsedAmount {get; internal set;}
 
         public int ChangedAount {

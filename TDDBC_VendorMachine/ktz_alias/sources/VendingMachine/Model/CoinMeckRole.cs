@@ -8,9 +8,9 @@ namespace VendingMachine.Model {
             return MoneyResolver.Resolve(inMoney).Status == MoneyStatus.Available;
 		}
 
-        public bool Receive(CashDeal inCash, Money inMoney) {
-            if (this.IsAvailableMoney(inMoney)) {
-                inCash.RecevedMoney.Add(inMoney);
+        public bool Receive(CashDeal inCash, Money inMoney, int inCount) {
+            if (inCount > 0 && this.IsAvailableMoney(inMoney)) {
+                inCash.RecevedMoney[inMoney] += inCount;
 
                 return true;
             }
@@ -28,10 +28,12 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public IEnumerable<Money> Eject(CashDeal inCash, ChangePool inReservedMoney) {
+        public IEnumerable<KeyValuePair<Money, int>> Eject(CashDeal inCash, ChangePool inReservedMoney) {
             try {
                 if (inCash.UsedAmount == 0) {
-                    return inCash.RecevedMoney.ToList();
+                    return inCash.RecevedMoney
+                        .Where(pair => pair.Value > 0)
+                        .ToList();
                 }   
 
                 var result = new List<KeyValuePair<Money, int>>();
@@ -46,7 +48,7 @@ namespace VendingMachine.Model {
                     }
                 );
 
-                return result.SelectMany(r => Enumerable.Repeat(r.Key, r.Value));
+                return result;
             }
             finally {
                 inCash.RecevedMoney.Clear();
