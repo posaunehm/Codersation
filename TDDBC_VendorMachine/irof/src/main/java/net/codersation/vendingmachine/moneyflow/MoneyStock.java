@@ -2,7 +2,9 @@ package net.codersation.vendingmachine.moneyflow;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.codersation.vendingmachine.Money;
 
@@ -88,5 +90,15 @@ public class MoneyStock {
 			difference -= money.getValue();
 		}
 		return difference == 0;
+	}
+
+	@Override
+	public String toString() {
+		Map<Money,Integer> map = new HashMap<>();
+		for (Money money : stock) {
+			if (!map.containsKey(money)) map.put(money, 0);
+			map.put(money, map.get(money) + 1);
+		}
+		return map.toString();
 	}
 }
