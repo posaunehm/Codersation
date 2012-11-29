@@ -83,6 +83,10 @@ public class MoneyStock {
 	}
 
 	public boolean canTakeOut(int amount) {
-		return true;
+		int difference = amount;
+		for (Money money : getUseMoneyList(amount)) {
+			difference -= money.getValue();
+		}
+		return difference == 0;
 	}
 }

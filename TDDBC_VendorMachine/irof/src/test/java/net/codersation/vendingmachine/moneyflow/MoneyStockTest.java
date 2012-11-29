@@ -44,6 +44,13 @@ public class MoneyStockTest {
 		assertThat(actual, is(true));
 	}
 
+	@Test
+	public void canTakeOutは丁度払えない金額を要求されるとfalseを返す() throws Exception {
+		add(Money.HundredYen, Money.HundredYen, Money.TenYen, Money.TenYen, Money.TenYen);
+		boolean actual = sut.canTakeOut(140);
+		assertThat(actual, is(false));
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void 払えない金額を要求されると例外を投げる() throws Exception {
 		sut.takeOut(10);
