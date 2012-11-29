@@ -85,18 +85,11 @@ namespace VendingMachine
                 _drinkPriceSpecification.SetDrinkSpec(priceSpecification);
             }
         }
-    }
 
-    public class MoneyStockInfo
-    {
-        public MoneyStockInfo(MoneyKind kind, int count)
+        public bool CanBuy(string drinkName)
         {
-            Kind = kind;
-            Count = count;
+            return _drinkStock.HasItem(drinkName) 
+                && _moneyStocker.CanReturnJustMoneyIfUsed(_drinkPriceSpecification.GetItemPrice(drinkName));
         }
-
-        public int Count{ get; private set; }
-
-        public MoneyKind Kind { get; private set; }
     }
 }
