@@ -5,7 +5,6 @@ namespace VendingMachine
 {
     public class MoneyStocker
     {
-        //© @irof
         private readonly List<Money> _moneyPool = new List<Money>();
         
         private int _insertedAmount = 0;
