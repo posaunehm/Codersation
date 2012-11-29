@@ -81,4 +81,8 @@ public class MoneyStock {
 	private void remove(Money e) {
 		stock.remove(e);
 	}
+
+	public boolean canTakeOut(int amount) {
+		return true;
+	}
 }
