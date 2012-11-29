@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile 'junit:junit:4.11'
+}
+
+def defaultEncoding = 'SJIS'
+sourceSets {
+  main.java {
+    srcDir 'src'
+    exclude 'test/**'
+  }
+  test.java.srcDir 'src'
+}
+
+[compileJava, compileTestJava].each {
+  it.options.encoding = defaultEncoding
+}
+
