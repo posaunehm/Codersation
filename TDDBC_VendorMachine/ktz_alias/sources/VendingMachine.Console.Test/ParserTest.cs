@@ -675,7 +675,7 @@ namespace VendingMachine.Console.Test {
             };
             
             var expected = new string[] {
-                "",
+                "Purchased !! [Item0]",
             };
             var it = expected.GetEnumerator();
 

@@ -82,8 +82,8 @@ namespace VendingMachine.Test.Unit {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
-                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.CanPurchase));            }
-        }
+            }
+         }
 
         [Test]
         public void _お金投入による商品選択状態の変化_売り切れの場合(
@@ -106,7 +106,7 @@ namespace VendingMachine.Test.Unit {
                 itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
                 
                 Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
-                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.CanPurchase));            
+                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.Soldout));            
             }
         }
 

@@ -71,6 +71,8 @@ namespace VendingMachine.Test.Unit {
             Assert.That(item.Name, Is.EqualTo("Item0"));
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(80));
 
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
+
             var changes = ctx.Eject()
                 .GroupBy(m => m)
                 .ToDictionary(g => g.Key, g => g.Count())
