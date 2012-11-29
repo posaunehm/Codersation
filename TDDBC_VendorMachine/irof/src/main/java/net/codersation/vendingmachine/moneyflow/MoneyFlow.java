@@ -47,11 +47,24 @@ public class MoneyFlow {
 		// creditから払えるだけのお金を取り出す
 		MoneyStock sale = credit.takeOut(price);
 		// poolからお釣りのために差額のお金を取り出す
-		MoneyStock change = pool.takeOut(sale.getAmount() - price);
+		int changeAmount = sale.getAmount() - price;
+		if (!pool.canTakeOut(changeAmount)) {
+			throw new IllegalStateException("cannot take out just Money. pool=" + pool + ", amount=" + changeAmount);
+		}
+		MoneyStock change = pool.takeOut(changeAmount);
 
 		sale.moveAllMoneyTo(pool);
 		change.moveAllMoneyTo(credit);
 
 		addSale(price);
+	}
+
+	/**
+	 * 指定金額を購入した時にお釣りが返せるか
+	 * @param price 購入する商品の金額
+	 * @return お釣りが返せるならtrue
+	 */
+	public boolean canPayBackChange(int price) {
+		return pool.canTakeOut(credit.getAmount() - price);
 	}
 }

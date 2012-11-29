@@ -2,7 +2,9 @@ package net.codersation.vendingmachine.moneyflow;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.codersation.vendingmachine.Money;
 
@@ -41,13 +43,8 @@ public class MoneyStock {
 			if (i <= 0) {
 				break;
 			}
-			if (money.getValue() < i) {
-				result.add(money);
-				i -= money.getValue();
-			} else {
-				result.add(money);
-				i -= money.getValue();
-			}
+			result.add(money);
+			i -= money.getValue();
 		}
 
 		for (Money money : result.toArray(new Money[0])) {
@@ -80,5 +77,23 @@ public class MoneyStock {
 
 	private void remove(Money e) {
 		stock.remove(e);
+	}
+
+	public boolean canTakeOut(int amount) {
+		int difference = amount;
+		for (Money money : getUseMoneyList(amount)) {
+			difference -= money.getValue();
+		}
+		return difference == 0;
+	}
+
+	@Override
+	public String toString() {
+		Map<Money,Integer> map = new HashMap<>();
+		for (Money money : stock) {
+			if (!map.containsKey(money)) map.put(money, 0);
+			map.put(money, map.get(money) + 1);
+		}
+		return map.toString();
 	}
 }

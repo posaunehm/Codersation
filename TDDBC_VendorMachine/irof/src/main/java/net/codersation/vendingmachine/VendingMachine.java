@@ -66,7 +66,7 @@ public class VendingMachine {
 			return;
 		}
 
-		if (juiceStock.isInStock(juice)) {
+		if (juiceStock.isInStock(juice) && moneyFlow.canPayBackChange(juice.getPrice())) {
 			juiceStock.remove(juice);
 			moneyFlow.purchase(juice.getPrice());
 		}

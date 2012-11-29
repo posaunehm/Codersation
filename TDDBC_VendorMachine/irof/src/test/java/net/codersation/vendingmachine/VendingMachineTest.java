@@ -29,12 +29,12 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 総計は0円() {
+		public void 預かり金額は0円() {
 			assertThat(sut.getCreditAmount(), is(0));
 		}
 
 		@Test
-		public void 十円投入すると総計は10円() throws Exception {
+		public void 十円投入すると預かり金額は10円() throws Exception {
 			sut.insert(Money.TenYen);
 			assertThat(sut.getCreditAmount(), is(10));
 		}
@@ -45,7 +45,7 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 二千円入れても総計は増えない() throws Exception {
+		public void 二千円入れても預かり金額は増えない() throws Exception {
 			sut.insert(Money.TwoThousandYen);
 			assertThat(sut.getCreditAmount(), is(0));
 		}
@@ -88,12 +88,12 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 総計は100円() throws Exception {
+		public void 預かり金額は100円() throws Exception {
 			assertThat(sut.getCreditAmount(), is(100));
 		}
 
 		@Test
-		public void 払い戻すと総計が0円になる() throws Exception {
+		public void 払い戻すと預かり金額が0円になる() throws Exception {
 			sut.payBack();
 			assertThat(sut.getCreditAmount(), is(0));
 		}
@@ -140,7 +140,7 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 総計は1000円() throws Exception {
+		public void 預かり金額は1000円() throws Exception {
 			assertThat(sut.getCreditAmount(), is(1000));
 		}
 
@@ -163,14 +163,24 @@ public class VendingMachineTest {
 		}
 
 		@Test
-		public void 在庫が無くなったら購入不可になる() throws Exception {
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
-			sut.purchase(コーラ);
+		public void 在庫が無くなるまでは購入可能() throws Exception {
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
 
-			assertThat(sut.getPurchasable(), not(hasItem(コーラ)));
+			assertThat(sut.getPurchasable(), hasItem(水));
+		}
+
+		@Test
+		public void 在庫が無くなったら購入不可になる() throws Exception {
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+			sut.purchase(水);
+
+			assertThat(sut.getPurchasable(), not(hasItem(水)));
 		}
 
 		@Test
