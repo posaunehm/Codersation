@@ -52,7 +52,7 @@ namespace VendingMachine.Test.Unit {
             Assert.That(item.Name, Is.EqualTo("Item0"));
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(0));
 
-            Assert.That(ctx.Eject().Credits.Any(), Is.False);
+            Assert.That(ctx.Eject().Credits.Where(c => c.Value > 0).Any(), Is.False);
         }
 
         [Test]
@@ -75,6 +75,7 @@ namespace VendingMachine.Test.Unit {
 
             var changes = ctx.Eject()
                 .Credits
+                .Where(c => c.Value > 0)
                 .ToDictionary(g => g.Key, g => g.Value)
             ;
             var expected = new Dictionary<Money, int> {

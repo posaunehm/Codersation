@@ -151,25 +151,28 @@ namespace VendingMachine.Test.Unit {
 			
             role.Receive(received, inMoney, inRepeat);
 			
-			var changed = role.Eject(received, pool).Credits
+            var expectReceived = received.RecevedMoney.TotalAmount();
+
+			var changes = role.Eject(received, pool).Credits
+                .Where(c => c.Value > 0)
 				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
-			Assert.That(received.RecevedMoney.Credits.Sum(pair => pair.Key.Value() * pair.Value), Is.EqualTo(0));
+            Assert.That(received.RecevedMoney.TotalAmount(), Is.EqualTo(expectReceived));
 			
-			Assert.That(changed.Count, Is.EqualTo(1));
-			Assert.True(changed.ContainsKey(inMoney));
-			Assert.That(changed[inMoney], Is.EqualTo(inRepeat));
+			Assert.That(changes.Count, Is.EqualTo(1));
+			Assert.True(changes.ContainsKey(inMoney));
+			Assert.That(changes[inMoney], Is.EqualTo(inRepeat));
 		}
 		
 		[Test]
 		public void _お金を入れず購入() {
 			var role = new CoinMeckRole ();
 			var received = new CashDeal();
-			
-			Assert.False(role.Purchase(received, 100));	
-			
-			Assert.That(received.UsedAmount, Is.EqualTo(0));
+            var pool = new CreditPool();
+
+            var changes = role.Purchase(received, pool, 100);
+            Assert.That(changes.TotalAmount(), Is.EqualTo(0));	
 		}
 		
 		public class _商品購入後お金を排出するParams {
@@ -237,22 +240,18 @@ namespace VendingMachine.Test.Unit {
 				}
 			}
 			
-			Assert.True(role.Purchase(received, 100));
-			
-			var changed = role.Eject(received, pool)
+			var newReceives = new CashDeal(role.Purchase(received, pool, 100));			
+            var changes = role.Eject(newReceives, pool)
                 .Credits
+                .Where(c => c.Value > 0)
 				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
 			var lookup = inParameter.ChangedMoney.ToDictionary(m => m.Item1, m => m.Item2);
 			
-			Assert.That(received.RecevedMoney.Credits.Sum(pair => pair.Key.Value() * pair.Value), Is.EqualTo(0));
+			Assert.That(changes.Count, Is.EqualTo(lookup.Count), "count money type (id = {0})", inParameter.Id);
 			
-			Assert.That(received.UsedAmount, Is.EqualTo(100));
-			
-			Assert.That(changed.Count, Is.EqualTo(lookup.Count), "count money type (id = {0})", inParameter.Id);
-			
-			foreach (var pair in changed) {
+			foreach (var pair in changes) {
 				Assert.True(lookup.ContainsKey(pair.Key), "money ({0}) should be contained (id = {1})", pair.Key, inParameter.Id);
 				Assert.That(pair.Value, Is.EqualTo (lookup[pair.Key]), "money ({0}) count should be equaled (id = {1})", pair.Key, inParameter.Id);
 			}

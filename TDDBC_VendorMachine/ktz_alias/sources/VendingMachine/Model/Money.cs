@@ -21,13 +21,16 @@ namespace VendingMachine.Model {
         public CashDeal() {
             this.RecevedMoney = new CreditPool();
         }
-
+        
+        public CashDeal(CreditPool inMoney) {
+            this.RecevedMoney = new CreditPool(inMoney.Credits);
+        }
+        
         public  CreditPool RecevedMoney {get; private set;}
-        public int UsedAmount {get; internal set;}
 
         public int ChangedAount {
             get {
-                return this.RecevedMoney.TotalAmount() - this.UsedAmount;
+                return this.RecevedMoney.TotalAmount();
             }
         }
     }
@@ -37,8 +40,10 @@ namespace VendingMachine.Model {
             this.Clear();
         }
         
-        public CreditPool(IEnumerable<KeyValuePair<Money, int>> inCredits) {
-            this.Credits = inCredits.ToDictionary(pair => pair.Key, pair => pair.Value);
+        public CreditPool(IEnumerable<KeyValuePair<Money, int>> inCredits) : this() {
+            foreach (var credit in inCredits) {
+                this.Credits[credit.Key] = credit.Value;
+            }
         }
         
         public void Clear() {

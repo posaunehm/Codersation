@@ -18,44 +18,37 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public bool Purchase(CashDeal inCash, int inItemValue) {
-            if (inCash.ChangedAount >= inItemValue) {
-                inCash.UsedAmount += inItemValue;
-
-                return true;
+        public CreditPool Purchase(CashDeal inCash, CreditPool inChangePool, int inItemValue) {
+            if (inCash.ChangedAount < inItemValue) {
+                return inCash.RecevedMoney;
             }
 
-            return false;
+            // [TODO]
+            // create sales
+
+            return this.CalcChanges(
+                inCash.RecevedMoney.TotalAmount() - inItemValue,
+                this.AppendMoney(inChangePool, inCash.RecevedMoney, (pool, cash) => pool+cash)
+            );
         }
 
-        public CreditPool Eject(CashDeal inCash, CreditPool inReservedMoney) {
-            try {
-                if (inCash.UsedAmount == 0) {
-                    return new CreditPool(inCash.RecevedMoney.Credits
-                        .Where(pair => pair.Value > 0)
-                    );
-                }   
-
-                var result = new List<KeyValuePair<Money, int>>();
-
-                this.EjectCore(
-                    inCash.ChangedAount,
-                    inReservedMoney.Credits.OrderByDescending(pair => pair.Key.Value()),
-                    (m, totalCount, useCount) => {
-                        result.Add(
-                            new KeyValuePair<Money, int>(m, (int)useCount)
-                        );
-                    }
-                );
-
-                return new CreditPool(result);
-            }
-            finally {
-                inCash.RecevedMoney.Clear();
-            }
+        private IEnumerable<KeyValuePair<Money, int>> AppendMoney(CreditPool inChangePool, CreditPool inReceivedCredit, Func<int, int, int> inCallback) {
+            return Enumerable.Join(
+                    inChangePool.Credits, inReceivedCredit.Credits, 
+                    (outer) => outer.Key, (inner) => inner.Key,
+                    (outer, inner) => new KeyValuePair<Money, int>(outer.Key, inCallback(outer.Value, inner.Value))
+                )
+                .OrderByDescending(pair => pair.Key)
+            ;
         }
 
-        private int EjectCore(int inChangeAmount, IEnumerable<KeyValuePair<Money, int>> inMoney, Action<Money, int, decimal> inEjectCallback) {
+        public CreditPool Eject(CashDeal inCash, CreditPool inChangePool) {
+            return new CreditPool(inCash.RecevedMoney.Credits);
+        }
+
+        private CreditPool CalcChanges(int inChangeAmount, IEnumerable<KeyValuePair<Money, int>> inMoney) {
+            var result = new Dictionary<Money, int>();
+
             foreach (var m in inMoney) {
                 if (inChangeAmount == 0) break;
 
@@ -65,11 +58,11 @@ namespace VendingMachine.Model {
                 if (useCount > 0) {
                     inChangeAmount -= useCount * v;
 
-                    inEjectCallback(m.Key, m.Value, n);
+                    result[m.Key] = useCount;
                 }
             }
 
-            return inChangeAmount;
+            return new CreditPool(result);
         }
 
         private decimal CalculateEjectCount(int inChangeAmount, int inValue, int inCount) {

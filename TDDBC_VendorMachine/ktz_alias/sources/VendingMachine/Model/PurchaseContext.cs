@@ -35,7 +35,14 @@ namespace VendingMachine.Model {
         }
 
         public CreditPool Eject() {
-            return mCoinMeckRole.Eject(mDealAmount, mChanges);
+            try {
+                return new CreditPool(
+                    mCoinMeckRole.Eject(mDealAmount, mChanges).Credits
+                );
+            }
+            finally {
+                mDealAmount.RecevedMoney.Clear();
+            }
         }
 
         public ItemInfo Purchase(int inPosition) {
@@ -44,7 +51,9 @@ namespace VendingMachine.Model {
                 // error [TODO:]
             }
 
-            mCoinMeckRole.Purchase(mDealAmount, rack.Item.Price);
+            mDealAmount = new CashDeal(
+                mCoinMeckRole.Purchase(mDealAmount, mChanges, rack.Item.Price)
+            );
 
             var result = mItemRole.Purchase(rack);
 

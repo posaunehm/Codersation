@@ -6,7 +6,7 @@ namespace VendingMachine.Model {
             var oldState = inRack.State;
             if (oldState == ItemRackState.Soldout) return false;
 
-            if (inRack.Item.Price <= (inCredits.RecevedMoney.TotalAmount() - inCredits.UsedAmount)) {
+            if (inRack.Item.Price <= inCredits.RecevedMoney.TotalAmount()) {
                 inRack.State = ItemRackState.CanPurchase;
             }
             else {
