@@ -95,11 +95,11 @@ namespace VendingMachine.Test.Unit {
             Assert.False(role.Receive(received, Money.Bill5000, inCount));
             Assert.False(role.Receive(received, Money.Bill10000, inCount));
 			
-			Assert.False(received.RecevedMoney.ContainsKey(Money.Coin1));
-			Assert.False(received.RecevedMoney.ContainsKey(Money.Coin5));
-			Assert.False(received.RecevedMoney.ContainsKey(Money.Bill2000));
-			Assert.False(received.RecevedMoney.ContainsKey(Money.Bill5000));
-			Assert.False(received.RecevedMoney.ContainsKey(Money.Bill10000));
+			Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin1));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin5));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill2000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill5000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill10000));
 			
             Assert.That(received.ChangedAount, Is.EqualTo(3320 * inCount));
 		}
@@ -132,11 +132,11 @@ namespace VendingMachine.Test.Unit {
             Assert.False(role.Receive(received, Money.Bill5000, inCount));
             Assert.False(role.Receive(received, Money.Bill10000, inCount));
             
-            Assert.False(received.RecevedMoney.ContainsKey(Money.Coin1));
-            Assert.False(received.RecevedMoney.ContainsKey(Money.Coin5));
-            Assert.False(received.RecevedMoney.ContainsKey(Money.Bill2000));
-            Assert.False(received.RecevedMoney.ContainsKey(Money.Bill5000));
-            Assert.False(received.RecevedMoney.ContainsKey(Money.Bill10000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin1));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin5));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill2000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill5000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill10000));
             
             Assert.That(received.ChangedAount, Is.EqualTo(0));
         }
@@ -151,11 +151,11 @@ namespace VendingMachine.Test.Unit {
 			
             role.Receive(received, inMoney, inRepeat);
 			
-			var changed = role.Eject(received, pool)
+			var changed = role.Eject(received, pool).Credits
 				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
-			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
+			Assert.That(received.RecevedMoney.Credits.Sum(pair => pair.Key.Value() * pair.Value), Is.EqualTo(0));
 			
 			Assert.That(changed.Count, Is.EqualTo(1));
 			Assert.True(changed.ContainsKey(inMoney));
@@ -240,12 +240,13 @@ namespace VendingMachine.Test.Unit {
 			Assert.True(role.Purchase(received, 100));
 			
 			var changed = role.Eject(received, pool)
+                .Credits
 				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
 			var lookup = inParameter.ChangedMoney.ToDictionary(m => m.Item1, m => m.Item2);
 			
-			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
+			Assert.That(received.RecevedMoney.Credits.Sum(pair => pair.Key.Value() * pair.Value), Is.EqualTo(0));
 			
 			Assert.That(received.UsedAmount, Is.EqualTo(100));
 			

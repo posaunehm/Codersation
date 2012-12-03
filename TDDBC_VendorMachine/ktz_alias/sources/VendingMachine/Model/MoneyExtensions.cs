@@ -7,18 +7,18 @@ namespace VendingMachine.Model {
             return MoneyResolver.Resolve(inMoney).Value;
         }
 
-        public static int TotalAmount(this IEnumerable<KeyValuePair<Money, int>> inMoney) {
-            return inMoney
+        public static int TotalAmount(this CreditPool inPool) {
+            return inPool.Credits
                 .Sum(m => m.Key.Value() * m.Value)
             ;
         }
-
-        public static int TotalAmount(this IEnumerable<Money> inMoney) {
-            return inMoney
-                .GroupBy(m => m)
-                .Sum(m => m.Key.Value() * m.Count())
-            ;
-        }
+//
+//        public static int TotalAmount(this IEnumerable<Money> inMoney) {
+//            return inMoney
+//                .GroupBy(m => m)
+//                .Sum(m => m.Key.Value() * m.Count())
+//            ;
+//        }
     }
 
     public enum MoneyStatus {

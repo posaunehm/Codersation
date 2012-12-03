@@ -44,6 +44,7 @@ namespace VendingMachine.Console {
                     typeof (MoneyEjectParseResult),
                     (result, ev) => {
                         var changes = this.PurchaseContext.Eject()
+                            .Credits
                             .Select(g => Tuple.Create(g.Key.Value(), g.Value))
                             .OrderBy(m => m.Item1)
                             .Select(m => string.Format("{0}({1})", m.Item1, m.Item2))

@@ -59,10 +59,6 @@ namespace VendingMachine.Console.Test {
                     Input = "ins 10 -10",
                     Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
-                yield return new _コマンドパーサに渡すTestFixture.Parameter {
-                    Input = "ins 10 101",
-                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
-                };
             }
         }
 

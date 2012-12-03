@@ -52,7 +52,7 @@ namespace VendingMachine.Test.Unit {
             Assert.That(item.Name, Is.EqualTo("Item0"));
             Assert.That(ctx.ReceivedTotal, Is.EqualTo(0));
 
-            Assert.That(ctx.Eject().Any(), Is.False);
+            Assert.That(ctx.Eject().Credits.Any(), Is.False);
         }
 
         [Test]
@@ -74,6 +74,7 @@ namespace VendingMachine.Test.Unit {
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanNotPurchase));
 
             var changes = ctx.Eject()
+                .Credits
                 .ToDictionary(g => g.Key, g => g.Value)
             ;
             var expected = new Dictionary<Money, int> {
@@ -99,6 +100,16 @@ namespace VendingMachine.Test.Unit {
         [Test]
         public void _金銭を投入して商品を受け取ろうとするも_釣り銭切れで買えない場合() {
         }
-    }
+
+        public IKernel BindNoChangeContext(this IKernel inSelf) {
+            inSelf.Bind<CreditPool>().ToMethod(ctx => new CreditPool());
+            inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
+            inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
+            inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
+            inSelf.Bind<PurchaseContext>().ToSelf();
+            
+            return inSelf;
+        }
+    } 
 }
 

@@ -7,14 +7,14 @@ using Ninject;
 namespace VendingMachine.Model {
     public class PurchaseContext {
         private CashDeal mDealAmount;
-        private ChangePool mChanges;
+        private CreditPool mChanges;
         private ItemRackPosition mItems;
 
         private IUserCoinMeckRole mCoinMeckRole;
         private IUserPurchaseRole mItemRole;
 
         [Inject]
-        public PurchaseContext(ChangePool inChanges, ItemRackPosition inItems) {
+        public PurchaseContext(CreditPool inChanges, ItemRackPosition inItems) {
             mDealAmount = new CashDeal();
             mChanges = inChanges;
             mItems = inItems;
@@ -34,7 +34,7 @@ namespace VendingMachine.Model {
             }
         }
 
-        public IEnumerable<KeyValuePair<Money, int>> Eject() {
+        public CreditPool Eject() {
             return mCoinMeckRole.Eject(mDealAmount, mChanges);
         }
 

@@ -10,7 +10,7 @@ namespace VendingMachine.Model {
 
         public bool Receive(CashDeal inCash, Money inMoney, int inCount) {
             if (inCount > 0 && this.IsAvailableMoney(inMoney)) {
-                inCash.RecevedMoney[inMoney] += inCount;
+                inCash.RecevedMoney.Credits[inMoney] += inCount;
 
                 return true;
             }
@@ -28,19 +28,19 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public IEnumerable<KeyValuePair<Money, int>> Eject(CashDeal inCash, ChangePool inReservedMoney) {
+        public CreditPool Eject(CashDeal inCash, CreditPool inReservedMoney) {
             try {
                 if (inCash.UsedAmount == 0) {
-                    return inCash.RecevedMoney
+                    return new CreditPool(inCash.RecevedMoney.Credits
                         .Where(pair => pair.Value > 0)
-                        .ToList();
+                    );
                 }   
 
                 var result = new List<KeyValuePair<Money, int>>();
 
                 this.EjectCore(
                     inCash.ChangedAount,
-                    inReservedMoney.Items.OrderByDescending(pair => pair.Key.Value()),
+                    inReservedMoney.Credits.OrderByDescending(pair => pair.Key.Value()),
                     (m, totalCount, useCount) => {
                         result.Add(
                             new KeyValuePair<Money, int>(m, (int)useCount)
@@ -48,10 +48,10 @@ namespace VendingMachine.Model {
                     }
                 );
 
-                return result;
+                return new CreditPool(result);
             }
             finally {
-                inCash.Clear();
+                inCash.RecevedMoney.Clear();
             }
         }
 

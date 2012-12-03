@@ -8,11 +8,11 @@ using VendingMachine.Model;
 
 namespace TestUtils {
     public static class TestHelper {
-        public static ChangePool InitInfinityReservedChange() {
-            var result = new ChangePool();
+        public static CreditPool InitInfinityReservedChange() {
+            var result = new CreditPool();
             
             foreach (var m in EnumHeler.Values<Money>().Where (m => m != Money.Unknown)) {
-                result.Items[m] = 10000;
+                result.Credits[m] = 10000;
             }
             
             return result;
@@ -77,7 +77,7 @@ namespace TestUtils {
 
     public static class VendingMachineDIExtensions {
         public static IKernel BindPurchaseContext(this IKernel inSelf) {
-            inSelf.Bind<ChangePool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
+            inSelf.Bind<CreditPool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
             inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
             inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
             inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
@@ -87,7 +87,7 @@ namespace TestUtils {
         }
 
         public static IKernel BindPurchaseContextContainingSoldout(this IKernel inSelf) {
-            inSelf.Bind<ChangePool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
+            inSelf.Bind<CreditPool>().ToMethod(ctx => TestHelper.InitInfinityReservedChange());
             inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitItems());
             inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
             inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
