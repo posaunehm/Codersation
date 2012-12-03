@@ -159,7 +159,7 @@ namespace VendingMachine.Test.Unit {
             var svCount = rack.Count;
             Assert.That(rack.State, Is.EqualTo(ItemRackState.CanPurchase));
 
-            coinMeckRole.Purchase(credit, pool, rack.Item.Price);
+            coinMeckRole.CalcChanges(credit, pool, rack.Item.Price);
             var item = itemRackRole.Purchase(rack);
 
             Assert.That(item, Is.Not.Null);

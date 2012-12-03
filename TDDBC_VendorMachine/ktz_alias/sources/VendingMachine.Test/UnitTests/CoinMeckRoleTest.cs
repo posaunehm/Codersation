@@ -171,7 +171,7 @@ namespace VendingMachine.Test.Unit {
 			var received = new CashDeal();
             var pool = new CreditPool();
 
-            var changes = role.Purchase(received, pool, 100);
+            var changes = role.CalcChanges(received, pool, 100);
             Assert.That(changes.TotalAmount(), Is.EqualTo(0));	
 		}
 		
@@ -240,7 +240,7 @@ namespace VendingMachine.Test.Unit {
 				}
 			}
 			
-			var newReceives = new CashDeal(role.Purchase(received, pool, 100));			
+			var newReceives = new CashDeal(role.CalcChanges(received, pool, 100));			
             var changes = role.Eject(newReceives, pool)
                 .Credits
                 .Where(c => c.Value > 0)

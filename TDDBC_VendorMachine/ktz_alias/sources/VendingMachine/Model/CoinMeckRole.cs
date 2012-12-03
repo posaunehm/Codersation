@@ -18,7 +18,7 @@ namespace VendingMachine.Model {
             return false;
         }
 
-        public CreditPool Purchase(CashDeal inCash, CreditPool inChangePool, int inItemValue) {
+        public CreditPool CalcChanges(CashDeal inCash, CreditPool inChangePool, int inItemValue) {
             if (inCash.ChangedAount < inItemValue) {
                 return inCash.RecevedMoney;
             }
@@ -26,7 +26,7 @@ namespace VendingMachine.Model {
             // [TODO]
             // create sales
 
-            return this.CalcChanges(
+            return this.CalcChangesCore(
                 inCash.RecevedMoney.TotalAmount() - inItemValue,
                 this.AppendMoney(inChangePool, inCash.RecevedMoney, (pool, cash) => pool+cash)
             );
@@ -46,7 +46,7 @@ namespace VendingMachine.Model {
             return new CreditPool(inCash.RecevedMoney.Credits);
         }
 
-        private CreditPool CalcChanges(int inChangeAmount, IEnumerable<KeyValuePair<Money, int>> inMoney) {
+        private CreditPool CalcChangesCore(int inChangeAmount, IEnumerable<KeyValuePair<Money, int>> inMoney) {
             var result = new Dictionary<Money, int>();
 
             foreach (var m in inMoney) {

@@ -52,7 +52,7 @@ namespace VendingMachine.Model {
             }
 
             mDealAmount = new CashDeal(
-                mCoinMeckRole.Purchase(mDealAmount, mChanges, rack.Item.Price)
+                mCoinMeckRole.CalcChanges(mDealAmount, mChanges, rack.Item.Price)
             );
 
             var result = mItemRole.Purchase(rack);
