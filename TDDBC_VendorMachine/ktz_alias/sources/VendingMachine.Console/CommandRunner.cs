@@ -171,6 +171,7 @@ namespace VendingMachine.Console {
                 this.OnLogUpdated(inEvent, "Item is not placed.");
                 break;
             case ItemRackState.MissingChange:
+                this.OnLogUpdated(inEvent, "Sorry, can not purchase this item because of lack of changes.");
                 break;
             case ItemRackState.Soldout:
                 this.OnLogUpdated(inEvent, "Sorry, this item has been sold out.");

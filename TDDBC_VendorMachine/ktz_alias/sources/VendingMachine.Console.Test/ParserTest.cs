@@ -748,19 +748,49 @@ namespace VendingMachine.Console.Test {
         public void _商品の購入依頼を処理する_複数件同時_でも後半お金不足の場合 () {
         }
 
-        [Ignore]
         [Test]
         public void _商品の購入依頼を処理する_正しくないインデックスを含む一件の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(f => f.Expected)
+                    .Cast<MoneyInsertionParseResult>()
+                    ;
+            
+            Action runner;
+            foreach (var f in fixtures) {
+                runner = repo.FindRunner(f, null);
+                
+                runner();
+            }
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {-1}
+            };
+            
+            var expected = new string[] {
+                "Item is not placed.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);  
         }
 
         [Ignore]
         [Test]
         public void _商品の購入依頼を処理する_正しくないインデックスを含む複数件同時の場合 () {
-        }
-
-        [Ignore]
-        [Test]
-        public void _商品の購入依頼を処理する_範囲外の一件の場合() {
         }
 
         [Ignore]
@@ -805,7 +835,40 @@ namespace VendingMachine.Console.Test {
             
             runner();
             
-            Assert.That(it.MoveNext(), Is.False);        }
+            Assert.That(it.MoveNext(), Is.False);        
+        }
+        
+        [Test]
+        public void _商品の購入依頼を処理する_釣り銭不足で購入できない商品を選択した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindNoChangeContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+            Action runner;
+            runner = repo.FindRunner( new MoneyInsertionParseResult {Money = Money.Coin500, Count=1}, null);               
+            runner();
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {1}
+            };
+            
+            var expected = new string[] {
+                "Sorry, can not purchase this item because of lack of changes.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);        
+        }
 
         [Test]
         public void _お金の排出依頼を処理する() {
