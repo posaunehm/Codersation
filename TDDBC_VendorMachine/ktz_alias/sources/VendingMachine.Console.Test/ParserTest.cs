@@ -438,9 +438,23 @@ namespace VendingMachine.Console.Test {
             Assert.That(it.MoveNext(), Is.False);
         }
 
-        [Ignore]
         [Test]
         public void _陳列された商品の表示依頼を処理する_未陳列の商品含む場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindNoChangeContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [ ]   1 Item0...................   120",
+                " [x]   2 ........................      ",
+                " [ ]   3 Item2...................   250"
+            );   
         }
 
         [Test]
@@ -561,7 +575,7 @@ namespace VendingMachine.Console.Test {
                 "       # Name                     Price",
                 "-----+--+------------------------+------",
                 " [!]   1 Item0...................   120",
-                " [x]   2 ........................     0",
+                " [x]   2 ........................      ",
                 " [!]   3 Item2...................   250"
             );   
 
@@ -574,7 +588,7 @@ namespace VendingMachine.Console.Test {
                 "       # Name                     Price",
                 "-----+--+------------------------+------",
                 " [*]   1 Item0...................   120",
-                " [x]   2 ........................     0",
+                " [x]   2 ........................      ",
                 " [!]   3 Item2...................   250"
             );   
 

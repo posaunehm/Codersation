@@ -82,8 +82,10 @@ namespace VendingMachine.Console {
                         foreach (var pair in racks) {
                             var itemName = pair.Item2.Item.Name.PadRight(24, '.');
                             var state = this.RackStatusToString(this.PurchaseContext.Racks[pair.Item1-1].State);
+                            var price = pair.Item2.State == ItemRackState.RackNotExist ? "" : pair.Item2.Item.Price.ToString();
+
                             this.OnLogUpdated(ev, 
-                              string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, pair.Item2.Item.Price)
+                              string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, price)
                             );
 
                         }
