@@ -82,8 +82,9 @@ namespace VendingMachine.Console {
                 Count = 9999,
                 State = ItemRackState.CanNotPurchase,
             };
+            yield return ItemRack.Empty;
             yield return new ItemRack {
-                Item = new Item {
+                    Item = new Item {
                     Name = "Mysterious Power",
                     Price = 3000,
                     Shape = ItemShapeType.Can500
