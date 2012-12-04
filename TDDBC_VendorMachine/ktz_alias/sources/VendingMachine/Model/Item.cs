@@ -71,10 +71,10 @@ namespace VendingMachine.Model {
         }
 
         private IEnumerable<ItemRack> ListAllRacks() {
-            var n = 0;
-            foreach (var rack in this.Positions.OrderBy(rack => rack.Key)) {
-                if (n++ == rack.Key) {
-                    yield return rack.Value;
+            foreach (var n in Enumerable.Range(0, this.Positions.Max(rack => rack.Key)+1)) {
+                ItemRack rack;
+                if (this.Positions.TryGetValue(n, out rack)) {
+                    yield return rack;
                 }
                 else {
                     yield return ItemRack.Empty;

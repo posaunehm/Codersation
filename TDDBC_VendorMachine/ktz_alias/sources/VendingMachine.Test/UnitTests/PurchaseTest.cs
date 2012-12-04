@@ -21,19 +21,19 @@ namespace VendingMachine.Test.Unit {
                 get {
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.CanNotPurchase, ItemRackState.CanNotPurchase),
+                        States = TestHelper.AsArray(ItemRackState.CanNotPurchase, ItemRackState.RackNotExist, ItemRackState.CanNotPurchase),
                     };
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.CanNotPurchase),
+                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.RackNotExist,ItemRackState.CanNotPurchase),
                     };
                     yield return new Param {
-                        Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.CanPurchase),
+                        Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin10, Money.Coin10),
+                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.RackNotExist,ItemRackState.CanNotPurchase),
                     };
                     yield return new Param {
-                        Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.CanPurchase),
+                        Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin50),
+                        States = TestHelper.AsArray(ItemRackState.CanPurchase, ItemRackState.RackNotExist,ItemRackState.CanPurchase),
                     };
                 }
             }
@@ -43,19 +43,19 @@ namespace VendingMachine.Test.Unit {
                     // Sold OUT !!!
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.Soldout),
+                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.RackNotExist,ItemRackState.Soldout),
                     };
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.Soldout),
+                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.RackNotExist,ItemRackState.Soldout),
                     };
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.Soldout),
+                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.RackNotExist,ItemRackState.Soldout),
                     };
                     yield return new Param {
                         Credits = TestHelper.AsArray(Money.Coin100, Money.Coin100, Money.Coin100, Money.Coin100),
-                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.Soldout),
+                        States = TestHelper.AsArray(ItemRackState.Soldout, ItemRackState.RackNotExist,ItemRackState.Soldout),
                     };
                 }
             }
@@ -77,11 +77,14 @@ namespace VendingMachine.Test.Unit {
             foreach (var c in inParameter.Credits) {
                 coinMeckRole.Receive(credit, c, 1);
             }
-            
-            foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
-                itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
+
+            foreach (var p in Enumerable.Range(0, positions.Racks.Length)) {
+                var newState = itemRackRole.UpdateItemSelectionState(
+                    positions.Racks[p], credit, 
+                    coinMeckRole.CalcChanges(credit, pool, positions.Racks[p].Item.Price)
+                );
                 
-                Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
+                Assert.That(newState, Is.EqualTo(inParameter.States[p]));
             }
          }
 
@@ -101,12 +104,14 @@ namespace VendingMachine.Test.Unit {
             foreach (var c in inParameter.Credits) {
                 coinMeckRole.Receive(credit, c, 1);
             }
-            
-            foreach (var result in positions.Racks.Zip(inParameter.States, (r, s) => Tuple.Create(r, s))) {
-                itemRackRole.UpdateItemSelectionState(result.Item1, credit, pool);
+
+            foreach (var p in Enumerable.Range(0, positions.Racks.Length)) {
+                var newState = itemRackRole.UpdateItemSelectionState(
+                    positions.Racks[p], credit, 
+                    coinMeckRole.CalcChanges(credit, pool, positions.Racks[p].Item.Price)
+                    );
                 
-                Assert.That(result.Item1.State, Is.EqualTo(result.Item2));
-                Assert.That(result.Item1.State, Is.EqualTo(ItemRackState.Soldout));            
+                Assert.That(newState, Is.EqualTo(inParameter.States[p]));
             }
         }
 
@@ -133,9 +138,13 @@ namespace VendingMachine.Test.Unit {
         public void _商品ラック配置のラックコレクションは位置順に並んでいる() {
             var racks = TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase);
 
-            var keys = racks.Positions.Keys.OrderBy(k => k);
-            foreach (var pair in keys.Zip(racks.Racks, (n, rack) => Tuple.Create(n, rack))) {
-                Assert.That(racks.Positions[pair.Item1], Is.EqualTo(pair.Item2));
+            Assert.That(racks.Racks.Length-1, Is.EqualTo(racks.Positions.Max(r => r.Key)));
+
+            var results = racks.Positions.OrderBy(p => p.Key).Select(p => p.Value)
+                .Zip(racks.Racks.Where(r => r.State != ItemRackState.RackNotExist), (expect, actual) => Tuple.Create(expect, actual))
+            ;
+            foreach (var result in results) {
+                Assert.That(result.Item1, Is.EqualTo(result.Item2));
             }
         }
 
@@ -154,7 +163,10 @@ namespace VendingMachine.Test.Unit {
             coinMeckRole.Receive(credit, Money.Coin10, 1);
 
             var rack = itemRackRole.FindRackAt(racks, 0);
-            itemRackRole.UpdateItemSelectionState(rack, credit, pool);            
+            itemRackRole.UpdateItemSelectionState(
+                rack, credit, 
+                coinMeckRole.CalcChanges(credit, pool, rack.Item.Price)
+            );            
 
             var svCount = rack.Count;
             Assert.That(rack.State, Is.EqualTo(ItemRackState.CanPurchase));

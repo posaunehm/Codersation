@@ -95,7 +95,7 @@ namespace VendingMachine.Console {
                         var r = (PurchaseParseResult)result;
 
                         foreach (var p in r.Positions) {
-                            if (p < 1 || p >= this.PurchaseContext.Racks.Length) {
+                            if (p < 1 || p >= this.PurchaseContext.Racks.Length+1) {
                                 this.NotifyPurchaseLogs(0, ItemRackState.RackNotExist, ev);
                             }
                             else {

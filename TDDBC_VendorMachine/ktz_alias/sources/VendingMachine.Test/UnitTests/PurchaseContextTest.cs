@@ -99,7 +99,7 @@ namespace VendingMachine.Test.Unit {
 
         [Test]
         public void _金銭を投入して商品を受け取ろうとするも_釣り銭切れで買えない場合() {
-            var ctx = this.BindNoChangeContext(new StandardKernel()).Get<PurchaseContext>();
+            var ctx = new StandardKernel().BindNoChangeContext().Get<PurchaseContext>();
 
             ctx.ReceiveMoney(Money.Coin500, 1);
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
@@ -116,16 +116,6 @@ namespace VendingMachine.Test.Unit {
             ctx.ReceiveMoney(Money.Coin10, 2);
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase));
             Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
-        }
-
-        private IKernel BindNoChangeContext(IKernel inSelf) {
-            inSelf.Bind<CreditPool>().ToMethod(ctx => new CreditPool());
-            inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
-            inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
-            inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
-            inSelf.Bind<PurchaseContext>().ToSelf();
-            
-            return inSelf;
         }
     } 
 }

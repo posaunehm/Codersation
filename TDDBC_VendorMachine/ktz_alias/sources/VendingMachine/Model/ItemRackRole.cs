@@ -3,6 +3,7 @@ using System;
 namespace VendingMachine.Model {
     public class ItemRackRole : IUserPurchaseRole {
         public ItemRackState UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, CreditPool inChanges) {
+            if (inRack.State == ItemRackState.RackNotExist) return inRack.State;
             if (inRack.Count == 0) return inRack.State = ItemRackState.Soldout;
 
             var amount = inCredits.ChangedAount;

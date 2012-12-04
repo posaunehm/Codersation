@@ -101,6 +101,16 @@ namespace TestUtils {
             
             return inSelf;
         }
+
+        public static IKernel BindNoChangeContext(this IKernel inSelf) {
+            inSelf.Bind<CreditPool>().ToMethod(ctx => new CreditPool());
+            inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
+            inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());
+            inSelf.Bind<IUserPurchaseRole>().ToMethod(ctx => new ItemRackRole());
+            inSelf.Bind<PurchaseContext>().ToSelf();
+            
+            return inSelf;
+        }
     }
 }
 
