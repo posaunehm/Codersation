@@ -768,10 +768,44 @@ namespace VendingMachine.Console.Test {
         public void _商品の購入依頼を処理する_範囲外の複数件同時の場合 () {
         }
         
-        [Ignore]
         [Test]
         public void _商品の購入依頼を処理する_うっかり未陳列の商品を選択した場合 () {
-        }
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(f => f.Expected)
+                    .Cast<MoneyInsertionParseResult>()
+                    ;
+            
+            Action runner;
+            foreach (var f in fixtures) {
+                runner = repo.FindRunner(f, null);
+                
+                runner();
+            }
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {2}
+            };
+            
+            var expected = new string[] {
+                "Item is not placed.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);        }
 
         [Test]
         public void _お金の排出依頼を処理する() {

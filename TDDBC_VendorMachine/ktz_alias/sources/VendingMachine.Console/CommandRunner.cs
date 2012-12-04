@@ -168,6 +168,8 @@ namespace VendingMachine.Console {
                 this.OnLogUpdated(inEvent, string.Format("Purchased !! [{0}]", item.Name));
                 break;
             case ItemRackState.RackNotExist:
+                this.OnLogUpdated(inEvent, "Item is not placed.");
+                break;
             case ItemRackState.MissingChange:
                 break;
             case ItemRackState.Soldout:
