@@ -104,6 +104,7 @@ namespace VendingMachine.Console {
                                 ));
                                 break;
                             case ItemRackState.RackNotExist:
+                            case ItemRackState.MissingChange:
                                 break;
                             case ItemRackState.Soldout:
                                 this.OnLogUpdated(ev, "Sorry, this item has been sold out.");
@@ -164,8 +165,11 @@ namespace VendingMachine.Console {
             case ItemRackState.CanPurchase: 
                 return "*";
             case ItemRackState.Soldout:
-            case ItemRackState.RackNotExist: 
                 return "-";
+            case ItemRackState.RackNotExist: 
+                return "x";
+            case ItemRackState.MissingChange:
+                return "!";
             default:
                 return " ";
             }

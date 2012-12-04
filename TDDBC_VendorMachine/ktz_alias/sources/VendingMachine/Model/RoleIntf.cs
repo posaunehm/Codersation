@@ -11,7 +11,7 @@ namespace VendingMachine.Model {
     }
 
     public interface IUserPurchaseRole {
-        bool UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, CreditPool inPool);
+        ItemRackState UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, CreditPool inChanges);
         ItemRack FindRackAt(ItemRackPosition inRacks, int inPosition);
         ItemInfo Purchase(ItemRack inRack);
     }

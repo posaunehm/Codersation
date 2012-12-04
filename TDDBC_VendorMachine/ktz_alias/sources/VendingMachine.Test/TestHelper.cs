@@ -23,7 +23,8 @@ namespace TestUtils {
                 Tuple.Create(
                 0, 
                 new ItemRack {
-                Item = new Item { Name = "Item0", Price = 120,  Shape = ItemShapeType.Can350 },    
+                Item = new Item { Name = "Item0", Price = 120,  Shape = ItemShapeType.Can350 },   
+                Count = inState == ItemRackState.Soldout ? 0 : 9999,
                 State = inState,
             }
             ),
@@ -31,6 +32,7 @@ namespace TestUtils {
                 2, 
                 new ItemRack {
                 Item = new Item { Name = "Item2", Price = 250,  Shape = ItemShapeType.Can500 },
+                Count = inState == ItemRackState.Soldout ? 0 : 9999,
                 State = inState,
             }
             )
@@ -43,6 +45,7 @@ namespace TestUtils {
                 0, 
                 new ItemRack {
                 Item = new Item { Name = "Item0", Price = 300,  Shape = ItemShapeType.Can350 },    
+                Count = 9999,
                 State = ItemRackState.CanNotPurchase,
             }
             ),
@@ -50,6 +53,7 @@ namespace TestUtils {
                 1, 
                 new ItemRack {
                 Item = new Item { Name = "Item1", Price = 1200,  Shape = ItemShapeType.Can500 },
+                Count = 9999,
                 State = ItemRackState.CanNotPurchase,
             }
             ),
@@ -57,6 +61,7 @@ namespace TestUtils {
                 2, 
                 new ItemRack {
                 Item = new Item { Name = "Item2", Price = 900,  Shape = ItemShapeType.Can500 },
+                Count = 0,
                 State = ItemRackState.Soldout,
             }
             ),
@@ -64,6 +69,7 @@ namespace TestUtils {
                 3, 
                 new ItemRack {
                 Item = new Item { Name = "Item3", Price = 600,  Shape = ItemShapeType.Can500 },
+                Count = 9999,
                 State = ItemRackState.CanNotPurchase,
             }
             )

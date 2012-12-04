@@ -50,6 +50,7 @@ namespace VendingMachine.Model {
         RackNotExist,
         CanNotPurchase,
         CanPurchase,
+        MissingChange, 
         Soldout,
     }
 
@@ -65,11 +66,19 @@ namespace VendingMachine.Model {
         public IDictionary<int, ItemRack> Positions {get; internal set;}
         public ItemRack[] Racks {
             get {
-                return this.Positions
-                    .OrderBy(rack => rack.Key)
-                    .Select(rack => rack.Value)
-                    .ToArray()
-                ;
+                return this.ListAllRacks().ToArray();
+            }
+        }
+
+        private IEnumerable<ItemRack> ListAllRacks() {
+            var n = 0;
+            foreach (var rack in this.Positions.OrderBy(rack => rack.Key)) {
+                if (n++ == rack.Key) {
+                    yield return rack.Value;
+                }
+                else {
+                    yield return ItemRack.Empty;
+                }
             }
         }
     }

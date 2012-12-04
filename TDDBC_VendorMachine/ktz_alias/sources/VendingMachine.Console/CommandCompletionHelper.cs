@@ -88,7 +88,7 @@ namespace VendingMachine.Console {
                     Price = 3000,
                     Shape = ItemShapeType.Can500
                 },
-                Count = 9999,
+                Count = 0,
                 State = ItemRackState.Soldout,
             };
         }

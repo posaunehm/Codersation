@@ -7,7 +7,7 @@ using Ninject;
 namespace VendingMachine.Model {
     public class PurchaseContext {
         private CashDeal mDealAmount;
-        private CreditPool mChanges;
+        private CreditPool mChangesPool;
         private ItemRackPosition mItems;
 
         private IUserCoinMeckRole mCoinMeckRole;
@@ -16,7 +16,7 @@ namespace VendingMachine.Model {
         [Inject]
         public PurchaseContext(CreditPool inChanges, ItemRackPosition inItems) {
             mDealAmount = new CashDeal();
-            mChanges = inChanges;
+            mChangesPool = inChanges;
             mItems = inItems;
         }
 
@@ -29,15 +29,18 @@ namespace VendingMachine.Model {
         public void ReceiveMoney(Money inMoney, int inCount) {
             mCoinMeckRole.Receive(mDealAmount, inMoney, inCount);
 
-            foreach (var rack in mItems.Racks.Where(r => r.State == ItemRackState.CanNotPurchase)) {
-                mItemRole.UpdateItemSelectionState(rack, mDealAmount, mChanges);
+            foreach (var rack in mItems.Racks.Where(r => r.State != ItemRackState.RackNotExist)) {
+                mItemRole.UpdateItemSelectionState(
+                    rack, mDealAmount, 
+                    mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)
+                );
             }
         }
-
+     
         public CreditPool Eject() {
             try {
                 return new CreditPool(
-                    mCoinMeckRole.Eject(mDealAmount, mChanges).Credits
+                    mCoinMeckRole.Eject(mDealAmount, mChangesPool).Credits
                 );
             }
             finally {
@@ -49,16 +52,17 @@ namespace VendingMachine.Model {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
             if (rack.State != ItemRackState.CanPurchase) {
                 // error [TODO:]
+                throw new Exception();
             }
 
             mDealAmount = new CashDeal(
-                mCoinMeckRole.CalcChanges(mDealAmount, mChanges, rack.Item.Price)
+                mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)
             );
 
             var result = mItemRole.Purchase(rack);
 
-            foreach (var r in mItems.Racks) {
-                mItemRole.UpdateItemSelectionState(r, mDealAmount, mChanges);
+            foreach (var r in mItems.Racks.Where(r => r.State != ItemRackState.RackNotExist)) {
+                mItemRole.UpdateItemSelectionState(r, mDealAmount, mChangesPool);
             }
 
             return result;
@@ -66,20 +70,8 @@ namespace VendingMachine.Model {
 
         public ItemRackInfo[] Racks {
             get {
-                return this.ListAllRacks().ToArray();
+                return mItems.Racks;
             } 
-        }
-
-        private IEnumerable<ItemRackInfo> ListAllRacks() {
-            var position = 0; 
-            foreach (var pair in mItems.Racks.Select((rack, i) => Tuple.Create(i, rack))) {
-                if (pair.Item1 == position++) {
-                    yield return pair.Item2;
-                }
-                else {
-                    yield return ItemRack.Empty;
-                }
-            }
         }
 
         public int ReceivedTotal {

@@ -97,12 +97,28 @@ namespace VendingMachine.Test.Unit {
             }
         }
 
-        [Ignore]
         [Test]
         public void _金銭を投入して商品を受け取ろうとするも_釣り銭切れで買えない場合() {
+            var ctx = this.BindNoChangeContext(new StandardKernel()).Get<PurchaseContext>();
+
+            ctx.ReceiveMoney(Money.Coin500, 1);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
+            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
+
+            ctx.ReceiveMoney(Money.Coin500, 1);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
+            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
+
+            ctx.ReceiveMoney(Money.Coin100, 1);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
+            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
+
+            ctx.ReceiveMoney(Money.Coin10, 2);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase));
+            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
         }
 
-        public IKernel BindNoChangeContext(this IKernel inSelf) {
+        private IKernel BindNoChangeContext(IKernel inSelf) {
             inSelf.Bind<CreditPool>().ToMethod(ctx => new CreditPool());
             inSelf.Bind<ItemRackPosition>().ToMethod(ctx => TestHelper.InitInfinityItems(ItemRackState.CanNotPurchase));
             inSelf.Bind<IUserCoinMeckRole>().ToMethod(ctx => new CoinMeckRole());

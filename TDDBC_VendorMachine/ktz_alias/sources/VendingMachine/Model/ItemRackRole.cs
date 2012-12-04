@@ -2,18 +2,19 @@ using System;
 
 namespace VendingMachine.Model {
     public class ItemRackRole : IUserPurchaseRole {
-        public bool UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, CreditPool inPool) {
-            var oldState = inRack.State;
-            if (oldState == ItemRackState.Soldout) return false;
+        public ItemRackState UpdateItemSelectionState(ItemRack inRack, CashDeal inCredits, CreditPool inChanges) {
+            if (inRack.Count == 0) return inRack.State = ItemRackState.Soldout;
 
-            if (inRack.Item.Price <= inCredits.RecevedMoney.TotalAmount()) {
-                inRack.State = ItemRackState.CanPurchase;
-            }
-            else {
-                inRack.State = ItemRackState.CanNotPurchase;
+            var amount = inCredits.ChangedAount;
+            if (inRack.Item.Price > amount) {
+                return inRack.State = ItemRackState.CanNotPurchase;
             }
 
-            return oldState != inRack.State;
+            if (inChanges.TotalAmount() != amount-inRack.Item.Price) {     
+                return inRack.State = ItemRackState.MissingChange;
+            }
+
+            return inRack.State = ItemRackState.CanPurchase;
         }
 
         public ItemRack FindRackAt(ItemRackPosition inRacks, int inPosition) {
