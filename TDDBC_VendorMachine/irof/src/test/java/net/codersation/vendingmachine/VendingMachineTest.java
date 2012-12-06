@@ -41,7 +41,7 @@ public class VendingMachineTest {
 
 		@Test
 		public void お釣りの金額は0円() throws Exception {
-			assertThat(sut.getChangeAmount(), is(0));
+			assertThat(sut.takeOutChange().getAmount(), is(0));
 		}
 
 		@Test
@@ -101,14 +101,14 @@ public class VendingMachineTest {
 		@Test
 		public void 払い戻すとお釣りが増える() throws Exception {
 			sut.payBack();
-			assertThat(sut.getChangeAmount(), is(100));
+			assertThat(sut.takeOutChange().getAmount(), is(100));
 		}
 
 		@Test
 		public void 払い戻しを二回してもお釣りは変わらない() throws Exception {
 			sut.payBack();
 			sut.payBack();
-			assertThat(sut.getChangeAmount(), is(100));
+			assertThat(sut.takeOutChange().getAmount(), is(100));
 		}
 
 		@Test
