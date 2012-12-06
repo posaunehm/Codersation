@@ -223,7 +223,7 @@ namespace VendingMachine.Test.Unit {
 					yield return new Parameter {
 						Id = id++,
                         ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 3)), 
-                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin100, 4)),
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {								
 						Id = id++,

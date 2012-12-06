@@ -8,15 +8,23 @@ using VendingMachine.Model;
 
 namespace TestUtils {
     public static class TestHelper {
+ 
         public static CreditPool InitInfinityReservedChange() {
             var result = new CreditPool();
             
-            foreach (var m in EnumHeler.Values<Money>().Where (m => m != Money.Unknown)) {
-                result.Credits[m] = 10000;
+            var credits = EnumHeler.Values<Money>()
+                .Where (m => m != Money.Unknown) 
+                    .Select(m => MoneyResolver.Resolve(m))
+                    .Where(m => m.Status == MoneyStatus.Available)
+                    .Where(m => m.Style == MoneyStyle.Coin)
+                    ;
+            
+            foreach (var m in credits) {
+                result.Credits[m.Type] = 10000;
             }
             
             return result;
-        }
+        }    
 
         public static ItemRackPosition InitInfinityItems(ItemRackState inState) {
             return new ItemRackPosition(
