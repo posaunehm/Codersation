@@ -105,10 +105,6 @@ namespace VendingMachine.Test.Unit {
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
             Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
 
-            ctx.ReceiveMoney(Money.Coin500, 1);
-            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
-            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
-
             ctx.ReceiveMoney(Money.Coin100, 1);
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.MissingChange));
             Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
@@ -116,6 +112,11 @@ namespace VendingMachine.Test.Unit {
             ctx.ReceiveMoney(Money.Coin10, 2);
             Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase));
             Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
+
+            ctx.Purchase(0);
+            Assert.That(ctx.Racks[0].State, Is.EqualTo(ItemRackState.CanPurchase));
+            Assert.That(ctx.Racks[1].State, Is.EqualTo(ItemRackState.RackNotExist));
+
         }
     } 
 }

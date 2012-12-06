@@ -67,6 +67,20 @@ namespace VendingMachine.Test.Unit {
 			Assert.False(role.IsAvailableMoney(Money.Bill10000), "10000円は使用不可");
 		}
 		
+        [TestCase(Money.Coin1, MoneyStyle.Coin)]
+        [TestCase(Money.Coin5, MoneyStyle.Coin)]
+        [TestCase(Money.Coin10, MoneyStyle.Coin)]
+        [TestCase(Money.Coin50, MoneyStyle.Coin)]
+        [TestCase(Money.Coin100, MoneyStyle.Coin)]
+        [TestCase(Money.Coin500, MoneyStyle.Coin)]
+        [TestCase(Money.Bill1000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill2000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill5000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill10000, MoneyStyle.Bill)]
+        public void _金種形式の判定(Money inMoney, MoneyStyle inExpected) {
+            Assert.That(MoneyResolver.Resolve(inMoney).Style, Is.EqualTo(inExpected));
+        }
+
         [TestCase(1)]
         [TestCase(10)]
         [TestCase(100)]
