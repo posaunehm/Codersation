@@ -5,9 +5,12 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String... args) {
+		System.out.println("Insert?> ");
 		try (Scanner scanner = new Scanner(System.in)) {
 			while (scanner.hasNext()) {
-				System.out.println(scanner.nextLine());
+				String input = scanner.nextLine();
+				System.out.println("credit: " + input);
+				System.out.println("Insert?> ");
 			}
 		}
 	}
