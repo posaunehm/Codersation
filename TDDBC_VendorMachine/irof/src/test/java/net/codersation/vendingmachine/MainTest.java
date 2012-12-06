@@ -15,19 +15,21 @@ import org.junit.Test;
 public class MainTest {
 
 	@Test
-	public void 入力した金額の合計を出力する() throws Exception {
+	public void お金の投入はinsでする() throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(baos));
 
-		byte[] input = "100\n10\n".getBytes();
+		byte[] input = "ins 100\nins 10\n".getBytes();
 		System.setIn(new ByteArrayInputStream(input));
 
 		Main.main();
 
 		BufferedReader reader = new BufferedReader(new StringReader(baos.toString("UTF-8")));
-		assertThat(reader.readLine(), is("Insert?> "));
-		assertThat(reader.readLine(), is("credit: 100"));
-		assertThat(reader.readLine(), is("Insert?> "));
-		assertThat(reader.readLine(), is("credit: 110"));
+		assertThat(reader.readLine(), is("> "));
+		assertThat(reader.readLine(), is("money: 100 was received."));
+		assertThat(reader.readLine(), is("> "));
+		assertThat(reader.readLine(), is("money: 10 was received."));
 	}
+
+	
 }
