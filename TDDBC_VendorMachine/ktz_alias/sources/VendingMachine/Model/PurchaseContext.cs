@@ -51,9 +51,15 @@ namespace VendingMachine.Model {
         public ItemInfo Purchase(int inPosition) {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
             if (rack.State != ItemRackState.CanPurchase) {
-                // error [TODO:]
                 throw new Exception();
             }
+
+            // [TODO: 1]
+            // create sales
+            // 投入金を準備金に加える
+            // 残額を分解し、残りの準備金を返す
+            // 計算前後の準備金の差異から、おつりを算出する
+            // 準備対象外の金種はビルバリプールに振り替える
 
             mDealAmount = new CashDeal(
                 mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)

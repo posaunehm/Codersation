@@ -23,9 +23,6 @@ namespace VendingMachine.Model {
                 return inCash.RecevedMoney;
             }
 
-            // [TODO]
-            // create sales
-
             return this.CalcChangesCore(
                 inCash.RecevedMoney.TotalAmount() - inItemValue,
                 this.AppendMoney(inChangePool, inCash.RecevedMoney, (pool, cash) => pool+cash)
