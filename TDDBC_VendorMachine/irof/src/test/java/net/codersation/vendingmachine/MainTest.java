@@ -31,5 +31,18 @@ public class MainTest {
 		assertThat(reader.readLine(), is("money: 10 was received."));
 	}
 
-	
+	@Test
+	public void 変なお金をinsしたらば() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(baos));
+
+		byte[] input = "ins 123".getBytes();
+		System.setIn(new ByteArrayInputStream(input));
+
+		Main.main();
+
+		BufferedReader reader = new BufferedReader(new StringReader(baos.toString("UTF-8")));
+		assertThat(reader.readLine(), is("> "));
+		assertThat(reader.readLine(), is("! 123 is not available."));
+	}
 }
