@@ -6,23 +6,25 @@ public class Main {
 
 	public static void main(String... args) {
 		VendingMachine vendingMachine = new VendingMachine();
-
-		System.out.println("Insert?> ");
+		System.out.println("> ");
 		try (Scanner scanner = new Scanner(System.in)) {
 			while (scanner.hasNext()) {
-				Money money = null;
-				switch (scanner.nextLine()) {
-				case "100":
-					money = Money.HundredYen;
-					break;
-				case "10":
-					money = Money.TenYen;
-					break;
+				String input = scanner.nextLine();
+				if (input.startsWith("ins")) {
+					String[] split = input.split(" +");
+					if (split.length > 1) {
+						String amountString = split[1];
+						int amount = Integer.parseInt(amountString);
+						for (Money money : Money.values()) {
+							if (money.getValue() == amount) {
+								vendingMachine.insert(money);
+								System.out.printf("money: %d was received.%n", amount);
+								break;
+							}
+						}
+					}
 				}
-
-				vendingMachine.insert(money);
-				System.out.println("credit: " + vendingMachine.getCreditAmount());
-				System.out.println("Insert?> ");
+				System.out.println("> ");
 			}
 		}
 	}
