@@ -40,19 +40,24 @@ public class MainTest {
 	@Test
 	public void 変な金額をinsしたらエラーメッセージ() throws Exception {
 		in.writeLine("ins 123");
-
 		Main.main();
-
 		assertThat(out.readMesage(), is("! 123 is not available."));
 	}
 
 	@Test
 	public void 変なものをinsしたらエラーメッセージ() throws Exception {
 		in.writeLine("ins hoge");
-
 		Main.main();
-
 		assertThat(out.readMesage(), is("! hoge is not available."));
+	}
+
+	@Test
+	public void ejectで出てくる() throws Exception {
+		in.writeLine("ins 100");
+		in.writeLine("eject");
+		Main.main();
+		assertThat(out.readMesage(), is("money: 100 was received."));
+		assertThat(out.readMesage(), is("100(1) was ejected."));
 	}
 
 	static class SystemIn {
