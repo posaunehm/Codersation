@@ -13,19 +13,23 @@ public class Main {
 				if (input.startsWith("ins")) {
 					String[] split = input.split(" +");
 					if (split.length > 1) {
-						String amountString = split[1];
-						int amount = Integer.parseInt(amountString);
-						boolean flg = false;
-						for (Money money : Money.values()) {
-							if (money.getValue() == amount) {
-								flg = true;
-								vendingMachine.insert(money);
-								System.out.printf("money: %d was received.%n", amount);
-								break;
+						String insAmount = split[1];
+						try {
+							int amount = Integer.parseInt(insAmount);
+							boolean flg = false;
+							for (Money money : Money.values()) {
+								if (money.getValue() == amount) {
+									flg = true;
+									vendingMachine.insert(money);
+									System.out.printf("money: %d was received.%n", amount);
+									break;
+								}
 							}
-						}
-						if (!flg) {
-							System.out.printf("! %s is not available.%n", amountString);
+							if (!flg) {
+								System.out.printf("! %s is not available.%n", insAmount);
+							}
+						} catch (NumberFormatException e) {
+							System.out.printf("! %s is not available.%n", insAmount);
 						}
 					}
 				}

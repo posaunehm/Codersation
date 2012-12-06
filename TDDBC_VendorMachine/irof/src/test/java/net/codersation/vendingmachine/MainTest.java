@@ -46,6 +46,15 @@ public class MainTest {
 		assertThat(out.readMesage(), is("! 123 is not available."));
 	}
 
+	@Test
+	public void 変なものをinsしたらエラーメッセージ() throws Exception {
+		in.writeLine("ins hoge");
+
+		Main.main();
+
+		assertThat(out.readMesage(), is("! hoge is not available."));
+	}
+
 	static class SystemIn {
 		StringBuilder sb = new StringBuilder();
 
