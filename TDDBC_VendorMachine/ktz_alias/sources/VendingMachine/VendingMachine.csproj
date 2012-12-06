@@ -36,6 +36,7 @@
     <Compile Include="Model\ItemRackRole.cs" />
     <Compile Include="Model\RoleIntf.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Model\ChangePoolRole.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
