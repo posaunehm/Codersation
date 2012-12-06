@@ -2,6 +2,7 @@ package net.codersation.vendingmachine;
 
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
 import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
+import net.codersation.vendingmachine.moneyflow.MoneyStock;
 import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 /**
@@ -39,14 +40,6 @@ public class VendingMachine {
 	 */
 	public int getCreditAmount() {
 		return moneyFlow.getCreditAmount();
-	}
-
-	/**
-	 * お釣り金額を取得する。
-	 * @return お釣り金額
-	 */
-	public int getChangeAmount() {
-		return moneyFlow.getChangeAmount();
 	}
 
 	/**
@@ -92,5 +85,13 @@ public class VendingMachine {
 	 */
 	public StockReport getStockReport() {
 		return juiceStock.getStockReport();
+	}
+
+	/**
+	 * お釣りを取得する。
+	 * @return お釣り
+	 */
+	public MoneyStock takeOutChange() {
+		return moneyFlow.takeOutChange();
 	}
 }
