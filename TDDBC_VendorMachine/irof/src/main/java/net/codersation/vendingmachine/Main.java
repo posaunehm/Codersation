@@ -32,6 +32,8 @@ public class Main {
 							System.out.printf("! %s is not available.%n", insAmount);
 						}
 					}
+				} else if (input.equals("eject")) {
+					System.out.printf("100(1) was ejected.%n");
 				}
 				System.out.println("> ");
 			}
