@@ -6,7 +6,9 @@ public class Main {
 
 	public static void main(String... args) {
 		try (Scanner scanner = new Scanner(System.in)) {
-			System.out.print(scanner.nextLine());
+			while (scanner.hasNext()) {
+				System.out.println(scanner.nextLine());
+			}
 		}
 	}
 }
