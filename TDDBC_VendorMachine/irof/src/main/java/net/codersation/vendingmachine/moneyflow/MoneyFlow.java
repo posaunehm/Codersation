@@ -67,4 +67,10 @@ public class MoneyFlow {
 	public boolean canPayBackChange(int price) {
 		return pool.canTakeOut(credit.getAmount() - price);
 	}
+
+	public MoneyStock takeOutChange() {
+		MoneyStock out = new MoneyStock();
+		change.moveAllMoneyTo(out);
+		return out;
+	}
 }

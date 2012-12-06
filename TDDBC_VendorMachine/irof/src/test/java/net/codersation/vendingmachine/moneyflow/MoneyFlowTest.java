@@ -18,7 +18,7 @@ public class MoneyFlowTest {
 
 		assertThat(sut.getCreditAmount(), is(880));
 		assertThat(sut.getSaleAmount(), is(120));
-		assertThat(sut.getChangeAmount(), is(0));
+		assertThat(sut.takeOutChange().getAmount(), is(0));
 	}
 
 	@Test(expected=IllegalStateException.class)
