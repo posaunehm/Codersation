@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
@@ -58,6 +59,18 @@ public class MainTest {
 		Main.main();
 		assertThat(out.readMesage(), is("money: 100 was received."));
 		assertThat(out.readMesage(), is("100(1) was ejected."));
+	}
+
+	@Ignore("VendingMachineにお釣りがへばりついて取り出せない")
+	@Test
+	public void ejectで二枚出す() throws Exception {
+		in.writeLine("ins 100");
+		in.writeLine("ins 500");
+		in.writeLine("eject");
+		Main.main();
+		assertThat(out.readMesage(), is("money: 100 was received."));
+		assertThat(out.readMesage(), is("money: 500 was received."));
+		assertThat(out.readMesage(), is("100(1), 500(1) was ejected."));
 	}
 
 	static class SystemIn {
