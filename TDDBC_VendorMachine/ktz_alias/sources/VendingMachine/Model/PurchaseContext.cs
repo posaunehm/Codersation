@@ -61,14 +61,20 @@ namespace VendingMachine.Model {
             // 計算前後の準備金の差異から、おつりを算出する
             // 準備対象外の金種はビルバリプールに振り替える
 
+            var allCredits = mCoinMeckRole.TransferMoney(mChangesPool, mDealAmount.RecevedMoney, (m1, m2) => m1+m2);
+
             mDealAmount = new CashDeal(
                 mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)
             );
+            mChangesPool = mCoinMeckRole.TransferMoney(allCredits, mDealAmount.RecevedMoney, (m1, m2) => m1-m2);
 
             var result = mItemRole.Purchase(rack);
 
             foreach (var r in mItems.Racks.Where(r => r.State != ItemRackState.RackNotExist)) {
-                mItemRole.UpdateItemSelectionState(r, mDealAmount, mChangesPool);
+                mItemRole.UpdateItemSelectionState(
+                    r, mDealAmount, 
+                    mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, r.Item.Price)
+                );
             }
 
             return result;

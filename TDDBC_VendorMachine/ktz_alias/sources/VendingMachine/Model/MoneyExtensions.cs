@@ -12,13 +12,6 @@ namespace VendingMachine.Model {
                 .Sum(m => m.Key.Value() * m.Value)
             ;
         }
-//
-//        public static int TotalAmount(this IEnumerable<Money> inMoney) {
-//            return inMoney
-//                .GroupBy(m => m)
-//                .Sum(m => m.Key.Value() * m.Count())
-//            ;
-//        }
     }
 
     public enum MoneyStatus {

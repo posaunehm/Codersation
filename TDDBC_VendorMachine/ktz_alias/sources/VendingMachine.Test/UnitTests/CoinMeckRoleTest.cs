@@ -270,6 +270,36 @@ namespace VendingMachine.Test.Unit {
 				Assert.That(pair.Value, Is.EqualTo (lookup[pair.Key]), "money ({0}) count should be equaled (id = {1})", pair.Key, inParameter.Id);
 			}
 		}
+
+        [Test]
+        public void _Pool間でお金の移動を行う() {
+            var pool1 = new CreditPool();
+            var pool2 = new CreditPool(new Dictionary<Money, int> {
+                {Money.Bill1000, 1},
+                {Money.Coin500, 10},
+                {Money.Coin100, 5}
+            });
+
+            var pool2Keys = new HashSet<Money>(pool2.Credits.Keys);
+
+            var role = new CoinMeckRole();
+
+            var pool4 = role.TransferMoney(pool1, pool2, (m1, m2) => m1+m2);
+
+            Assert.That(pool4, Is.Not.EqualTo(pool2));
+            Assert.That(pool4.Credits.Keys.All(m => pool2Keys.Contains(m)), Is.True);
+            foreach (var k in pool2Keys) {
+                Assert.That(pool4.Credits[k], Is.EqualTo(pool2.Credits[k]));
+            }
+
+            var pool5 = role.TransferMoney(pool4, pool2, (m1, m2) => m1-m2);
+
+            Assert.That(pool5, Is.Not.EqualTo(pool1));
+            foreach (var k in pool2Keys) {
+                Assert.That(pool4.Credits[k], Is.EqualTo(pool2.Credits[k]));                
+                Assert.That(pool5.Credits[k], Is.EqualTo(0));
+            }
+        }
 	}
 }
 

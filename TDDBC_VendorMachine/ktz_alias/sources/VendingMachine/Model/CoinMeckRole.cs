@@ -25,17 +25,23 @@ namespace VendingMachine.Model {
 
             return this.CalcChangesCore(
                 inCash.RecevedMoney.TotalAmount() - inItemValue,
-                this.AppendMoney(inChangePool, inCash.RecevedMoney, (pool, cash) => pool+cash)
+                this.AppendMoneyCore(inChangePool, inCash.RecevedMoney, (pool, cash) => pool+cash).OrderByDescending(pair => pair.Key)
+
             );
         }
 
-        private IEnumerable<KeyValuePair<Money, int>> AppendMoney(CreditPool inChangePool, CreditPool inReceivedCredit, Func<int, int, int> inCallback) {
+        public CreditPool TransferMoney(CreditPool inTransferTo, CreditPool inTransferFrom, Func<int, int, int> inCallback) {
+            return new CreditPool(
+                this.AppendMoneyCore(inTransferTo, inTransferFrom, inCallback)
+            );
+        }
+
+        private IEnumerable<KeyValuePair<Money, int>> AppendMoneyCore(CreditPool inChangePool, CreditPool inReceivedCredit, Func<int, int, int> inCallback) {
             return Enumerable.Join(
                     inChangePool.Credits, inReceivedCredit.Credits, 
                     (outer) => outer.Key, (inner) => inner.Key,
                     (outer, inner) => new KeyValuePair<Money, int>(outer.Key, inCallback(outer.Value, inner.Value))
                 )
-                .OrderByDescending(pair => pair.Key)
             ;
         }
 
