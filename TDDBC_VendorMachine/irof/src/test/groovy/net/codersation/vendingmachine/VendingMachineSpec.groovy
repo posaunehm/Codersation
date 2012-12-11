@@ -18,7 +18,7 @@ class VendingMachineSpec extends Specification {
 		then:
 		sut.creditAmount == 0
 		sut.saleAmount == 120
-		sut.changeAmount == 80
+		sut.takeOutChange().amount == 80
 	}
 
 	def "釣り銭切れると購入しても無反応、売上も増えない"() {
@@ -33,7 +33,7 @@ class VendingMachineSpec extends Specification {
 		then:
 		sut.creditAmount == 0
 		sut.saleAmount == 120
-		sut.changeAmount == 1880
+		sut.takeOutChange().amount == 1880
 	}
 
 	@Unroll

@@ -82,16 +82,34 @@ namespace VendingMachine.Console {
                 Count = 9999,
                 State = ItemRackState.CanNotPurchase,
             };
+            yield return ItemRack.Empty;
             yield return new ItemRack {
-                Item = new Item {
+                    Item = new Item {
                     Name = "Mysterious Power",
                     Price = 3000,
                     Shape = ItemShapeType.Can500
                 },
-                Count = 9999,
+                Count = 0,
                 State = ItemRackState.Soldout,
             };
         }
+
+        public static CreditPool InitInfinityReservedChange() {
+            var result = new CreditPool();
+
+            var credits = EnumHeler.Values<Money>()
+                .Where (m => m != Money.Unknown) 
+                .Select(m => MoneyResolver.Resolve(m))
+                .Where(m => m.Status == MoneyStatus.Available)
+                .Where(m => m.Style == MoneyStyle.Coin)
+            ;
+
+            foreach (var m in credits) {
+                result.Credits[m.Type] = 10000;
+            }
+            
+            return result;
+        }    
     }
 }
 

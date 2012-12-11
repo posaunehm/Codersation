@@ -7,16 +7,16 @@ using Ninject;
 namespace VendingMachine.Model {
     public class PurchaseContext {
         private CashDeal mDealAmount;
-        private ChangePool mChanges;
+        private CreditPool mChangesPool;
         private ItemRackPosition mItems;
 
         private IUserCoinMeckRole mCoinMeckRole;
         private IUserPurchaseRole mItemRole;
 
         [Inject]
-        public PurchaseContext(ChangePool inChanges, ItemRackPosition inItems) {
+        public PurchaseContext(CreditPool inChanges, ItemRackPosition inItems) {
             mDealAmount = new CashDeal();
-            mChanges = inChanges;
+            mChangesPool = inChanges;
             mItems = inItems;
         }
 
@@ -26,30 +26,55 @@ namespace VendingMachine.Model {
             mItemRole = inPurchaseRole;
         }
 
-        public void ReceiveMoney(Money inMoney) {
-            mCoinMeckRole.Receive(mDealAmount, inMoney);
+        public void ReceiveMoney(Money inMoney, int inCount) {
+            mCoinMeckRole.Receive(mDealAmount, inMoney, inCount);
 
-            foreach (var rack in mItems.Racks.Where(r => r.State == ItemRackState.CanNotPurchase)) {
-                mItemRole.UpdateItemSelectionState(rack, mDealAmount, mChanges);
+            foreach (var rack in mItems.Racks.Where(r => r.State != ItemRackState.RackNotExist)) {
+                mItemRole.UpdateItemSelectionState(
+                    rack, mDealAmount, 
+                    mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)
+                );
             }
         }
-
-        public IEnumerable<Money> Eject() {
-            return mCoinMeckRole.Eject(mDealAmount, mChanges);
+     
+        public CreditPool Eject() {
+            try {
+                return new CreditPool(
+                    mCoinMeckRole.Eject(mDealAmount, mChangesPool).Credits
+                );
+            }
+            finally {
+                mDealAmount.RecevedMoney.Clear();
+            }
         }
 
         public ItemInfo Purchase(int inPosition) {
             var rack = mItemRole.FindRackAt(mItems, inPosition);
             if (rack.State != ItemRackState.CanPurchase) {
-                // error [TODO:]
+                throw new Exception();
             }
 
-            mCoinMeckRole.Purchase(mDealAmount, rack.Item.Price);
+            // [TODO: 1]
+            // create sales
+            // 投入金を準備金に加える
+            // 残額を分解し、残りの準備金を返す
+            // 計算前後の準備金の差異から、おつりを算出する
+            // 準備対象外の金種はビルバリプールに振り替える
+
+            var allCredits = mCoinMeckRole.TransferMoney(mChangesPool, mDealAmount.RecevedMoney, (m1, m2) => m1+m2);
+
+            mDealAmount = new CashDeal(
+                mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, rack.Item.Price)
+            );
+            mChangesPool = mCoinMeckRole.TransferMoney(allCredits, mDealAmount.RecevedMoney, (m1, m2) => m1-m2);
 
             var result = mItemRole.Purchase(rack);
 
-            foreach (var r in mItems.Racks) {
-                mItemRole.UpdateItemSelectionState(r, mDealAmount, mChanges);
+            foreach (var r in mItems.Racks.Where(r => r.State != ItemRackState.RackNotExist)) {
+                mItemRole.UpdateItemSelectionState(
+                    r, mDealAmount, 
+                    mCoinMeckRole.CalcChanges(mDealAmount, mChangesPool, r.Item.Price)
+                );
             }
 
             return result;
@@ -57,20 +82,8 @@ namespace VendingMachine.Model {
 
         public ItemRackInfo[] Racks {
             get {
-                return this.ListAllRacks().ToArray();
+                return mItems.Racks;
             } 
-        }
-
-        private IEnumerable<ItemRackInfo> ListAllRacks() {
-            var position = 0; 
-            foreach (var pair in mItems.Racks.Select((rack, i) => Tuple.Create(i, rack))) {
-                if (pair.Item1 == position++) {
-                    yield return pair.Item2;
-                }
-                else {
-                    yield return ItemRack.Empty;
-                }
-            }
         }
 
         public int ReceivedTotal {

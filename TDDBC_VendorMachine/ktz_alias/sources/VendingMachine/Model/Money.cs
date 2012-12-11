@@ -19,25 +19,42 @@ namespace VendingMachine.Model {
 
      public class CashDeal {
         public CashDeal() {
-            this.RecevedMoney = new List<Money>();
+            this.RecevedMoney = new CreditPool();
         }
-
-        public List<Money> RecevedMoney {get; private set;}
-        public int UsedAmount {get; internal set;}
+        
+        public CashDeal(CreditPool inMoney) {
+            this.RecevedMoney = new CreditPool(inMoney.Credits);
+        }
+        
+        public  CreditPool RecevedMoney {get; private set;}
 
         public int ChangedAount {
             get {
-                return this.RecevedMoney.TotalAmount() - this.UsedAmount;
+                return this.RecevedMoney.TotalAmount();
             }
         }
     }
 
-     public class ChangePool {
-        public ChangePool() {
-            this.Items = new Dictionary<Money, int>();
+     public class CreditPool {
+        public CreditPool() {
+            this.Clear();
+        }
+        
+        public CreditPool(IEnumerable<KeyValuePair<Money, int>> inCredits) : this() {
+            foreach (var credit in inCredits) {
+                this.Credits[credit.Key] = credit.Value;
+            }
+        }
+        
+        public void Clear() {
+            this.Credits = EnumHeler.Values<Money>()
+                .Where(m => m != Money.Unknown)
+                .Where(m => MoneyResolver.Resolve(m).Status == MoneyStatus.Available)
+                .ToDictionary(m => m, m => 0)
+            ;
         }
 
-        public Dictionary<Money, int> Items {get; private set;}
+        public Dictionary<Money, int> Credits {get; private set;}
     }
 }
 

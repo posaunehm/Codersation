@@ -67,41 +67,94 @@ namespace VendingMachine.Test.Unit {
 			Assert.False(role.IsAvailableMoney(Money.Bill10000), "10000円は使用不可");
 		}
 		
-		[Test]
-		public void _利用者がお金を投入する() {
+        [TestCase(Money.Coin1, MoneyStyle.Coin)]
+        [TestCase(Money.Coin5, MoneyStyle.Coin)]
+        [TestCase(Money.Coin10, MoneyStyle.Coin)]
+        [TestCase(Money.Coin50, MoneyStyle.Coin)]
+        [TestCase(Money.Coin100, MoneyStyle.Coin)]
+        [TestCase(Money.Coin500, MoneyStyle.Coin)]
+        [TestCase(Money.Bill1000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill2000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill5000, MoneyStyle.Bill)]
+        [TestCase(Money.Bill10000, MoneyStyle.Bill)]
+        public void _金種形式の判定(Money inMoney, MoneyStyle inExpected) {
+            Assert.That(MoneyResolver.Resolve(inMoney).Style, Is.EqualTo(inExpected));
+        }
+
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
+        public void _利用者がお金を投入する(int inCount) {
 			var role = new CoinMeckRole ();
 			var received = new CashDeal();
 			
-			Assert.True(role.Receive(received, Money.Coin10)); 
-			Assert.True(role.Receive(received, Money.Coin50));
-			Assert.True(role.Receive(received, Money.Coin100));
-			Assert.True(role.Receive(received, Money.Coin500));
-			Assert.True(role.Receive(received, Money.Bill1000));
-			Assert.False(role.Receive(received, Money.Coin1));
-			Assert.False(role.Receive(received, Money.Coin5));
-			Assert.False(role.Receive(received, Money.Bill2000));
-			Assert.False(role.Receive(received, Money.Bill5000));
-			Assert.False(role.Receive(received, Money.Bill10000));
-			Assert.True(role.Receive(received, Money.Coin10)); 
-			Assert.True(role.Receive(received, Money.Coin50));
-			Assert.True(role.Receive(received, Money.Coin100));
-			Assert.True(role.Receive(received, Money.Coin500));
-			Assert.True(role.Receive(received, Money.Bill1000));
-			Assert.False(role.Receive(received, Money.Coin1));
-			Assert.False(role.Receive(received, Money.Coin5));
-			Assert.False(role.Receive(received, Money.Bill2000));
-			Assert.False(role.Receive(received, Money.Bill5000));
-			Assert.False(role.Receive(received, Money.Bill10000));
+            Assert.True(role.Receive(received, Money.Coin10, inCount)); 
+            Assert.True(role.Receive(received, Money.Coin50, inCount));
+            Assert.True(role.Receive(received, Money.Coin100, inCount));
+            Assert.True(role.Receive(received, Money.Coin500, inCount));
+            Assert.True(role.Receive(received, Money.Bill1000, inCount));
+            Assert.False(role.Receive(received, Money.Coin1, inCount));
+            Assert.False(role.Receive(received, Money.Coin5, inCount));
+            Assert.False(role.Receive(received, Money.Bill2000, inCount));
+            Assert.False(role.Receive(received, Money.Bill5000, inCount));
+            Assert.False(role.Receive(received, Money.Bill10000, inCount));
+            Assert.True(role.Receive(received, Money.Coin10, inCount)); 
+            Assert.True(role.Receive(received, Money.Coin50, inCount));
+            Assert.True(role.Receive(received, Money.Coin100, inCount));
+            Assert.True(role.Receive(received, Money.Coin500, inCount));
+            Assert.True(role.Receive(received, Money.Bill1000, inCount));
+            Assert.False(role.Receive(received, Money.Coin1, inCount));
+            Assert.False(role.Receive(received, Money.Coin5, inCount));
+            Assert.False(role.Receive(received, Money.Bill2000, inCount));
+            Assert.False(role.Receive(received, Money.Bill5000, inCount));
+            Assert.False(role.Receive(received, Money.Bill10000, inCount));
 			
-			Assert.False(received.RecevedMoney.Contains(Money.Coin1));
-			Assert.False(received.RecevedMoney.Contains(Money.Coin5));
-			Assert.False(received.RecevedMoney.Contains(Money.Bill2000));
-			Assert.False(received.RecevedMoney.Contains(Money.Bill5000));
-			Assert.False(received.RecevedMoney.Contains(Money.Bill10000));
+			Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin1));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin5));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill2000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill5000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill10000));
 			
-			Assert.That(received.ChangedAount, Is.EqualTo(3320));
+            Assert.That(received.ChangedAount, Is.EqualTo(3320 * inCount));
 		}
-		
+        
+        [TestCase( 0)]
+        [TestCase(-1)]
+        [TestCase(-41)]
+        public void _利用者がお金を投入する_正しくない投入枚数の場合(int inCount) {
+            var role = new CoinMeckRole ();
+            var received = new CashDeal();
+            
+            Assert.False(role.Receive(received, Money.Coin10, inCount)); 
+            Assert.False(role.Receive(received, Money.Coin50, inCount));
+            Assert.False(role.Receive(received, Money.Coin100, inCount));
+            Assert.False(role.Receive(received, Money.Coin500, inCount));
+            Assert.False(role.Receive(received, Money.Bill1000, inCount));
+            Assert.False(role.Receive(received, Money.Coin1, inCount));
+            Assert.False(role.Receive(received, Money.Coin5, inCount));
+            Assert.False(role.Receive(received, Money.Bill2000, inCount));
+            Assert.False(role.Receive(received, Money.Bill5000, inCount));
+            Assert.False(role.Receive(received, Money.Bill10000, inCount));
+            Assert.False(role.Receive(received, Money.Coin10, inCount)); 
+            Assert.False(role.Receive(received, Money.Coin50, inCount));
+            Assert.False(role.Receive(received, Money.Coin100, inCount));
+            Assert.False(role.Receive(received, Money.Coin500, inCount));
+            Assert.False(role.Receive(received, Money.Bill1000, inCount));
+            Assert.False(role.Receive(received, Money.Coin1, inCount));
+            Assert.False(role.Receive(received, Money.Coin5, inCount));
+            Assert.False(role.Receive(received, Money.Bill2000, inCount));
+            Assert.False(role.Receive(received, Money.Bill5000, inCount));
+            Assert.False(role.Receive(received, Money.Bill10000, inCount));
+            
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin1));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Coin5));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill2000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill5000));
+            Assert.False(received.RecevedMoney.Credits.ContainsKey(Money.Bill10000));
+            
+            Assert.That(received.ChangedAount, Is.EqualTo(0));
+        }
+
 		[TestCase(Money.Coin100, 10)]
 		[TestCase(Money.Coin500, 2)]
 		[TestCase(Money.Bill1000, 1)]
@@ -110,30 +163,30 @@ namespace VendingMachine.Test.Unit {
 			var received = new CashDeal();
 			var pool = TestHelper.InitInfinityReservedChange();
 			
-			for (var i = 0; i < inRepeat; ++i) {
-				role.Receive(received, inMoney);
-			}
+            role.Receive(received, inMoney, inRepeat);
 			
-			var changed = role.Eject(received, pool)
-				.GroupBy(m => m)
-				.ToDictionary(g => g.Key, g => g)
+            var expectReceived = received.RecevedMoney.TotalAmount();
+
+			var changes = role.Eject(received, pool).Credits
+                .Where(c => c.Value > 0)
+				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
-			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
+            Assert.That(received.RecevedMoney.TotalAmount(), Is.EqualTo(expectReceived));
 			
-			Assert.That(changed.Count, Is.EqualTo(1));
-			Assert.True(changed.ContainsKey(inMoney));
-			Assert.That(changed[inMoney].Count(), Is.EqualTo(inRepeat));
+			Assert.That(changes.Count, Is.EqualTo(1));
+			Assert.True(changes.ContainsKey(inMoney));
+			Assert.That(changes[inMoney], Is.EqualTo(inRepeat));
 		}
 		
 		[Test]
 		public void _お金を入れず購入() {
 			var role = new CoinMeckRole ();
 			var received = new CashDeal();
-			
-			Assert.False(role.Purchase(received, 100));	
-			
-			Assert.That(received.UsedAmount, Is.EqualTo(0));
+            var pool = new CreditPool();
+
+            var changes = role.CalcChanges(received, pool, 100);
+            Assert.That(changes.TotalAmount(), Is.EqualTo(0));	
 		}
 		
 		public class _商品購入後お金を排出するParams {
@@ -170,7 +223,7 @@ namespace VendingMachine.Test.Unit {
 					yield return new Parameter {
 						Id = id++,
                         ReceivedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 3)), 
-                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Bill1000, 1), Tuple.Create(Money.Coin100, 4)),
+                        ChangedMoney = TestHelper.AsArray(Tuple.Create(Money.Coin500, 2), Tuple.Create(Money.Coin100, 4)),
 					};
 					yield return new Parameter {								
 						Id = id++,
@@ -197,30 +250,56 @@ namespace VendingMachine.Test.Unit {
 			
 			foreach (var m in inParameter.ReceivedMoney) {
 				for (var i = 0; i < m.Item2; ++i) {
-					role.Receive (received, m.Item1);
+					role.Receive (received, m.Item1, 1);
 				}
 			}
 			
-			Assert.True(role.Purchase(received, 100));
-			
-			var changed = role.Eject(received, pool)
-				.GroupBy(m => m)
-				.ToDictionary(g => g.Key, g => g)
+			var newReceives = new CashDeal(role.CalcChanges(received, pool, 100));			
+            var changes = role.Eject(newReceives, pool)
+                .Credits
+                .Where(c => c.Value > 0)
+				.ToDictionary(g => g.Key, g => g.Value)
 			;
 			
 			var lookup = inParameter.ChangedMoney.ToDictionary(m => m.Item1, m => m.Item2);
 			
-			Assert.That(received.RecevedMoney.Count, Is.EqualTo(0));
+			Assert.That(changes.Count, Is.EqualTo(lookup.Count), "count money type (id = {0})", inParameter.Id);
 			
-			Assert.That(received.UsedAmount, Is.EqualTo(100));
-			
-			Assert.That(changed.Count, Is.EqualTo(lookup.Count), "count money type (id = {0})", inParameter.Id);
-			
-			foreach (var pair in changed) {
+			foreach (var pair in changes) {
 				Assert.True(lookup.ContainsKey(pair.Key), "money ({0}) should be contained (id = {1})", pair.Key, inParameter.Id);
-				Assert.That(pair.Value.Count(), Is.EqualTo (lookup[pair.Key]), "money ({0}) count should be equaled (id = {1})", pair.Key, inParameter.Id);
+				Assert.That(pair.Value, Is.EqualTo (lookup[pair.Key]), "money ({0}) count should be equaled (id = {1})", pair.Key, inParameter.Id);
 			}
 		}
+
+        [Test]
+        public void _Pool間でお金の移動を行う() {
+            var pool1 = new CreditPool();
+            var pool2 = new CreditPool(new Dictionary<Money, int> {
+                {Money.Bill1000, 1},
+                {Money.Coin500, 10},
+                {Money.Coin100, 5}
+            });
+
+            var pool2Keys = new HashSet<Money>(pool2.Credits.Keys);
+
+            var role = new CoinMeckRole();
+
+            var pool4 = role.TransferMoney(pool1, pool2, (m1, m2) => m1+m2);
+
+            Assert.That(pool4, Is.Not.EqualTo(pool2));
+            Assert.That(pool4.Credits.Keys.All(m => pool2Keys.Contains(m)), Is.True);
+            foreach (var k in pool2Keys) {
+                Assert.That(pool4.Credits[k], Is.EqualTo(pool2.Credits[k]));
+            }
+
+            var pool5 = role.TransferMoney(pool4, pool2, (m1, m2) => m1-m2);
+
+            Assert.That(pool5, Is.Not.EqualTo(pool1));
+            foreach (var k in pool2Keys) {
+                Assert.That(pool4.Credits[k], Is.EqualTo(pool2.Credits[k]));                
+                Assert.That(pool5.Credits[k], Is.EqualTo(0));
+            }
+        }
 	}
 }
 

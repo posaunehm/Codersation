@@ -36,10 +36,7 @@ namespace VendingMachine.Console {
                     (result, ev) => {
                         var r = (MoneyInsertionParseResult)result;
 
-                        for (var i = 0; i < r.Count; ++i) {
-                            this.PurchaseContext.ReceiveMoney(r.Money);
-                        }
-
+                        this.PurchaseContext.ReceiveMoney(r.Money, r.Count);
                         this.OnLogUpdated(ev, string.Format("money: {0} was received.", r.Money.Value() * r.Count));
                     }
                 },
@@ -47,8 +44,9 @@ namespace VendingMachine.Console {
                     typeof (MoneyEjectParseResult),
                     (result, ev) => {
                         var changes = this.PurchaseContext.Eject()
-                            .GroupBy(m => m)
-                            .Select(g => Tuple.Create(g.Key.Value(), g.Count()))
+                            .Credits
+                            .Where(c => c.Value > 0)
+                            .Select(g => Tuple.Create(g.Key.Value(), g.Value))
                             .OrderBy(m => m.Item1)
                             .Select(m => string.Format("{0}({1})", m.Item1, m.Item2))
                             .ToArray()
@@ -84,8 +82,10 @@ namespace VendingMachine.Console {
                         foreach (var pair in racks) {
                             var itemName = pair.Item2.Item.Name.PadRight(24, '.');
                             var state = this.RackStatusToString(this.PurchaseContext.Racks[pair.Item1-1].State);
+                            var price = pair.Item2.State == ItemRackState.RackNotExist ? "" : pair.Item2.Item.Price.ToString();
+
                             this.OnLogUpdated(ev, 
-                              string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, pair.Item2.Item.Price)
+                              string.Format(" [{0}] {1,3} {2} {3,5}", state, pair.Item1, itemName, price)
                             );
 
                         }
@@ -97,27 +97,11 @@ namespace VendingMachine.Console {
                         var r = (PurchaseParseResult)result;
 
                         foreach (var p in r.Positions) {
-                            switch (this.PurchaseContext.Racks[p-1].State) {
-                            case ItemRackState.CanPurchase:
-                                var item = this.PurchaseContext.Purchase(p-1);
-
-                                this.OnLogUpdated(ev, string.Format(
-                                    "Purchased !! [{0}]", item.Name
-                                ));
-                                break;
-                            case ItemRackState.RackNotExist:
-                                break;
-                            case ItemRackState.Soldout:
-                                this.OnLogUpdated(ev, "Sorry, this item has been sold out.");
-                                break;
-                            case ItemRackState.CanNotPurchase:
-                                var amount = this.PurchaseContext.ReceivedTotal;
-                                var price = this.PurchaseContext.Racks[p-1].Item.Price;
-
-                                this.OnLogUpdated(ev, string.Format(
-                                    "Money enough to purchase is not inserted. (left: {0})", price-amount
-                                ));
-                                break;
+                            if (p < 1 || p >= this.PurchaseContext.Racks.Length+1) {
+                                this.NotifyPurchaseLogs(0, ItemRackState.RackNotExist, ev);
+                            }
+                            else {
+                                this.NotifyPurchaseLogs(p-1, this.PurchaseContext.Racks[p-1].State, ev);
                             }
                         }
                     }
@@ -166,10 +150,40 @@ namespace VendingMachine.Console {
             case ItemRackState.CanPurchase: 
                 return "*";
             case ItemRackState.Soldout:
-            case ItemRackState.RackNotExist: 
                 return "-";
+            case ItemRackState.RackNotExist: 
+                return "x";
+            case ItemRackState.MissingChange:
+                return "!";
             default:
                 return " ";
+            }
+        }
+
+        private void NotifyPurchaseLogs(int inPosition, ItemRackState inState, ConsoleLogEventHandler inEvent) {
+            switch (inState) {
+            case ItemRackState.CanPurchase:
+                var item = this.PurchaseContext.Purchase(inPosition);
+                
+                this.OnLogUpdated(inEvent, string.Format("Purchased !! [{0}]", item.Name));
+                break;
+            case ItemRackState.RackNotExist:
+                this.OnLogUpdated(inEvent, "Item is not placed.");
+                break;
+            case ItemRackState.MissingChange:
+                this.OnLogUpdated(inEvent, "Sorry, can not purchase this item because of lack of changes.");
+                break;
+            case ItemRackState.Soldout:
+                this.OnLogUpdated(inEvent, "Sorry, this item has been sold out.");
+                break;
+            case ItemRackState.CanNotPurchase:
+                var amount = this.PurchaseContext.ReceivedTotal;
+                var price = this.PurchaseContext.Racks[inPosition].Item.Price;
+                
+                this.OnLogUpdated(inEvent, string.Format(
+                    "Money enough to purchase is not inserted. (left: {0})", price-amount
+                    ));
+                break;
             }
         }
 

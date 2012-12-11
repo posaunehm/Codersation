@@ -56,7 +56,7 @@ namespace VendingMachine.Console {
                             if (! int.TryParse(it.Current, out count)) {
                                 return new ParseErrorResult(ParseResultStatus.InvalidMoney);
                             }
-                            if (count <= 0 || count > 100) {
+                            if (count <= 0) {
                                 return new ParseErrorResult(ParseResultStatus.InvalidMoney);
                             }
                         }

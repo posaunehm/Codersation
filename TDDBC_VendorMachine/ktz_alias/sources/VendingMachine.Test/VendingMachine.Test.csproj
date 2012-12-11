@@ -44,6 +44,7 @@
     <Compile Include="UnitTests\PurchaseTest.cs" />
     <Compile Include="UnitTests\PurchaseContextTest.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="UnitTests\ChangePoolRoleTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

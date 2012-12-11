@@ -22,7 +22,8 @@ namespace VendingMachine.Console {
 
         private static IKernel BuildKernel(string[] args, IEnumerable<HelpContent> inHelp) {
             var kernel = new Ninject.StandardKernel();
-            kernel.Bind<ChangePool>().ToMethod(ctx => new ChangePool());
+//            kernel.Bind<CreditPool>().ToMethod(ctx => ConsoleAppHelper.InitInfinityReservedChange());
+            kernel.Bind<CreditPool>().ToMethod(ctx => new CreditPool());
             kernel.Bind<ItemRackPosition>().ToMethod(ctx => {
                 return new ItemRackPosition(
                     ConsoleAppHelper.ListRacksDefault().Select((rack, i) => Tuple.Create(i, rack)).ToArray()

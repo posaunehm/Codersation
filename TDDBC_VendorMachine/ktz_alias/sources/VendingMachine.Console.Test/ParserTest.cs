@@ -59,10 +59,6 @@ namespace VendingMachine.Console.Test {
                     Input = "ins 10 -10",
                     Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
                 };
-                yield return new _コマンドパーサに渡すTestFixture.Parameter {
-                    Input = "ins 10 101",
-                    Expected = new ParseErrorResult(ParseResultStatus.InvalidMoney),
-                };
             }
         }
 
@@ -442,9 +438,23 @@ namespace VendingMachine.Console.Test {
             Assert.That(it.MoveNext(), Is.False);
         }
 
-        [Ignore]
         [Test]
         public void _陳列された商品の表示依頼を処理する_未陳列の商品含む場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindNoChangeContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+            
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [ ]   1 Item0...................   120",
+                " [x]   2 ........................      ",
+                " [ ]   3 Item2...................   250"
+            );   
         }
 
         [Test]
@@ -546,6 +556,44 @@ namespace VendingMachine.Console.Test {
             );
         }
 
+        [Test]
+        public void _陳列された商品の表示依頼を処理する_釣り銭切れが解消するまでは購入不可となる場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindNoChangeContext()
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
+        
+            Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
+            
+            Action runner;
+
+            runner = repo.FindRunner(new MoneyInsertionParseResult {Money = Money.Coin500, Count=1}, null);
+            runner();
+
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [!]   1 Item0...................   120",
+                " [x]   2 ........................      ",
+                " [!]   3 Item2...................   250"
+            );   
+
+            runner = repo.FindRunner(new MoneyInsertionParseResult {Money = Money.Coin100, Count=1}, null);
+            runner();
+            runner = repo.FindRunner(new MoneyInsertionParseResult {Money = Money.Coin10, Count=3}, null);
+            runner();
+
+            this.TestShowItemCore(repo, 
+                "       # Name                     Price",
+                "-----+--+------------------------+------",
+                " [*]   1 Item0...................   120",
+                " [x]   2 ........................      ",
+                " [!]   3 Item2...................   250"
+            );   
+
+        }
+
         private void TestShowItemCore(IRunnerRepository inRepo, params string[] inExpected) {
             var it = inExpected.GetEnumerator();
 
@@ -592,9 +640,9 @@ namespace VendingMachine.Console.Test {
         public void _商品の購入依頼を処理する_未入金で複数件同時の場合() {
             var repo = new Ninject.StandardKernel()
                 .BindPurchaseContextContainingSoldout()
-                    .BindRunnerRepository()
-                    .Get<IRunnerRepository>()
-                    ;
+                .BindRunnerRepository()
+                .Get<IRunnerRepository>()
+            ;
             
             Assert.That(repo.PurchaseContext.ReceivedTotal, Is.EqualTo(0));
             
@@ -700,9 +748,44 @@ namespace VendingMachine.Console.Test {
         public void _商品の購入依頼を処理する_複数件同時_でも後半お金不足の場合 () {
         }
 
-        [Ignore]
         [Test]
         public void _商品の購入依頼を処理する_正しくないインデックスを含む一件の場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(f => f.Expected)
+                    .Cast<MoneyInsertionParseResult>()
+                    ;
+            
+            Action runner;
+            foreach (var f in fixtures) {
+                runner = repo.FindRunner(f, null);
+                
+                runner();
+            }
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {-1}
+            };
+            
+            var expected = new string[] {
+                "Item is not placed.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);  
         }
 
         [Ignore]
@@ -712,17 +795,79 @@ namespace VendingMachine.Console.Test {
 
         [Ignore]
         [Test]
-        public void _商品の購入依頼を処理する_範囲外の一件の場合() {
-        }
-
-        [Ignore]
-        [Test]
         public void _商品の購入依頼を処理する_範囲外の複数件同時の場合 () {
         }
         
-        [Ignore]
         [Test]
         public void _商品の購入依頼を処理する_うっかり未陳列の商品を選択した場合 () {
+            var repo = new Ninject.StandardKernel()
+                .BindPurchaseContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+            
+            var fixtures = new _コマンドパーサに渡すTestFixture().InsMoneyParams
+                .Select(f => f.Expected)
+                    .Cast<MoneyInsertionParseResult>()
+                    ;
+            
+            Action runner;
+            foreach (var f in fixtures) {
+                runner = repo.FindRunner(f, null);
+                
+                runner();
+            }
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {2}
+            };
+            
+            var expected = new string[] {
+                "Item is not placed.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);        
+        }
+        
+        [Test]
+        public void _商品の購入依頼を処理する_釣り銭不足で購入できない商品を選択した場合() {
+            var repo = new Ninject.StandardKernel()
+                .BindNoChangeContext()
+                    .BindRunnerRepository()
+                    .Get<IRunnerRepository>()
+                    ;
+
+            Action runner;
+            runner = repo.FindRunner( new MoneyInsertionParseResult {Money = Money.Coin500, Count=1}, null);               
+            runner();
+            
+            var result = new PurchaseParseResult { 
+                Positions = new int[] {1}
+            };
+            
+            var expected = new string[] {
+                "Sorry, can not purchase this item because of lack of changes.",
+            };
+            var it = expected.GetEnumerator();
+            
+            runner = repo.FindRunner(result, (message) => {
+                Assert.That(it.MoveNext(), Is.True);
+                Assert.That(message, Is.Not.Null.And.Not.Empty);
+                Assert.That(message, Is.EqualTo(it.Current));
+            });
+            
+            runner();
+            
+            Assert.That(it.MoveNext(), Is.False);        
         }
 
         [Test]
