@@ -5,3 +5,5 @@
 *.class
 *.bak
 build/
+.idea/
+irof.iml
