@@ -3,6 +3,8 @@ package net.codersation.vendingmachine;
 import net.codersation.vendingmachine.moneyflow.MoneyFlow;
 import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
 import net.codersation.vendingmachine.moneyflow.MoneyStock;
+import net.codersation.vendingmachine.report.PurchasableReport;
+import net.codersation.vendingmachine.report.StockReport;
 import net.codersation.vendingmachine.stockflow.JuiceStock;
 
 /**

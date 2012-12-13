@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.codersation.vendingmachine.Juice;
-import net.codersation.vendingmachine.JuiceFactory;
-import net.codersation.vendingmachine.StockReport;
+import net.codersation.vendingmachine.report.StockReport;
 
 public class JuiceStock {
 
@@ -18,9 +17,9 @@ public class JuiceStock {
 	}
 
 	private void initialize() {
-		juices.add(JuiceFactory.create("コーラ"));
-		juices.add(JuiceFactory.create("水"));
-		juices.add(JuiceFactory.create("レッドブル"));
+		juices.add(Juice.create("コーラ"));
+		juices.add(Juice.create("水"));
+		juices.add(Juice.create("レッドブル"));
 		for (Juice j : juices) {
 			racks.add(new JuiceRack(j, 5));
 		}

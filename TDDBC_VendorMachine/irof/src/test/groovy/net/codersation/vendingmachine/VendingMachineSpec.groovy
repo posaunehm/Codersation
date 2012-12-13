@@ -1,6 +1,5 @@
 package net.codersation.vendingmachine
 
-import spock.lang.Ignore;
 import spock.lang.Specification;
 import spock.lang.Unroll;
 
@@ -13,7 +12,7 @@ class VendingMachineSpec extends Specification {
 		sut.insert(Money.HundredYen)
 		sut.insert(Money.HundredYen)
 		when:
-		sut.purchase(JuiceFactory.create("コーラ"))
+		sut.purchase(Juice.create("コーラ"))
 		sut.payBack()
 		then:
 		sut.creditAmount == 0
@@ -24,11 +23,11 @@ class VendingMachineSpec extends Specification {
 	def "釣り銭切れると購入しても無反応、売上も増えない"() {
 		given:
 		sut.insert(Money.ThousandYen)
-		sut.purchase(JuiceFactory.create("コーラ"))
+		sut.purchase(Juice.create("コーラ"))
 		sut.payBack()
 		sut.insert(Money.ThousandYen)
 		when:
-		sut.purchase(JuiceFactory.create("コーラ"))
+		sut.purchase(Juice.create("コーラ"))
 		sut.payBack()
 		then:
 		sut.creditAmount == 0

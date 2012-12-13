@@ -1,4 +1,6 @@
-package net.codersation.vendingmachine;
+package net.codersation.vendingmachine.report;
+
+import net.codersation.vendingmachine.Juice;
 
 import java.util.ArrayList;
 

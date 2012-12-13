@@ -3,10 +3,7 @@ package net.codersation.vendingmachine;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import net.codersation.vendingmachine.Juice;
-import net.codersation.vendingmachine.Money;
-import net.codersation.vendingmachine.VendingMachine;
-
+import net.codersation.vendingmachine.report.StockReport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -15,9 +12,9 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 public class VendingMachineTest {
 
-	private static final Juice コーラ = JuiceFactory.create("コーラ");
-	private static final Juice レッドブル = JuiceFactory.create("レッドブル");
-	private static final Juice 水 = JuiceFactory.create("水");
+	private static final Juice コーラ = Juice.create("コーラ");
+	private static final Juice レッドブル = Juice.create("レッドブル");
+	private static final Juice 水 = Juice.create("水");
 
 	public static class 初期状態 {
 
@@ -72,8 +69,8 @@ public class VendingMachineTest {
 			StockReport actual = sut.getStockReport();
 			assertThat(actual.size(), is(3));
 			assertThat(actual.get(コーラ), is(5));
-			assertThat(actual.get(JuiceFactory.create("レッドブル")), is(5));
-			assertThat(actual.get(JuiceFactory.create("水")), is(5));
+			assertThat(actual.get(Juice.create("レッドブル")), is(5));
+			assertThat(actual.get(Juice.create("水")), is(5));
 		}
 	}
 
