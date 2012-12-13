@@ -34,22 +34,22 @@ public class MainTest {
 
 		Main.main();
 
-		assertThat(out.readMesage(), is("money: 100 was received."));
-		assertThat(out.readMesage(), is("money: 10 was received."));
+		assertThat(out.readMassage(), is("money: 100 was received."));
+		assertThat(out.readMassage(), is("money: 10 was received."));
 	}
 
 	@Test
 	public void 変な金額をinsしたらエラーメッセージ() throws Exception {
 		in.writeLine("ins 123");
 		Main.main();
-		assertThat(out.readMesage(), is("! 123 is not available."));
+		assertThat(out.readMassage(), is("! 123 is not available."));
 	}
 
 	@Test
 	public void 変なものをinsしたらエラーメッセージ() throws Exception {
 		in.writeLine("ins hoge");
 		Main.main();
-		assertThat(out.readMesage(), is("! hoge is not available."));
+		assertThat(out.readMassage(), is("! hoge is not available."));
 	}
 
 	@Test
@@ -57,8 +57,8 @@ public class MainTest {
 		in.writeLine("ins 100");
 		in.writeLine("eject");
 		Main.main();
-		assertThat(out.readMesage(), is("money: 100 was received."));
-		assertThat(out.readMesage(), is("100(1) was ejected."));
+		assertThat(out.readMassage(), is("money: 100 was received."));
+		assertThat(out.readMassage(), is("100(1) was ejected."));
 	}
 
 	@Ignore("VendingMachineにお釣りがへばりついて取り出せない")
@@ -68,9 +68,9 @@ public class MainTest {
 		in.writeLine("ins 500");
 		in.writeLine("eject");
 		Main.main();
-		assertThat(out.readMesage(), is("money: 100 was received."));
-		assertThat(out.readMesage(), is("money: 500 was received."));
-		assertThat(out.readMesage(), is("100(1), 500(1) was ejected."));
+		assertThat(out.readMassage(), is("money: 100 was received."));
+		assertThat(out.readMassage(), is("money: 500 was received."));
+		assertThat(out.readMassage(), is("100(1), 500(1) was ejected."));
 	}
 
 	static class SystemIn {
@@ -98,9 +98,9 @@ public class MainTest {
 			System.setOut(new PrintStream(baos));
 		};
 
-		public String readMesage() throws IOException {
+		public String readMassage() throws IOException {
 			String line = readLine();
-			return line.equals("> ") ? readMesage() : line;
+			return line.equals("> ") ? readMassage() : line;
 		}
 
 		public String readLine() throws IOException {
