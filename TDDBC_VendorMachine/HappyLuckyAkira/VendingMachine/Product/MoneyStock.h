@@ -9,30 +9,29 @@
 #define MONEYSTOCK_H_
 
 #include "Money.h"
-class Money;
+#include "MoneyRack.h"
+#include <list>
+#include <boost/shared_ptr.hpp>
+
+//class MoneyRack;
 
 class MoneyStock
 {
 public:
   virtual
   ~MoneyStock();
-  MoneyStock(Money money,int count);
-
-  int
-  getCount() const
-  {
-    return count_;
-  }
-
-  const Money&
-  getMoney() const
-  {
-    return *pMoney_;
-  }
+  MoneyStock(const Money& money,int count);
+  void AddMoney(const Money& money,int count);
+  int getAmount();
 private:
   MoneyStock();
-  Money* pMoney_;
-  int count_;
+  typedef boost::shared_ptr<MoneyRack> MoneyRackPointer;
+  bool IsInStock(const Money& money,std::list<MoneyRackPointer>::iterator& moneyrackiterator);
+  std::list<MoneyRackPointer> moneyrack_list_;
 };
+class IsInMoneyRack : public std::binary_function<boost::shared_ptr<MoneyRack>,Money,bool> {
+public:
+  bool operator()(boost::shared_ptr<MoneyRack> pmoneyrack, const Money& money) const;
+ };
 
 #endif /* MONEYSTOCK_H_ */
