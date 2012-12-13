@@ -1,8 +1,7 @@
-package net.codersation.vendingmachine.moneyflow;
+package net.codersation.vendingmachine.money;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import net.codersation.vendingmachine.Money;
 
 import org.junit.Test;
 

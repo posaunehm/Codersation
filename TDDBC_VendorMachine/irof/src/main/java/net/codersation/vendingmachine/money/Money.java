@@ -1,4 +1,4 @@
-package net.codersation.vendingmachine;
+package net.codersation.vendingmachine.money;
 
 public enum Money {
 	OneYen(1), FiveYen(5), TenYen(10), FiftyYen(50), HundredYen(100), FiveHundredYen(500), ThousandYen(1000), TwoThousandYen(

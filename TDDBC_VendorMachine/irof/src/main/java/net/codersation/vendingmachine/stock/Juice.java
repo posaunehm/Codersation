@@ -1,4 +1,4 @@
-package net.codersation.vendingmachine;
+package net.codersation.vendingmachine.stock;
 
 public class Juice {
 	private final String juiceName;

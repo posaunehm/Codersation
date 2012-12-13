@@ -1,6 +1,4 @@
-package net.codersation.vendingmachine.moneyflow;
-
-import net.codersation.vendingmachine.Money;
+package net.codersation.vendingmachine.money;
 
 public class MoneyFlow {
 

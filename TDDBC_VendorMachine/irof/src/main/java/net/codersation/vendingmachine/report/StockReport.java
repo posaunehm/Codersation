@@ -1,6 +1,6 @@
 package net.codersation.vendingmachine.report;
 
-import net.codersation.vendingmachine.Juice;
+import net.codersation.vendingmachine.stock.Juice;
 
 import java.util.HashMap;
 

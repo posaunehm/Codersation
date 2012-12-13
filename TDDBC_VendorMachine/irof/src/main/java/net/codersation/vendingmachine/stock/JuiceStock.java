@@ -1,10 +1,9 @@
-package net.codersation.vendingmachine.stockflow;
+package net.codersation.vendingmachine.stock;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.codersation.vendingmachine.Juice;
 import net.codersation.vendingmachine.report.StockReport;
 
 public class JuiceStock {

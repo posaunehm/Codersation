@@ -1,5 +1,7 @@
 package net.codersation.vendingmachine
 
+import net.codersation.vendingmachine.money.Money
+import net.codersation.vendingmachine.stock.Juice
 import spock.lang.Specification;
 import spock.lang.Unroll;
 

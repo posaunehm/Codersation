@@ -3,7 +3,9 @@ package net.codersation.vendingmachine;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import net.codersation.vendingmachine.money.Money;
 import net.codersation.vendingmachine.report.StockReport;
+import net.codersation.vendingmachine.stock.Juice;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;

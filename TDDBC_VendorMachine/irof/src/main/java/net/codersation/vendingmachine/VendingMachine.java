@@ -1,11 +1,13 @@
 package net.codersation.vendingmachine;
 
-import net.codersation.vendingmachine.moneyflow.MoneyFlow;
-import net.codersation.vendingmachine.moneyflow.MoneyFlowFactory;
-import net.codersation.vendingmachine.moneyflow.MoneyStock;
+import net.codersation.vendingmachine.money.Money;
+import net.codersation.vendingmachine.money.MoneyFlow;
+import net.codersation.vendingmachine.money.MoneyFlowFactory;
+import net.codersation.vendingmachine.money.MoneyStock;
 import net.codersation.vendingmachine.report.PurchasableReport;
 import net.codersation.vendingmachine.report.StockReport;
-import net.codersation.vendingmachine.stockflow.JuiceStock;
+import net.codersation.vendingmachine.stock.Juice;
+import net.codersation.vendingmachine.stock.JuiceStock;
 
 /**
  * 自動販売機

@@ -1,5 +1,7 @@
 package net.codersation.vendingmachine;
 
+import net.codersation.vendingmachine.money.Money;
+
 import java.util.Scanner;
 
 public class Main {

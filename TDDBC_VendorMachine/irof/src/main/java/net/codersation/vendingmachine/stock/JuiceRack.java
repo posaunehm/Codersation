@@ -1,6 +1,4 @@
-package net.codersation.vendingmachine.stockflow;
-
-import net.codersation.vendingmachine.Juice;
+package net.codersation.vendingmachine.stock;
 
 public class JuiceRack {
 
