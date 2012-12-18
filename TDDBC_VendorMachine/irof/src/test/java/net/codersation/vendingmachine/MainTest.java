@@ -86,6 +86,18 @@ public class MainTest {
         assertThat(out.readMassage(), is(nullValue()));
     }
 
+    @Test
+    public void infoで現在の投入金額を表示() throws Exception {
+        in.writeLine("ins 100");
+        in.writeLine("ins 100");
+        in.writeLine("info");
+        Main.main();
+
+        out.readMassage();
+        out.readMassage();
+        assertThat(out.readMassage(), is("Credit:200"));
+    }
+
     static class SystemIn {
         StringBuilder sb = new StringBuilder();
 

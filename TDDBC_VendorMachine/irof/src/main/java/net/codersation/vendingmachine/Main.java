@@ -42,6 +42,8 @@ public class Main {
                     System.out.println(change.toString(new ConsoleFormatter()) + " was ejected.");
                 } else if (input.equals("exit")) {
                     break;
+                } else if (input.equals("info")) {
+                    System.out.printf("Credit:%d%n", vendingMachine.getCreditAmount());
                 }
                 System.out.print("> ");
             }
