@@ -100,7 +100,7 @@ public class MainTest {
 
         public String readMassage() throws IOException {
             String line = readLine();
-            return line.equals("> ") ? readMassage() : line;
+            return line.equals("> ") ? readMassage() : line.replace("> ", "");
         }
 
         public String readLine() throws IOException {

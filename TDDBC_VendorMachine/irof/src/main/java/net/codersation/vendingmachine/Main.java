@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String... args) {
 		VendingMachine vendingMachine = new VendingMachine();
-		System.out.println("> ");
+		System.out.print("> ");
 		try (Scanner scanner = new Scanner(System.in)) {
 			while (scanner.hasNext()) {
 				String input = scanner.nextLine();
@@ -37,7 +37,7 @@ public class Main {
 				} else if (input.equals("eject")) {
 					System.out.printf("100(1) was ejected.%n");
 				}
-				System.out.println("> ");
+				System.out.print("> ");
 			}
 		}
 	}
