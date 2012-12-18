@@ -1,4 +1,4 @@
-﻿using Jihanki.Cashier.Base;
+﻿using Jihanki.Money;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +16,12 @@ namespace Jihanki.Controllers
         /// <summary>
         /// 投入金額
         /// </summary>
-        private Moneys inputMoney = new Moneys();
+        private Money.Money inputMoney = new Money.Money();
 
         /// <summary>
         /// 払い戻し金額（おつり）
         /// </summary>
-        private Moneys refundMoney = new Moneys();
+        private Money.Money refundMoney = new Money.Money();
 
 
 
@@ -47,10 +47,10 @@ namespace Jihanki.Controllers
         /// ユーザからの投入金を追加
         /// </summary>
         /// <param name="money">投入金額</param>
-        public void InputMoneyAdd(Jihanki.Cashier.Base.Money money)
+        public void InputMoneyAdd(Currency money)
         {
             //取り扱い可能なお金種別かチェック
-            using (var handling = new Cashier.HandingMoney())
+            using (var handling = new Money.HandingMoney())
             {
                 //取り扱いしているお金種別
                 if (handling.IsHandling(money) == true)
