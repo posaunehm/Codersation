@@ -98,6 +98,11 @@ public class MoneyStock {
     }
 
     public String toString(ConsoleFormatter formatter) {
-        return formatter.format(this);
+        Map<Money, Integer> map = new HashMap<>();
+        for (Money money : stock) {
+            if (!map.containsKey(money)) map.put(money, 0);
+            map.put(money, map.get(money) + 1);
+        }
+        return formatter.format(map);
     }
 }

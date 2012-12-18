@@ -57,7 +57,16 @@ public class MoneyStockTest {
 
     @Test
     public void 出力書式に応じて文字列表現を返す() {
+        sut.add(Money.HundredYen);
+        sut.add(Money.TenYen);
         String actual = sut.toString(new ConsoleFormatter());
         assertThat(actual, is("10(1), 100(1)"));
+    }
+    @Test
+    public void 出力書式に応じて文字列表現を返す_三角測量() {
+        sut.add(Money.FiftyYen);
+        sut.add(Money.FiftyYen);
+        String actual = sut.toString(new ConsoleFormatter());
+        assertThat(actual, is("50(2)"));
     }
 }
