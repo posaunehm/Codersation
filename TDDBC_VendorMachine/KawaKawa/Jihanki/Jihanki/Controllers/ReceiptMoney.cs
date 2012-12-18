@@ -1,4 +1,4 @@
-﻿using Jihanki.Cashier.Base;
+﻿using Jihanki.Money;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +19,8 @@ namespace Jihanki.Controllers
         /// <summary>
         /// 投入金の受付EVENT
         /// </summary>
-        private Action<Money> _receiptEvemt;
-        public event Action<Money> ReceiptEvent
+        private Action<Currency> _receiptEvemt;
+        public event Action<Currency> ReceiptEvent
         {
             add{this._receiptEvemt+=value;}
             remove { this._receiptEvemt -= value; }
@@ -44,11 +44,11 @@ namespace Jihanki.Controllers
         /// <returns>
         /// 
         /// </returns>
-        public void Receipt(Money money)
+        public void Receipt(Currency money)
         {
             
             //登録されているユーザ投入金Event分実行
-            foreach (Action<Money> n in this._receiptEvemt
+            foreach (Action<Currency> n in this._receiptEvemt
                                             .GetInvocationList()
                                             .Where(s => s != null))
             {

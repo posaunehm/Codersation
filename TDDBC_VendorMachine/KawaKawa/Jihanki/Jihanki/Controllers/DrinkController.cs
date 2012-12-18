@@ -15,7 +15,7 @@ namespace Jihanki.Controllers
         /// <summary>
         /// 格納しているドリンク
         /// </summary>
-        private DrinkStocks drinkList = new DrinkStocks();
+        private DrinkStock _drinkList = new DrinkStock();
 
 
 
@@ -25,7 +25,7 @@ namespace Jihanki.Controllers
         /// <param name="drink"></param>
         internal void Add(Drink drink)
         {
-            this.drinkList.Add(drink);
+            this._drinkList.Add(drink);
         }
 
 
@@ -37,7 +37,7 @@ namespace Jihanki.Controllers
 
         internal int Count()
         {
-            return this.drinkList.Count();
+            return this._drinkList.Count();
         }
 
 
@@ -56,7 +56,7 @@ namespace Jihanki.Controllers
         /// <returns></returns>
         internal List<Drink> AllList()
         {
-            return this.drinkList.GetList();
+            return this._drinkList.GetList();
         }
     }
 }
