@@ -24,21 +24,28 @@ public class Main {
                                 int count = 1;
                                 if (insAmount.contains("x")) {
                                     count = Integer.valueOf(insAmount.split("x")[1]);
-                                    insAmount = insAmount.split("x")[0];
-                                }
-                                for (int j = 0; j < count; j++) {
-                                    int amount = Integer.parseInt(insAmount);
-                                    boolean flg = false;
-                                    for (Money money : Money.values()) {
-                                        if (money.getValue() == amount) {
-                                            flg = true;
-                                            vendingMachine.insert(money);
-                                            System.out.printf("money: %d was received.%n", amount);
-                                            break;
-                                        }
-                                    }
-                                    if (!flg) {
+                                    if (count > 100) {
                                         System.out.printf("! %s is not available.%n", insAmount);
+                                        count = 0;
+                                    } else {
+                                        insAmount = insAmount.split("x")[0];
+                                    }
+                                }
+                                if (count > 0) {
+                                    for (int j = 0; j < count; j++) {
+                                        int amount = Integer.parseInt(insAmount);
+                                        boolean flg = false;
+                                        for (Money money : Money.values()) {
+                                            if (money.getValue() == amount) {
+                                                flg = true;
+                                                vendingMachine.insert(money);
+                                                System.out.printf("money: %d was received.%n", amount);
+                                                break;
+                                            }
+                                        }
+                                        if (!flg) {
+                                            System.out.printf("! %s is not available.%n", insAmount);
+                                        }
                                     }
                                 }
                             } catch (NumberFormatException e) {

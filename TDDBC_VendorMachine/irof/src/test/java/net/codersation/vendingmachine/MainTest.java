@@ -73,6 +73,16 @@ public class MainTest {
     }
 
     @Test
+    public void 同じものは100枚を越えて入れられない() throws Exception {
+        in.writeLine("ins 10x101");
+
+        Main.main();
+
+        assertThat(out.readMassage(), is("! 10x101 is not available."));
+        assertThat(out.readMassage(), is(nullValue()));
+    }
+
+    @Test
     public void 変な金額をinsしたらエラーメッセージ() throws Exception {
         in.writeLine("ins 123");
         Main.main();
