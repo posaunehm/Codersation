@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public class PurchasableReport extends ArrayList<Juice> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 }
