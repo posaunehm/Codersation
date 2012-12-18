@@ -22,7 +22,7 @@ public class Main {
                             String insAmount = split[i];
                             try {
                                 int count = 1;
-                                if (input.contains("x")) {
+                                if (insAmount.contains("x")) {
                                     count = Integer.valueOf(insAmount.split("x")[1]);
                                     insAmount = insAmount.split("x")[0];
                                 }

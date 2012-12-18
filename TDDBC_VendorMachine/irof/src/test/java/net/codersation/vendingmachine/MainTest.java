@@ -63,6 +63,16 @@ public class MainTest {
     }
 
     @Test
+    public void xあるのとないのが混ざったらコケるバグ() throws Exception {
+        in.writeLine("ins 10x1 100");
+
+        Main.main();
+
+        assertThat(out.readMassage(), is("money: 10 was received."));
+        assertThat(out.readMassage(), is("money: 100 was received."));
+    }
+
+    @Test
     public void 変な金額をinsしたらエラーメッセージ() throws Exception {
         in.writeLine("ins 123");
         Main.main();
