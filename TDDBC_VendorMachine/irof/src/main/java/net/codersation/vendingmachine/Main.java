@@ -18,23 +18,25 @@ public class Main {
                 if (input.startsWith("ins")) {
                     String[] split = input.split(" +");
                     if (split.length > 1) {
-                        String insAmount = split[1];
-                        try {
-                            int amount = Integer.parseInt(insAmount);
-                            boolean flg = false;
-                            for (Money money : Money.values()) {
-                                if (money.getValue() == amount) {
-                                    flg = true;
-                                    vendingMachine.insert(money);
-                                    System.out.printf("money: %d was received.%n", amount);
-                                    break;
+                        for (int i = 1 ; i < split.length; i++) {
+                            String insAmount = split[i];
+                            try {
+                                int amount = Integer.parseInt(insAmount);
+                                boolean flg = false;
+                                for (Money money : Money.values()) {
+                                    if (money.getValue() == amount) {
+                                        flg = true;
+                                        vendingMachine.insert(money);
+                                        System.out.printf("money: %d was received.%n", amount);
+                                        break;
+                                    }
                                 }
-                            }
-                            if (!flg) {
+                                if (!flg) {
+                                    System.out.printf("! %s is not available.%n", insAmount);
+                                }
+                            } catch (NumberFormatException e) {
                                 System.out.printf("! %s is not available.%n", insAmount);
                             }
-                        } catch (NumberFormatException e) {
-                            System.out.printf("! %s is not available.%n", insAmount);
                         }
                     }
                 } else if (input.equals("eject")) {

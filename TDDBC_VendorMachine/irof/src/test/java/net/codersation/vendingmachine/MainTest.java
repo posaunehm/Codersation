@@ -40,6 +40,18 @@ public class MainTest {
     }
 
     @Test
+    public void insで続けただけお金が入る() throws Exception {
+        in.writeLine("ins 100 100 10 100");
+
+        Main.main();
+
+        assertThat(out.readMassage(), is("money: 100 was received."));
+        assertThat(out.readMassage(), is("money: 100 was received."));
+        assertThat(out.readMassage(), is("money: 10 was received."));
+        assertThat(out.readMassage(), is("money: 100 was received."));
+    }
+
+    @Test
     public void 変な金額をinsしたらエラーメッセージ() throws Exception {
         in.writeLine("ins 123");
         Main.main();
