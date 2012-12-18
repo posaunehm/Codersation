@@ -61,7 +61,6 @@ public class MainTest {
         assertThat(out.readMassage(), is("100(1) was ejected."));
     }
 
-    @Ignore("VendingMachineにお釣りがへばりついて取り出せない")
     @Test
     public void ejectで二枚出す() throws Exception {
         in.writeLine("ins 100");

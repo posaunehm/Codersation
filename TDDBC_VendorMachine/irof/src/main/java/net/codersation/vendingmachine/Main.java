@@ -1,6 +1,8 @@
 package net.codersation.vendingmachine;
 
+import net.codersation.vendingmachine.money.ConsoleFormatter;
 import net.codersation.vendingmachine.money.Money;
+import net.codersation.vendingmachine.money.MoneyStock;
 
 import java.util.Scanner;
 
@@ -35,7 +37,9 @@ public class Main {
                         }
                     }
                 } else if (input.equals("eject")) {
-                    System.out.printf("100(1) was ejected.%n");
+                    vendingMachine.payBack();
+                    MoneyStock change = vendingMachine.takeOutChange();
+                    System.out.println(change.toString(new ConsoleFormatter()) + " was ejected.");
                 }
                 System.out.print("> ");
             }
