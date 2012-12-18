@@ -24,8 +24,11 @@ namespace Jihanki.TEST.Cashier.Base
         [TestCase(MoneyKind.Kind.Yen10000, 10, 100000)]
         public void 金額種別ごとの合計金額計算(MoneyKind.Kind kind,int addCount,int sum)
         {
+
             var target = new Jihanki.Cashier.Base.Money(kind);
+
             target.Add(addCount);
+
             Assert.AreEqual(target.Sum(), sum);
         }
 
