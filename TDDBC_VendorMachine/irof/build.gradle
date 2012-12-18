@@ -46,5 +46,8 @@ cleanEclipseJdt << {
   file('.settings/org.eclipse.jdt.groovy.core.prefs').delete()
 }
 
-
 test.exclude '**/*$*'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.3'
+}
