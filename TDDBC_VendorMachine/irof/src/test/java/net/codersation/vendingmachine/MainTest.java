@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import java.io.StringReader;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MainTest {
@@ -74,6 +75,17 @@ public class MainTest {
         assertThat(out.readMassage(), is("100(1), 500(1) was ejected."));
     }
 
+    @Test
+    public void exitで終了する() throws Exception {
+        in.writeLine("ins 100");
+        in.writeLine("exit");
+        in.writeLine("ins 500");
+        Main.main();
+
+        out.readMassage();
+        assertThat(out.readMassage(), is(nullValue()));
+    }
+
     static class SystemIn {
         StringBuilder sb = new StringBuilder();
 
@@ -101,6 +113,7 @@ public class MainTest {
 
         public String readMassage() throws IOException {
             String line = readLine();
+            if (line == null) return null;
             return line.equals("> ") ? readMassage() : line.replace("> ", "");
         }
 

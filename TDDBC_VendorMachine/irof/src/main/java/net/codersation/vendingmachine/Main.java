@@ -40,6 +40,8 @@ public class Main {
                     vendingMachine.payBack();
                     MoneyStock change = vendingMachine.takeOutChange();
                     System.out.println(change.toString(new ConsoleFormatter()) + " was ejected.");
+                } else if (input.equals("exit")) {
+                    break;
                 }
                 System.out.print("> ");
             }
