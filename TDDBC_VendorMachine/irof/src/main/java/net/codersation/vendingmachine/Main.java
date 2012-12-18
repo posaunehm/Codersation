@@ -3,6 +3,7 @@ package net.codersation.vendingmachine;
 import net.codersation.vendingmachine.money.ConsoleFormatter;
 import net.codersation.vendingmachine.money.Money;
 import net.codersation.vendingmachine.money.MoneyStock;
+import net.codersation.vendingmachine.report.PurchasableReport;
 
 import java.util.Scanner;
 
@@ -44,6 +45,8 @@ public class Main {
                     break;
                 } else if (input.equals("info")) {
                     System.out.printf("Credit:%d%n", vendingMachine.getCreditAmount());
+                    PurchasableReport report = vendingMachine.getPurchasable();
+                    System.out.println(report.toString());
                 }
                 System.out.print("> ");
             }

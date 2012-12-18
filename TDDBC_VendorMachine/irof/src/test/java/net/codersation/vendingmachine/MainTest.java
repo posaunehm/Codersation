@@ -89,13 +89,14 @@ public class MainTest {
     @Test
     public void infoで現在の投入金額を表示() throws Exception {
         in.writeLine("ins 100");
-        in.writeLine("ins 100");
+        in.writeLine("ins 50");
         in.writeLine("info");
         Main.main();
 
         out.readMassage();
         out.readMassage();
-        assertThat(out.readMassage(), is("Credit:200"));
+        assertThat(out.readMassage(), is("Credit:150"));
+        assertThat(out.readMassage(), is("[コーラ, 水]"));
     }
 
     static class SystemIn {
