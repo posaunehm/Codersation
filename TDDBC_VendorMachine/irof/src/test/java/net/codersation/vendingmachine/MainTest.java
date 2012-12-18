@@ -52,6 +52,17 @@ public class MainTest {
     }
 
     @Test
+    public void insで枚数も付け加えれる() throws Exception {
+        in.writeLine("ins 10x3");
+
+        Main.main();
+
+        assertThat(out.readMassage(), is("money: 10 was received."));
+        assertThat(out.readMassage(), is("money: 10 was received."));
+        assertThat(out.readMassage(), is("money: 10 was received."));
+    }
+
+    @Test
     public void 変な金額をinsしたらエラーメッセージ() throws Exception {
         in.writeLine("ins 123");
         Main.main();
@@ -109,6 +120,11 @@ public class MainTest {
         out.readMassage();
         assertThat(out.readMassage(), is("Credit:150"));
         assertThat(out.readMassage(), is("[コーラ, 水]"));
+    }
+
+    @Test
+    public void 何も入れずにenterして入力待ち記号がちゃんと出る() {
+
     }
 
     static class SystemIn {

@@ -18,21 +18,28 @@ public class Main {
                 if (input.startsWith("ins")) {
                     String[] split = input.split(" +");
                     if (split.length > 1) {
-                        for (int i = 1 ; i < split.length; i++) {
+                        for (int i = 1; i < split.length; i++) {
                             String insAmount = split[i];
                             try {
-                                int amount = Integer.parseInt(insAmount);
-                                boolean flg = false;
-                                for (Money money : Money.values()) {
-                                    if (money.getValue() == amount) {
-                                        flg = true;
-                                        vendingMachine.insert(money);
-                                        System.out.printf("money: %d was received.%n", amount);
-                                        break;
-                                    }
+                                int count = 1;
+                                if (input.contains("x")) {
+                                    count = Integer.valueOf(insAmount.split("x")[1]);
+                                    insAmount = insAmount.split("x")[0];
                                 }
-                                if (!flg) {
-                                    System.out.printf("! %s is not available.%n", insAmount);
+                                for (int j = 0; j < count; j++) {
+                                    int amount = Integer.parseInt(insAmount);
+                                    boolean flg = false;
+                                    for (Money money : Money.values()) {
+                                        if (money.getValue() == amount) {
+                                            flg = true;
+                                            vendingMachine.insert(money);
+                                            System.out.printf("money: %d was received.%n", amount);
+                                            break;
+                                        }
+                                    }
+                                    if (!flg) {
+                                        System.out.printf("! %s is not available.%n", insAmount);
+                                    }
                                 }
                             } catch (NumberFormatException e) {
                                 System.out.printf("! %s is not available.%n", insAmount);
