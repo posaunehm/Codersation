@@ -54,4 +54,10 @@ public class MoneyStockTest {
     public void 払えない金額を要求されると例外を投げる() throws Exception {
         sut.takeOut(10);
     }
+
+    @Test
+    public void 出力書式に応じて文字列表現を返す() {
+        String actual = sut.toString(new ConsoleFormatter());
+        assertThat(actual, is("10(1), 100(1)"));
+    }
 }

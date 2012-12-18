@@ -96,4 +96,8 @@ public class MoneyStock {
         }
         return map.toString();
     }
+
+    public String toString(ConsoleFormatter formatter) {
+        return formatter.format(this);
+    }
 }
