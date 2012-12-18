@@ -57,7 +57,8 @@ public class MainTest {
         in.writeLine("ins 100");
         in.writeLine("eject");
         Main.main();
-        assertThat(out.readMassage(), is("money: 100 was received."));
+
+        out.readMassage();
         assertThat(out.readMassage(), is("100(1) was ejected."));
     }
 
@@ -67,8 +68,9 @@ public class MainTest {
         in.writeLine("ins 500");
         in.writeLine("eject");
         Main.main();
-        assertThat(out.readMassage(), is("money: 100 was received."));
-        assertThat(out.readMassage(), is("money: 500 was received."));
+
+        out.readMassage();
+        out.readMassage();
         assertThat(out.readMassage(), is("100(1), 500(1) was ejected."));
     }
 
