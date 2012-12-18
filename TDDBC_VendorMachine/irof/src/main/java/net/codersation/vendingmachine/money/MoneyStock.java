@@ -2,6 +2,7 @@ package net.codersation.vendingmachine.money;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class MoneyStock {
     }
 
     public String toString(ConsoleFormatter formatter) {
-        Map<Money, Integer> map = new HashMap<>();
+        Map<Money, Integer> map = new EnumMap<Money, Integer>(Money.class);
         for (Money money : stock) {
             if (!map.containsKey(money)) map.put(money, 0);
             map.put(money, map.get(money) + 1);
