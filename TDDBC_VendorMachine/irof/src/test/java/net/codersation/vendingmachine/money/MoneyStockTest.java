@@ -41,7 +41,7 @@ public class MoneyStockTest {
         sut.add(HundredYen, 2);
         sut.add(TenYen, 3);
 
-        boolean actual = sut.canTakeOut(120);
+        boolean actual = sut.canTakeOutJust(120);
         assertThat(actual, is(true));
     }
 
@@ -50,7 +50,7 @@ public class MoneyStockTest {
         sut.add(HundredYen, 2);
         sut.add(TenYen, 3);
 
-        boolean actual = sut.canTakeOut(140);
+        boolean actual = sut.canTakeOutJust(140);
         assertThat(actual, is(false));
     }
 

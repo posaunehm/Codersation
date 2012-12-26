@@ -19,11 +19,11 @@ public class MoneyStock {
     /**
      * 引数のMoneyStockにこのオブジェクトに全てのStockを移す。移されたほうは空になる。
      *
-     * @param s 中身を渡されるMoneyStock
+     * @param send 中身を渡されるMoneyStock
      */
-    void moveAllMoneyTo(MoneyStock s) {
+    void moveAllMoneyTo(MoneyStock send) {
         for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
-            s.add(entry.getKey(), entry.getValue());
+            send.add(entry.getKey(), entry.getValue());
         }
         stock.clear();
     }
@@ -40,15 +40,20 @@ public class MoneyStock {
         if (price > getAmount())
             throw new IllegalArgumentException("cannot take out. price:" + price + ", amount " + getAmount());
 
-        MoneyStock res = calc(price);
+        MoneyStock res = createTakeOutStock(price);
         // 取り出す分を減らす
         for (Map.Entry<Money, Integer> entry : res.stock.entrySet()) {
-            stock.put(entry.getKey(), stock.get(entry.getKey()) - entry.getValue());
+            add(entry.getKey(), entry.getValue() * -1);
         }
         return res;
     }
 
-    private MoneyStock calc(int amount) {
+    /**
+     * 指定金額取り出します
+     * @param amount 金額
+     * @return 取りだされるもの
+     */
+    private MoneyStock createTakeOutStock(int amount) {
         MoneyStock res = getMoneyStock(amount, true);
 
         // 越えてる分を削る
@@ -57,7 +62,7 @@ public class MoneyStock {
             MoneyStock res2 = res.getMoneyStock(diff * -1, false);
             // 取り出す分を減らす
             for (Map.Entry<Money, Integer> entry : res2.stock.entrySet()) {
-                res.stock.put(entry.getKey(), res.stock.get(entry.getKey()) - entry.getValue());
+                res.add(entry.getKey(), entry.getValue() * -1);
             }
         }
 
@@ -69,22 +74,26 @@ public class MoneyStock {
         for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
             Money money = entry.getKey();
             int count = entry.getValue();
-            int use = amount / money.getValue() + (flg ? 1 : 0);
+            int use = (amount - res.getAmount()) / money.getValue() + (flg ? 1 : 0);
             if (use > count) {
                 use = count;
             }
-            amount -= money.getValue() * use;
 
             res.add(money, use);
-            if (amount < 0) {
+            if (res.getAmount() >= amount) {
                 break;
             }
         }
         return res;
     }
 
-    public boolean canTakeOut(int amount) {
-        return amount == calc(amount).getAmount();
+    /**
+     * 指定金額丁度取り出せるかを返します
+     * @param amount 金額
+     * @return 丁度返せるならtrue
+     */
+    public boolean canTakeOutJust(int amount) {
+        return amount == createTakeOutStock(amount).getAmount();
     }
 
     @Override

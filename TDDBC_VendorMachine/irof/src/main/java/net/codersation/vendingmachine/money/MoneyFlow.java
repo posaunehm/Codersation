@@ -38,7 +38,7 @@ public class MoneyFlow {
         MoneyStock sale = credit.takeOut(price);
         // poolからお釣りのために差額のお金を取り出す
         int changeAmount = sale.getAmount() - price;
-        if (!pool.canTakeOut(changeAmount)) {
+        if (!pool.canTakeOutJust(changeAmount)) {
             throw new IllegalStateException("cannot take out just Money. pool=" + pool + ", amount=" + changeAmount);
         }
         MoneyStock change = pool.takeOut(changeAmount);
@@ -56,7 +56,7 @@ public class MoneyFlow {
      * @return お釣りが返せるならtrue
      */
     public boolean canPayBackChange(int price) {
-        return pool.canTakeOut(credit.getAmount() - price);
+        return pool.canTakeOutJust(credit.getAmount() - price);
     }
 
     public MoneyStock takeOutChange() {
