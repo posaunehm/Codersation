@@ -26,11 +26,7 @@ public class MoneyFlow {
     }
 
     public void insert(Money money) {
-        if (moneyPoricy.isAllowed(money)) {
-            credit.add(money);
-        } else {
-            change.add(money);
-        }
+        (moneyPoricy.isAllowed(money) ? credit : change).add(money, 1);
     }
 
     public void payBack() {

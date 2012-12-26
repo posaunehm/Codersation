@@ -19,10 +19,6 @@ public class MoneyStock {
         return amount;
     }
 
-    void add(Money e) {
-        stock.add(e);
-    }
-
     /**
      * 引数のMoneyStockにこのオブジェクトに全てのStockを移す。移されたほうは空になる。
      *
@@ -109,7 +105,7 @@ public class MoneyStock {
 
     public void add(Money money, int count) {
         for (int i = 0; i < count; i++) {
-            add(money);
+            stock.add(money);
         }
     }
 }
