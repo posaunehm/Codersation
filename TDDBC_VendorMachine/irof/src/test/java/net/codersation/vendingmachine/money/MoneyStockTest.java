@@ -69,4 +69,11 @@ public class MoneyStockTest {
         String actual = sut.toString(new ConsoleFormatter());
         assertThat(actual, is("50(2)"));
     }
+
+    @Test
+    public void 枚数指定で追加する() {
+        sut.add(Money.HundredYen, 5);
+
+        assertThat(sut.getAmount(), is(500));
+    }
 }

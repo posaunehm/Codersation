@@ -106,4 +106,10 @@ public class MoneyStock {
         }
         return formatter.format(map);
     }
+
+    public void add(Money money, int count) {
+        for (int i = 0; i < count; i++) {
+            add(money);
+        }
+    }
 }
