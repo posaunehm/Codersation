@@ -5,9 +5,10 @@
  *      Author: Akira
  */
 
-#include "MoneyRack.h"
+
 #include "Money.h"
 #include <boost/make_shared.hpp>
+#include "MoneyRack.h"
 
 //ここまでしなくても良いかもしれないが、将来的には、shared_pointerのラッピングでいけるようにできる気がする
 //強い保証は、できていない。

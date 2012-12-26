@@ -1,4 +1,4 @@
-﻿using Jihanki.Cashier.Base;
+﻿using Jihanki.Money;
 using Jihanki.DrinkrRlations.Base;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Jihanki.Controllers
         /// ユーザからの投入金の受付
         /// </summary>
         /// <param name="money">投入金</param>
-        public void ReceiptMoney(Money money)
+        public void ReceiptMoney(Currency money)
         {
             this.receiptMoney.Receipt(money);
         }

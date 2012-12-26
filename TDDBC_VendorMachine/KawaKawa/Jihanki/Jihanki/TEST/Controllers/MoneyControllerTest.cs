@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Jihanki.Controllers;
-using Jihanki.Cashier.Base;
+using Jihanki.Money;
 
 
 
@@ -16,31 +16,34 @@ namespace Jihanki.TEST.Controllers
     {
 
         //投入金額
-        private Jihanki.Cashier.Base.Money yen1;
-        private Jihanki.Cashier.Base.Money yen5;
-        private Jihanki.Cashier.Base.Money yen10;
-        private Jihanki.Cashier.Base.Money yen50;
-        private Jihanki.Cashier.Base.Money yen100;
-        private Jihanki.Cashier.Base.Money yen500;
-        private Jihanki.Cashier.Base.Money yen1000;
-        private Jihanki.Cashier.Base.Money yen2000;
-        private Jihanki.Cashier.Base.Money yen5000;
-        private Jihanki.Cashier.Base.Money yen10000;
+        private Currency yen1;
+        private Currency yen5;
+        private Currency yen10;
+        private Currency yen50;
+        private Currency yen100;
+        private Currency yen500;
+        private Currency yen1000;
+        private Currency yen2000;
+        private Currency yen5000;
+        private Currency yen10000;
 
 
-        private void initMoney()
+        /// <summary>
+        /// 
+        /// </summary>
+        [SetUp]
+        public void Init()
         {
-            yen1 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen1);
-            yen5 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen5);
-            yen10 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen10);
-            yen50 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen50);
-            yen100= new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen100);
-            yen500= new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen500);
-            yen1000 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen1000);
-            yen2000 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen2000);
-            yen5000 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen5000);
-            yen10000 = new Jihanki.Cashier.Base.Money(Jihanki.Cashier.Base.MoneyKind.Kind.Yen10000);
-
+            yen1 = new Currency(CurrencyKind.Kind.Yen1);
+            yen5 = new Currency(CurrencyKind.Kind.Yen5);
+            yen10 = new Currency(CurrencyKind.Kind.Yen10);
+            yen50 = new Currency(CurrencyKind.Kind.Yen50);
+            yen100= new Currency(CurrencyKind.Kind.Yen100);
+            yen500= new Currency(CurrencyKind.Kind.Yen500);
+            yen1000 = new Currency(CurrencyKind.Kind.Yen1000);
+            yen2000 = new Currency(CurrencyKind.Kind.Yen2000);
+            yen5000 = new Currency(CurrencyKind.Kind.Yen5000);
+            yen10000 = new Currency(CurrencyKind.Kind.Yen10000);
 
         }
 
@@ -52,8 +55,6 @@ namespace Jihanki.TEST.Controllers
         /// <param name="num"></param>
          public void SetMoneyNum(int num)
         {
-            initMoney();
-
             yen1.Add(num);
             yen5.Add(num);
             yen10.Add(num);
@@ -69,42 +70,50 @@ namespace Jihanki.TEST.Controllers
 
 
 
-        [TestCase(1,10,60,160,660)]
-        [TestCase(2,20,120,320,1320)]
-        [TestCase(5,50,300,800,3300)]
-        public void 投入金額と投入金額総計が一致するかテスト(int insertNum,int exp1,int exp2 ,int exp3,int exp4)
+        [TestCase(1, 1660)]
+        [TestCase(2, 3320)]
+        [TestCase(5, 8300)]
+         public void 投入金額と投入金額総計が一致するかテスト(int insertNum, int expect)
         {
              //投入するお金を用意
              this.SetMoneyNum(insertNum);
 
              var target = new MoneyController();
 
-             //10円*1を投入
+            //1円を投入
+             target.InputMoneyAdd(this.yen1);
+
+            //5円を投入
+             target.InputMoneyAdd(this.yen5);
+
+             //10円を投入
              target.InputMoneyAdd(this.yen10);
-             var expect = exp1;
-             var actual = target.InputMoneySum();
-             Assert.AreEqual(expect, actual);
 
              //50円を投入
              target.InputMoneyAdd(this.yen50);
-             expect = exp2;
-             actual = target.InputMoneySum();
-             Assert.AreEqual(expect, actual);
 
              //100円を投入
              target.InputMoneyAdd(this.yen100);
-             expect = exp3;
-             actual = target.InputMoneySum();
-             Assert.AreEqual(expect, actual);
 
              //500円を投入
              target.InputMoneyAdd(this.yen500);
-             expect = exp4;
-             actual = target.InputMoneySum();
+
+             //1000円を投入
+             target.InputMoneyAdd(this.yen1000);
+
+            //2000円を投入
+             target.InputMoneyAdd(this.yen2000);
+
+            //5000円を投入
+             target.InputMoneyAdd(this.yen5000);
+
+            //10000円を投入
+             target.InputMoneyAdd(this.yen10000);
+             
+            
+            //投入金額合計
+             var actual = target.InputMoneySum();
              Assert.AreEqual(expect, actual);
-
-
-
          }
 
 

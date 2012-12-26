@@ -1,4 +1,6 @@
-package net.codersation.vendingmachine;
+package net.codersation.vendingmachine.report;
+
+import net.codersation.vendingmachine.stock.Juice;
 
 import java.util.ArrayList;
 
@@ -7,6 +9,6 @@ import java.util.ArrayList;
  */
 public class PurchasableReport extends ArrayList<Juice> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 }

@@ -1,8 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
+apply plugin: 'application'
+apply from: 'https://github.com/valkolovos/gradle_cobertura/raw/master/repo/gradle_cobertura/gradle_cobertura/1.2.1/coberturainit.gradle'
 
-defaultTasks 'clean', 'test'
+
+defaultTasks 'clean', 'test', 'cobertura'
 
 [compileJava, compileTestJava, compileTestGroovy]*.options*.encoding = 'UTF-8'
 
@@ -17,6 +20,12 @@ dependencies {
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
   testCompile 'org.yaml:snakeyaml:1.10'
 }
+
+test {
+  jvmArgs '-XX:-UseSplitVerifier'
+}
+
+mainClassName = 'net.codersation.vendingmachine.Main'
 
 eclipse {
   project.name = 'VendingMachine_irof'
@@ -43,5 +52,8 @@ cleanEclipseJdt << {
   file('.settings/org.eclipse.jdt.groovy.core.prefs').delete()
 }
 
-
 test.exclude '**/*$*'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.3'
+}

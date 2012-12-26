@@ -56,10 +56,8 @@ namespace VendingMachine.Model {
 
             // [TODO: 1]
             // create sales
-            // 投入金を準備金に加える
-            // 残額を分解し、残りの準備金を返す
-            // 計算前後の準備金の差異から、おつりを算出する
             // 準備対象外の金種はビルバリプールに振り替える
+            // 管理用の文脈と購入文脈で準備金を共有できるよう大規模なリファクタリングｪ ... 
 
             var allCredits = mCoinMeckRole.TransferMoney(mChangesPool, mDealAmount.RecevedMoney, (m1, m2) => m1+m2);
 
