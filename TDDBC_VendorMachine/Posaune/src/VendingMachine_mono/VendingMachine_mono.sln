@@ -5,18 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine", "..\Vendin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\VendingMachine\Test\Test.csproj", "{2B420094-A88B-44D0-B02F-7B9FF8EAE956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "View\View.csproj", "{200D9673-D4E6-457C-9E21-7D8C33A7AEF3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{200D9673-D4E6-457C-9E21-7D8C33A7AEF3}.Debug|x86.ActiveCfg = Debug|x86
-		{200D9673-D4E6-457C-9E21-7D8C33A7AEF3}.Debug|x86.Build.0 = Debug|x86
-		{200D9673-D4E6-457C-9E21-7D8C33A7AEF3}.Release|x86.ActiveCfg = Release|x86
-		{200D9673-D4E6-457C-9E21-7D8C33A7AEF3}.Release|x86.Build.0 = Release|x86
 		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Debug|x86.Build.0 = Debug|Any CPU
 		{2B420094-A88B-44D0-B02F-7B9FF8EAE956}.Release|x86.ActiveCfg = Release|Any CPU
