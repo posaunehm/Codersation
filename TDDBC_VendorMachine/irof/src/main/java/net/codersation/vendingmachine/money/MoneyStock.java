@@ -22,7 +22,7 @@ public class MoneyStock {
     /**
      * 引数のMoneyStockにこのオブジェクトに全てのStockを移す。移されたほうは空になる。
      *
-     * @param s
+     * @param s 中身を渡されるMoneyStock
      */
     void moveAllMoneyTo(MoneyStock s) {
         s.stock.addAll(stock);
@@ -43,7 +43,7 @@ public class MoneyStock {
             i -= money.getValue();
         }
 
-        for (Money money : result.toArray(new Money[0])) {
+        for (Money money : result.toArray(new Money[result.size()])) {
             if (i <= money.getValue() * -1) {
                 result.remove(money);
                 i += money.getValue();
@@ -95,7 +95,7 @@ public class MoneyStock {
     }
 
     public String toString(ConsoleFormatter formatter) {
-        Map<Money, Integer> map = new EnumMap<Money, Integer>(Money.class);
+        Map<Money, Integer> map = new EnumMap<>(Money.class);
         for (Money money : stock) {
             if (!map.containsKey(money)) map.put(money, 0);
             map.put(money, map.get(money) + 1);

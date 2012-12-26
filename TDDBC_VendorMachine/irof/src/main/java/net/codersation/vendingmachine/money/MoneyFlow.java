@@ -2,7 +2,7 @@ package net.codersation.vendingmachine.money;
 
 public class MoneyFlow {
 
-    public MoneyPolicy moneyPoricy = new MoneyPolicy();
+    public MoneyPolicy moneyPolicy = new MoneyPolicy();
 
     private int saleAmount = 0;
     private final MoneyStock credit = new MoneyStock();
@@ -26,15 +26,11 @@ public class MoneyFlow {
     }
 
     public void insert(Money money) {
-        (moneyPoricy.isAllowed(money) ? credit : change).add(money, 1);
+        (moneyPolicy.isAllowed(money) ? credit : change).add(money, 1);
     }
 
     public void payBack() {
         credit.moveAllMoneyTo(change);
-    }
-
-    public int getChangeAmount() {
-        return change.getAmount();
     }
 
     public void purchase(int price) {
