@@ -5,7 +5,7 @@ apply plugin: 'application'
 apply from: 'https://github.com/valkolovos/gradle_cobertura/raw/master/repo/gradle_cobertura/gradle_cobertura/1.2.1/coberturainit.gradle'
 
 
-defaultTasks 'clean', 'test', 'cobertura'
+defaultTasks 'clean', 'test'
 
 [compileJava, compileTestJava, compileTestGroovy]*.options*.encoding = 'UTF-8'
 
