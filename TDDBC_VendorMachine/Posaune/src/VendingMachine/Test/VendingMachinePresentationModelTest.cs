@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VendingMachine.Domain;
+using VendingMachine.PresentationModel;
 using Xunit;
 using Xunit.Extensions;
 using VendingMachine;
@@ -46,8 +48,8 @@ namespace Test
             _sut.JuiceStockDataCollection.Is(
                 new[]
                     {
-                        new JuiceStockData {Name = "Cola", Price = 110, CanBuy = true},
-                        new JuiceStockData {Name = "Soda", Price = 100, CanBuy = true},
+                        new JuiceStockItemPresentationModel {Name = "Cola", Price = 110, CanBuy = true},
+                        new JuiceStockItemPresentationModel {Name = "Soda", Price = 100, CanBuy = true},
                     }
                 );
         }

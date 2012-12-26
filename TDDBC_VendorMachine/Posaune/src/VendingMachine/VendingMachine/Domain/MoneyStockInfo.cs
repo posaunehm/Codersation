@@ -1,4 +1,4 @@
-namespace VendingMachine
+namespace VendingMachine.Domain
 {
     public class MoneyStockInfo
     {

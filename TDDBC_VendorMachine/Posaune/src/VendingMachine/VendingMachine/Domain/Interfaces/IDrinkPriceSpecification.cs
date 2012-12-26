@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace VendingMachine
+namespace VendingMachine.Domain.Interfaces
 {
     public interface IDrinkPriceSpecification
     {

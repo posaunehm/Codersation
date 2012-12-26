@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using VendingMachine.Domain.Interfaces;
 
-namespace VendingMachine
+namespace VendingMachine.Domain
 {
     public class VendingMachine
     {

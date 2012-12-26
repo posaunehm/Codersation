@@ -1,4 +1,4 @@
-namespace VendingMachine
+namespace VendingMachine.Domain.Interfaces
 {
     public interface IMoneyAcceptor
     {
