@@ -1,20 +1,17 @@
 package net.codersation.vendingmachine.money;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MoneyStock {
 
-    private List<Money> stock = new ArrayList<>();
+    private Map<Money, Integer> stock = new EnumMap<>(Money.class);
 
     public int getAmount() {
         int amount = 0;
-        for (Money c : stock) {
-            amount += c.getValue();
+
+        for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
+            amount += entry.getKey().getValue() * entry.getValue();
         }
         return amount;
     }
@@ -25,32 +22,10 @@ public class MoneyStock {
      * @param s 中身を渡されるMoneyStock
      */
     void moveAllMoneyTo(MoneyStock s) {
-        s.stock.addAll(stock);
+        for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
+            s.add(entry.getKey(), entry.getValue());
+        }
         stock.clear();
-    }
-
-    private List<Money> getUseMoneyList(int i) {
-        // TODO 指定された金額のお金を出すための見苦しいコード
-
-        List<Money> result = new ArrayList<>();
-
-        Collections.sort(stock);
-        for (Money money : stock) {
-            if (i <= 0) {
-                break;
-            }
-            result.add(money);
-            i -= money.getValue();
-        }
-
-        for (Money money : result.toArray(new Money[result.size()])) {
-            if (i <= money.getValue() * -1) {
-                result.remove(money);
-                i += money.getValue();
-            }
-        }
-        return result;
-
     }
 
     /**
@@ -64,24 +39,52 @@ public class MoneyStock {
     public MoneyStock takeOut(int price) {
         if (price > getAmount())
             throw new IllegalArgumentException("cannot take out. price:" + price + ", amount " + getAmount());
-        MoneyStock res = new MoneyStock();
-        res.stock = getUseMoneyList(price);
-        for (Money money : res.stock) {
-            remove(money);
+
+        MoneyStock res = calc(price);
+        // 取り出す分を減らす
+        for (Map.Entry<Money, Integer> entry : res.stock.entrySet()) {
+            stock.put(entry.getKey(), stock.get(entry.getKey()) - entry.getValue());
         }
         return res;
     }
 
-    private void remove(Money e) {
-        stock.remove(e);
+    private MoneyStock calc(int amount) {
+        MoneyStock res = getMoneyStock(amount, true);
+
+        // 越えてる分を削る
+        int diff = amount - res.getAmount();
+        if (diff < 0) {
+            MoneyStock res2 = res.getMoneyStock(diff * -1, false);
+            // 取り出す分を減らす
+            for (Map.Entry<Money, Integer> entry : res2.stock.entrySet()) {
+                res.stock.put(entry.getKey(), res.stock.get(entry.getKey()) - entry.getValue());
+            }
+        }
+
+        return res;
+    }
+
+    private MoneyStock getMoneyStock(int amount, boolean flg) {
+        MoneyStock res = new MoneyStock();
+        for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
+            Money money = entry.getKey();
+            int count = entry.getValue();
+            int use = amount / money.getValue() + (flg ? 1 : 0);
+            if (use > count) {
+                use = count;
+            }
+            amount -= money.getValue() * use;
+
+            res.add(money, use);
+            if (amount < 0) {
+                break;
+            }
+        }
+        return res;
     }
 
     public boolean canTakeOut(int amount) {
-        int difference = amount;
-        for (Money money : getUseMoneyList(amount)) {
-            difference -= money.getValue();
-        }
-        return difference == 0;
+        return amount == calc(amount).getAmount();
     }
 
     @Override
@@ -90,19 +93,16 @@ public class MoneyStock {
     }
 
     public void add(Money money, int count) {
-        for (int i = 0; i < count; i++) {
-            stock.add(money);
+        if (stock.containsKey(money)) {
+            stock.put(money, stock.get(money) + count);
+        } else {
+            stock.put(money, count);
         }
     }
 
     public String getText() {
-        Map<Money, Integer> map = new EnumMap<>(Money.class);
-        for (Money money : stock) {
-            if (!map.containsKey(money)) map.put(money, 0);
-            map.put(money, map.get(money) + 1);
-        }
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<Money, Integer> entry : map.entrySet()) {
+        for (Map.Entry<Money, Integer> entry : stock.entrySet()) {
             if (sb.length() != 0) sb.append(", ");
             sb.append(String.format("%d(%d)", entry.getKey().getValue(), entry.getValue()));
         }
