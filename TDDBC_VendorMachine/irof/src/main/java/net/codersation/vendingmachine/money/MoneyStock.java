@@ -54,7 +54,7 @@ public class MoneyStock {
     }
 
     /**
-     * 指定された金額のMoneStockを取り出す。
+     * 指定された金額のMoneyStockを取り出す。
      * 取り出された分の金額は減る。
      * TODO 丁度、多め、などは TakeOutRule とかにしたい
      *
