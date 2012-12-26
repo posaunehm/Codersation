@@ -1,6 +1,5 @@
 package net.codersation.vendingmachine;
 
-import net.codersation.vendingmachine.money.ConsoleFormatter;
 import net.codersation.vendingmachine.money.Money;
 import net.codersation.vendingmachine.money.MoneyStock;
 import net.codersation.vendingmachine.report.PurchasableReport;
@@ -56,7 +55,7 @@ public class Main {
                 } else if (input.equals("eject")) {
                     vendingMachine.payBack();
                     MoneyStock change = vendingMachine.takeOutChange();
-                    System.out.println(change.toString(new ConsoleFormatter()) + " was ejected.");
+                    System.out.println(change.getText() + " was ejected.");
                 } else if (input.equals("exit")) {
                     break;
                 } else if (input.equals("info")) {

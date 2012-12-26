@@ -86,26 +86,26 @@ public class MoneyStock {
 
     @Override
     public String toString() {
-        Map<Money, Integer> map = new HashMap<>();
-        for (Money money : stock) {
-            if (!map.containsKey(money)) map.put(money, 0);
-            map.put(money, map.get(money) + 1);
-        }
-        return map.toString();
-    }
-
-    public String toString(ConsoleFormatter formatter) {
-        Map<Money, Integer> map = new EnumMap<>(Money.class);
-        for (Money money : stock) {
-            if (!map.containsKey(money)) map.put(money, 0);
-            map.put(money, map.get(money) + 1);
-        }
-        return formatter.format(map);
+        return getText();
     }
 
     public void add(Money money, int count) {
         for (int i = 0; i < count; i++) {
             stock.add(money);
         }
+    }
+
+    public String getText() {
+        Map<Money, Integer> map = new EnumMap<>(Money.class);
+        for (Money money : stock) {
+            if (!map.containsKey(money)) map.put(money, 0);
+            map.put(money, map.get(money) + 1);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Money, Integer> entry : map.entrySet()) {
+            if (sb.length() != 0) sb.append(", ");
+            sb.append(String.format("%d(%d)", entry.getKey().getValue(), entry.getValue()));
+        }
+        return sb.toString();
     }
 }

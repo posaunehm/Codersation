@@ -64,14 +64,14 @@ public class MoneyStockTest {
         sut.add(HundredYen, 1);
         sut.add(TenYen, 1);
 
-        String actual = sut.toString(new ConsoleFormatter());
+        String actual = sut.getText();
         assertThat(actual, is("10(1), 100(1)"));
     }
     @Test
     public void 出力書式に応じて文字列表現を返す_三角測量() {
         sut.add(FiftyYen, 2);
 
-        String actual = sut.toString(new ConsoleFormatter());
+        String actual = sut.getText();
         assertThat(actual, is("50(2)"));
     }
 
